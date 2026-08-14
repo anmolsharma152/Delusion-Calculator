@@ -33,7 +33,7 @@ export default function InteractiveBackground() {
   const spriteCache = useRef<Record<string, { canvas: HTMLCanvasElement; aspect: number }>>({});
 
   useEffect(() => {
-    // 1. Preload Dedicated High-Quality Vector & Character Assets
+    // 1. Preload Dedicated High-Quality Vector & Character Cutout Assets
     const loadAsset = (key: string, src: string) => {
       const img = new Image();
       img.src = src;
@@ -118,6 +118,7 @@ export default function InteractiveBackground() {
       ctx.shadowBlur = 18;
       ctx.shadowColor = '#FF007F';
 
+      // Stem & Base
       ctx.beginPath();
       ctx.ellipse(0, 44, 22, 5, 0, 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
@@ -128,6 +129,7 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 3.5;
       ctx.stroke();
 
+      // V-Shaped Martini Glass Body
       ctx.beginPath();
       ctx.moveTo(-38, -28);
       ctx.lineTo(38, -28);
@@ -143,6 +145,7 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 2.5;
       ctx.stroke();
 
+      // Lime Wheel on Rim
       ctx.beginPath();
       ctx.arc(26, -28, 12, 0, Math.PI * 2);
       ctx.fillStyle = '#10B981';
@@ -151,6 +154,7 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
+      // Cocktail Umbrella
       ctx.beginPath();
       ctx.arc(-14, -34, 16, Math.PI, 0);
       ctx.fillStyle = '#FFE600';
@@ -249,16 +253,17 @@ export default function InteractiveBackground() {
 
     const initItems = () => {
       items = [];
+      // Explicit, well-balanced distribution of 28 zero-gravity floating items:
       const itemTypes: ItemType[] = [
-        'CAT_BAG', 'CAT_BAG', 'CAT_BAG',
-        'DOLLAR', 'DOLLAR', 'DOLLAR', 'DOLLAR',
-        'DIAMOND', 'DIAMOND', 'DIAMOND',
-        'COCKTAIL', 'COCKTAIL', 'COCKTAIL',
-        'PALM', 'PALM', 'PALM',
-        'YACHT', 'YACHT', 'YACHT',
-        'MIAMI_MAN', 'MIAMI_MAN', 'MIAMI_MAN',
-        'MIAMI_WOMAN', 'MIAMI_WOMAN', 'MIAMI_WOMAN',
-        'ORB', 'ORB', 'ORB', 'ORB'
+        'CAT_BAG', 'CAT_BAG', 'CAT_BAG', 'CAT_BAG',       // 4x Cat Litter Bags (~14.3%)
+        'DOLLAR', 'DOLLAR', 'DOLLAR', 'DOLLAR',           // 4x Diamond Dollar Signs (~14.3%)
+        'DIAMOND', 'DIAMOND', 'DIAMOND',                  // 3x Brilliant Cut Diamonds (~10.7%)
+        'COCKTAIL', 'COCKTAIL', 'COCKTAIL',               // 3x Tropical Cocktails (~10.7%)
+        'PALM', 'PALM', 'PALM',                           // 3x Miami Palm Trees (~10.7%)
+        'YACHT', 'YACHT', 'YACHT',                        // 3x Luxury Superyachts (~10.7%)
+        'MIAMI_MAN', 'MIAMI_MAN',                         // 2x Miami Vice Man (~7.1%)
+        'MIAMI_WOMAN', 'MIAMI_WOMAN',                     // 2x Miami Vice Woman (~7.1%)
+        'ORB', 'ORB', 'ORB', 'ORB'                        // 4x Glowing Neon Orbs (~14.3%)
       ];
 
       itemTypes.forEach((type) => {
@@ -275,7 +280,7 @@ export default function InteractiveBackground() {
           size = Math.random() * 20 + 60; // 60-80px Diamond Dollar Sign
           aspectRatio = 180 / 200;
         } else if (type === 'MIAMI_MAN' || type === 'MIAMI_WOMAN') {
-          size = Math.random() * 25 + 90; // 90-115px Character Full Body
+          size = Math.random() * 25 + 90; // 90-115px Character Silhouette Cutout
           aspectRatio = 540 / 960;
         } else if (type === 'PALM') {
           size = Math.random() * 20 + 70; // 70-90px Palm
@@ -296,10 +301,10 @@ export default function InteractiveBackground() {
           y: Math.random() * height,
           size,
           aspectRatio,
-          speedX: (Math.random() - 0.5) * 0.5,
-          speedY: Math.random() * 0.5 + 0.25,
+          speedX: (Math.random() - 0.5) * 1.2,
+          speedY: Math.random() * 2.2 + 2.0, // High gravity speed (2.0 to 4.2 px/frame)
           rotation: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.012,
+          rotSpeed: (Math.random() - 0.5) * 0.028,
           opacity: Math.random() * 0.25 + 0.75,
           type,
           color: colors[Math.floor(Math.random() * colors.length)],
@@ -355,11 +360,6 @@ export default function InteractiveBackground() {
             ctx.translate(item.x, item.y);
             ctx.rotate(item.rotation);
             ctx.globalAlpha = item.opacity;
-
-            // Use screen blend mode for character illustrations to blend dark backgrounds seamlessly
-            if (item.type === 'MIAMI_MAN' || item.type === 'MIAMI_WOMAN') {
-              ctx.globalCompositeOperation = 'screen';
-            }
 
             const w = item.size;
             const h = w / item.aspectRatio;

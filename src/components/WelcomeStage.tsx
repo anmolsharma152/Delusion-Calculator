@@ -14,17 +14,49 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
       <div className="max-w-5xl mx-auto w-full space-y-4 sm:space-y-5">
         {/* Main Banner Card */}
         <div className="bg-[#0e0726] p-5 sm:p-7 rounded-2xl border-2 border-[#FF007F]/40 shadow-[0_0_45px_rgba(255,0,127,0.35)] text-center space-y-4 relative overflow-hidden">
-          {/* Title - Official banner image /Assets/fnf_delusion_banner.png */}
+          {/* Title - Official banner image with clockwise rotating cat litter bag */}
           <div className="space-y-2 py-1 flex flex-col items-center justify-center">
-            <div className="relative w-full max-w-xl h-24 sm:h-32 md:h-36 drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]">
-              <Image
-                src="/Assets/fnf_delusion_banner.png"
-                alt="Fresh & Fit Podcast - Female Delusion Calculator"
-                fill
-                priority
-                className="object-contain"
-              />
+            <div className="flex items-center justify-center gap-3 sm:gap-6 w-full">
+              {/* Clockwise Rotating Cat Litter Bag Left */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 10, ease: 'linear' }}
+                className="relative w-14 h-16 sm:w-20 sm:h-24 shrink-0 drop-shadow-[0_0_20px_rgba(255,0,127,0.8)]"
+              >
+                <Image
+                  src="/Assets/cat_litter_bag.png"
+                  alt="Cat Litter Bag"
+                  fill
+                  className="object-contain"
+                />
+              </motion.div>
+
+              {/* Main Banner */}
+              <div className="relative w-full max-w-xl h-24 sm:h-32 md:h-36 drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]">
+                <Image
+                  src="/Assets/fnf_delusion_banner.png"
+                  alt="Fresh & Fit Podcast - Female Delusion Calculator"
+                  fill
+                  priority
+                  className="object-contain"
+                />
+              </div>
+
+              {/* Clockwise Rotating Cat Litter Bag Right */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 10, ease: 'linear' }}
+                className="relative w-14 h-16 sm:w-20 sm:h-24 shrink-0 drop-shadow-[0_0_20px_rgba(255,0,127,0.8)] hidden sm:block"
+              >
+                <Image
+                  src="/Assets/cat_litter_bag.png"
+                  alt="Cat Litter Bag"
+                  fill
+                  className="object-contain"
+                />
+              </motion.div>
             </div>
+
             <p className="font-mono text-xs sm:text-sm text-[#00F5FF] font-bold text-glow-cyan">
               "HOW DELUSIONAL ARE YOUR STANDARDS IN A MAN?" — THE NUMBERS DON'T LIE
             </p>
