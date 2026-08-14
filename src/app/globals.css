@@ -13,6 +13,20 @@
   font-family: var(--font-anton), 'Anton', sans-serif;
 }
 
+@keyframes spinClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-clockwise {
+  animation: spinClockwise 10s linear infinite;
+  will-change: transform;
+}
+
 :root {
   /* Vaporwave Foundations */
   --vapor-dark: #0c0721;

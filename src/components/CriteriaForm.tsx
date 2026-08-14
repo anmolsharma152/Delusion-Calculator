@@ -117,21 +117,7 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
       >
         {/* Fresh & Fit Delusion Banner Logo Header */}
         <div className="flex flex-col items-center justify-center border-b border-[#FF007F]/30 pb-4 text-center space-y-2">
-          <div className="flex items-center justify-center gap-3 sm:gap-6 w-full">
-            {/* Clockwise Rotating Cat Litter Bag Left */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 10, ease: 'linear' }}
-              className="relative w-12 h-14 sm:w-16 sm:h-18 md:w-20 md:h-22 shrink-0 drop-shadow-[0_0_18px_rgba(255,0,127,0.8)]"
-            >
-              <Image
-                src="/Assets/cat_litter_bag.png"
-                alt="Cat Litter Bag"
-                fill
-                className="object-contain"
-              />
-            </motion.div>
-
+          <div className="flex items-center justify-center gap-3 sm:gap-5 w-full">
             {/* Main Delusion Banner */}
             <div className="relative w-full max-w-lg h-20 sm:h-24 md:h-28 drop-shadow-[0_0_25px_rgba(255,0,127,0.6)]">
               <Image
@@ -143,19 +129,15 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
               />
             </div>
 
-            {/* Clockwise Rotating Cat Litter Bag Right */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 10, ease: 'linear' }}
-              className="relative w-12 h-14 sm:w-16 sm:h-18 md:w-20 md:h-22 shrink-0 drop-shadow-[0_0_18px_rgba(255,0,127,0.8)] hidden sm:block"
-            >
+            {/* Exactly 1 Clockwise Rotating Cat Litter Bag */}
+            <div className="relative w-12 h-14 sm:w-16 sm:h-18 md:w-20 md:h-22 shrink-0 drop-shadow-[0_0_18px_rgba(255,0,127,0.8)] animate-spin-clockwise">
               <Image
                 src="/Assets/cat_litter_bag.png"
                 alt="Cat Litter Bag"
                 fill
                 className="object-contain"
               />
-            </motion.div>
+            </div>
           </div>
 
           <p className="font-mono text-xs sm:text-sm text-[#00F5FF] font-bold tracking-wider uppercase text-glow-cyan">

@@ -17,20 +17,6 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
           {/* Title - Official banner image with clockwise rotating cat litter bag */}
           <div className="space-y-2 py-1 flex flex-col items-center justify-center">
             <div className="flex items-center justify-center gap-3 sm:gap-6 w-full">
-              {/* Clockwise Rotating Cat Litter Bag Left */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 10, ease: 'linear' }}
-                className="relative w-14 h-16 sm:w-20 sm:h-24 shrink-0 drop-shadow-[0_0_20px_rgba(255,0,127,0.8)]"
-              >
-                <Image
-                  src="/Assets/cat_litter_bag.png"
-                  alt="Cat Litter Bag"
-                  fill
-                  className="object-contain"
-                />
-              </motion.div>
-
               {/* Main Banner */}
               <div className="relative w-full max-w-xl h-24 sm:h-32 md:h-36 drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]">
                 <Image
@@ -42,19 +28,15 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
                 />
               </div>
 
-              {/* Clockwise Rotating Cat Litter Bag Right */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 10, ease: 'linear' }}
-                className="relative w-14 h-16 sm:w-20 sm:h-24 shrink-0 drop-shadow-[0_0_20px_rgba(255,0,127,0.8)] hidden sm:block"
-              >
+              {/* Exactly 1 Clockwise Rotating Cat Litter Bag */}
+              <div className="relative w-14 h-16 sm:w-20 sm:h-24 shrink-0 drop-shadow-[0_0_20px_rgba(255,0,127,0.8)] animate-spin-clockwise">
                 <Image
                   src="/Assets/cat_litter_bag.png"
                   alt="Cat Litter Bag"
                   fill
                   className="object-contain"
                 />
-              </motion.div>
+              </div>
             </div>
 
             <p className="font-mono text-xs sm:text-sm text-[#00F5FF] font-bold text-glow-cyan">
