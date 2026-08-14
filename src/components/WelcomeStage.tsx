@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Sparkles, ArrowRight, Flame, Database, ShieldCheck, Award, DollarSign, CheckCircle2, Users } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck, Award, DollarSign, CheckCircle2, Users } from 'lucide-react';
 
 interface WelcomeStageProps {
   onStart: () => void;
@@ -13,16 +13,8 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
     <div className="w-full py-2 sm:py-3 relative flex flex-col justify-center">
       <div className="max-w-5xl mx-auto w-full space-y-4 sm:space-y-5">
         {/* Main Banner Card */}
-        <div className="glass-card-vapor p-5 sm:p-7 rounded-2xl border-2 border-[#FF007F]/40 shadow-[0_0_45px_rgba(255,0,127,0.35)] text-center space-y-4 relative overflow-hidden">
-          <div className="scanlines" />
-
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FF007F]/15 border border-[#FF007F]/40 text-[#FF007F] font-mono text-xs sm:text-sm font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(255,0,127,0.3)]">
-            <Flame className="w-4 h-4 text-[#FFE600] animate-bounce" />
-            <span>FRESH & FIT MIAMI AFTER HOURS • OFFICIAL REALITY CALCULATOR</span>
-          </div>
-
-          {/* Title - Clean single-line fit with official banner image /Assets/fnf_delusion_banner.png */}
+        <div className="bg-[#0e0726] p-5 sm:p-7 rounded-2xl border-2 border-[#FF007F]/40 shadow-[0_0_45px_rgba(255,0,127,0.35)] text-center space-y-4 relative overflow-hidden">
+          {/* Title - Official banner image /Assets/fnf_delusion_banner.png */}
           <div className="space-y-2 py-1 flex flex-col items-center justify-center">
             <div className="relative w-full max-w-xl h-24 sm:h-32 md:h-36 drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]">
               <Image
@@ -41,7 +33,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
           {/* Side-by-Side Central Host Profile Badges */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto pt-1">
             {/* Myron Gaines Badge */}
-            <div className="bg-[#180e38]/90 border border-[#FF007F]/40 p-3.5 rounded-xl flex items-center gap-3.5 text-left shadow-lg">
+            <div className="bg-[#180e38] border border-[#FF007F]/40 p-3.5 rounded-xl flex items-center gap-3.5 text-left shadow-lg">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-[#FF007F] shadow-[0_0_15px_#FF007F] relative shrink-0">
                 <Image src="/Assets/myron2.jpg" alt="Myron Gaines" fill sizes="(max-width: 640px) 64px, 80px" className="object-cover object-top" priority />
               </div>
@@ -60,7 +52,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
             </div>
 
             {/* Walter Weekes (Fresh) Badge */}
-            <div className="bg-[#180e38]/90 border border-[#00F5FF]/40 p-3.5 rounded-xl flex items-center gap-3.5 text-left shadow-lg">
+            <div className="bg-[#180e38] border border-[#00F5FF]/40 p-3.5 rounded-xl flex items-center gap-3.5 text-left shadow-lg">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-[#00F5FF] shadow-[0_0_15px_#00F5FF] relative shrink-0">
                 <Image src="/Assets/fresh.jpg" alt="Walter Weekes (Fresh)" fill sizes="(max-width: 640px) 64px, 80px" className="object-cover object-top" priority />
               </div>
@@ -81,7 +73,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
         </div>
 
         {/* Overview & Government Data Methodology Card */}
-        <div className="glass-card-vapor p-5 sm:p-6 rounded-2xl border border-[#FF007F]/30 space-y-4 text-left font-mono">
+        <div className="bg-[#0e0726] p-5 sm:p-6 rounded-2xl border border-[#FF007F]/30 space-y-4 text-left font-mono shadow-[0_0_35px_rgba(0,0,0,0.8)]">
           <div className="flex items-center gap-2 text-[#FFE600] font-bold text-base sm:text-lg border-b border-[#FF007F]/20 pb-2">
             <Users className="w-5 h-5 text-[#FFE600]" />
             <span>THE FRESH & FIT REALITY CHECK METHODOLOGY</span>
@@ -98,7 +90,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
 
           {/* Government Data Sources Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div className="flex items-start gap-2.5 bg-[#180e38]/80 p-3 rounded-xl border border-[#00F5FF]/30">
+            <div className="flex items-start gap-2.5 bg-[#180e38] p-3 rounded-xl border border-[#00F5FF]/30">
               <CheckCircle2 className="w-4 h-4 text-[#00F5FF] shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold text-white block text-xs sm:text-sm">US Census Bureau ACS (2023)</span>
@@ -106,7 +98,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
               </div>
             </div>
 
-            <div className="flex items-start gap-2.5 bg-[#180e38]/80 p-3 rounded-xl border border-[#FF007F]/30">
+            <div className="flex items-start gap-2.5 bg-[#180e38] p-3 rounded-xl border border-[#FF007F]/30">
               <CheckCircle2 className="w-4 h-4 text-[#FF007F] shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold text-white block text-xs sm:text-sm">CDC NHANES (2021-2023)</span>
