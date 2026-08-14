@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-type ItemType = 'CAT_BAG' | 'CHAIN' | 'DIAMOND' | 'COCKTAIL' | 'PALM' | 'YACHT' | 'ORB';
+type ItemType = 'CAT_BAG' | 'DOLLAR' | 'DIAMOND' | 'COCKTAIL' | 'PALM' | 'YACHT' | 'ORB';
 
 interface FloatingItem {
   x: number;
@@ -24,7 +24,7 @@ export default function InteractiveBackground() {
   const spriteCache = useRef<Record<string, { canvas: HTMLCanvasElement; aspect: number }>>({});
 
   useEffect(() => {
-    // 1. Preload Dedicated High-Quality SVG Assets
+    // 1. Preload Dedicated High-Quality Assets
     const loadAsset = (key: string, src: string) => {
       const img = new Image();
       img.src = src;
@@ -34,7 +34,7 @@ export default function InteractiveBackground() {
     };
 
     loadAsset('CAT_BAG', '/Assets/cat_litter_bag.png');
-    loadAsset('CHAIN', '/Assets/gold_chain.svg');
+    loadAsset('DOLLAR', '/Assets/diamond_dollar.svg');
     loadAsset('YACHT', '/Assets/luxury_yacht.svg');
 
     // 2. Pre-render High-Resolution Vector Sprites for Remaining Items
@@ -247,7 +247,7 @@ export default function InteractiveBackground() {
       items = [];
       const itemTypes: ItemType[] = [
         'CAT_BAG', 'CAT_BAG', 'CAT_BAG', 'CAT_BAG',
-        'CHAIN', 'CHAIN', 'CHAIN', 'CHAIN',
+        'DOLLAR', 'DOLLAR', 'DOLLAR', 'DOLLAR',
         'DIAMOND', 'DIAMOND', 'DIAMOND', 'DIAMOND',
         'COCKTAIL', 'COCKTAIL', 'COCKTAIL', 'COCKTAIL',
         'PALM', 'PALM', 'PALM', 'PALM',
@@ -265,9 +265,9 @@ export default function InteractiveBackground() {
         } else if (type === 'YACHT') {
           size = Math.random() * 30 + 95; // 95-125px Superyacht
           aspectRatio = 320 / 140;
-        } else if (type === 'CHAIN') {
-          size = Math.random() * 20 + 70; // 70-90px Gold Chain Loop
-          aspectRatio = 1;
+        } else if (type === 'DOLLAR') {
+          size = Math.random() * 20 + 60; // 60-80px Diamond Dollar Sign
+          aspectRatio = 160 / 180;
         } else if (type === 'PALM') {
           size = Math.random() * 20 + 70; // 70-90px Palm
           aspectRatio = 1;
@@ -340,7 +340,7 @@ export default function InteractiveBackground() {
           ctx.fill();
           ctx.shadowBlur = 0;
         } else {
-          // Check if we have a dedicated loaded Image asset (e.g. CAT_BAG, CHAIN, YACHT)
+          // Check for dedicated preloaded image asset
           const dedicatedImg = imageAssets.current[item.type];
           if (dedicatedImg && dedicatedImg.complete) {
             ctx.save();

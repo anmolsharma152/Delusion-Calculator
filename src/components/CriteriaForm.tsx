@@ -107,6 +107,7 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
     <div className="w-full max-w-7xl mx-auto flex flex-col justify-center my-auto px-2 sm:px-4 py-2">
       {/* 3x2 Spacious Card Form Container (100% Solid & Opaque Background) */}
       <form
+        noValidate
         onSubmit={(e) => {
           e.preventDefault();
           onCalculate();
@@ -346,7 +347,7 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
                   type="number"
                   min="0"
                   max="10000000"
-                  step="5000"
+                  step="any"
                   value={criteria.minIncome || ''}
                   onChange={(e) => {
                     const val = parseInt(e.target.value) || 0;
