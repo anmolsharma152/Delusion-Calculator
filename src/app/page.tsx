@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import WelcomeStage from '@/components/WelcomeStage';
 import CriteriaForm from '@/components/CriteriaForm';
@@ -26,6 +27,7 @@ const defaultCriteria: CriteriaState = {
 };
 
 export default function Home() {
+  const router = useRouter();
   const [criteria, setCriteria] = useState<CriteriaState>(defaultCriteria);
   const [activeCriteria, setActiveCriteria] = useState<CriteriaState>(defaultCriteria);
 
@@ -36,6 +38,24 @@ export default function Home() {
 
   // Hook receives activeCriteria
   const { result, breakdown } = useCalculator(activeCriteria);
+
+  // Spacebar Hotkey -> Enter OBS Stream Mode
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore hotkeys when typing inside an input or textarea
+      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
+
+      if (e.code === 'Space' || e.key === ' ') {
+        e.preventDefault();
+        router.push('/stream');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [router]);
 
   const handleGoHome = () => {
     setViewState('WELCOME');
@@ -68,10 +88,9 @@ export default function Home() {
       <div className="retro-sun" />
 
       <Header onGoHome={handleGoHome} />
-      <SoundboardBar />
 
-      <main className="flex-1 max-w-6xl sm:max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 z-10 relative">
-        {/* 3-Step App Flow View Switcher (initial={false} guarantees instant initial render visibility) */}
+      <main className="flex-1 max-w-6xl sm:max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 z-10 relative flex flex-col justify-center min-h-[calc(100vh-8.5rem)] my-auto">
+        {/* 3-Step App Flow View Switcher */}
         <AnimatePresence mode="wait" initial={false}>
           {viewState === 'WELCOME' && (
             <motion.div
@@ -80,7 +99,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="w-full"
+              className="w-full my-auto"
             >
               <WelcomeStage onStart={handleStartTest} />
             </motion.div>
@@ -93,7 +112,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="w-full"
+              className="w-full my-auto"
             >
               <CriteriaForm
                 criteria={criteria}
@@ -111,7 +130,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.3 }}
-              className="w-full"
+              className="w-full my-auto"
             >
               <ResultsPanel
                 result={result}
@@ -123,6 +142,9 @@ export default function Home() {
           )}
         </AnimatePresence>
       </main>
+
+      {/* Sticky Bottom Soundboard Panel */}
+      <SoundboardBar />
 
       {/* Anticipation Build-Up Overlay */}
       <AnimatePresence>

@@ -25,22 +25,50 @@ const anton = Anton({
 });
 
 export const metadata: Metadata = {
-  title: "The Delusion Calculator | The Numbers Don't Lie",
+  metadataBase: new URL("https://female-delusion-calculator.vercel.app"),
+  title: "Female Delusion Calculator | Fresh & Fit Miami After Hours",
   description:
-    "Calculate what percentage of the US population matches your partner preferences. Powered by real US Census Bureau and CDC demographic data. How delusional are your standards?",
+    "The Official Fresh & Fit Podcast Reality Calculator. Cross-referencing US Census Bureau and CDC microdata (~100M+ adult men) to reveal the exact mathematical probability of finding a partner matching your standards. The Numbers Don't Lie.",
   keywords: [
-    "delusion calculator",
-    "dating standards",
     "female delusion calculator",
-    "cat lady meter",
+    "delusion calculator",
     "fresh and fit",
+    "fresh and fit podcast",
+    "myron gaines",
+    "walter weekes",
+    "dating standards",
+    "cat lady meter",
     "dating statistics",
     "US Census",
   ],
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
   openGraph: {
-    title: "The Delusion Calculator",
-    description: "The Numbers Don't Lie. How delusional are your standards?",
+    title: "Female Delusion Calculator | Fresh & Fit Miami After Hours",
+    description: "How delusional are your standards in a man? The Numbers Don't Lie.",
+    url: "https://female-delusion-calculator.vercel.app/",
+    siteName: "Female Delusion Calculator",
+    images: [
+      {
+        url: "/Assets/FreshnFit After Hours - Cover Art.jpg",
+        width: 800,
+        height: 800,
+        alt: "Fresh & Fit Female Delusion Calculator",
+      },
+    ],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Female Delusion Calculator | Fresh & Fit",
+    description: "Calculate what percentage of US men match your partner standards. The Numbers Don't Lie.",
+    images: ["/Assets/FreshnFit After Hours - Cover Art.jpg"],
   },
 };
 

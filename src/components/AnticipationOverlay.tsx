@@ -16,21 +16,51 @@ const STAGES = [
   { text: "CONSULTING MYRON'S STATISTICAL DATABASE...", icon: Sparkles, color: "text-[#00F5FF]" }
 ];
 
-// Single global audio manager to guarantee ZERO sound overlap across components
+// Single global audio manager with preloading & custom start trim to guarantee zero initial delay
 class GlobalAudio {
   private static currentAudio: HTMLAudioElement | null = null;
+  private static audioCache: Map<string, HTMLAudioElement> = new Map();
 
-  static play(file: string, onEnded?: () => void) {
+  static preload(file: string) {
+    if (typeof window === 'undefined') return;
+    const uri = encodeURI(file);
+    if (!this.audioCache.has(uri)) {
+      const audio = new Audio(uri);
+      audio.preload = 'auto';
+      this.audioCache.set(uri, audio);
+    }
+  }
+
+  static play(file: string, onEnded?: () => void, startTime: number = 0) {
+    if (typeof window === 'undefined') return;
+
+    // Pause & reset any actively playing clip
     if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.currentAudio.currentTime = 0;
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+      } catch (e) {}
       this.currentAudio = null;
     }
 
     try {
-      const audio = new Audio(encodeURI(file));
+      const uri = encodeURI(file);
+      let audio = this.audioCache.get(uri);
+      if (!audio) {
+        audio = new Audio(uri);
+        audio.preload = 'auto';
+        this.audioCache.set(uri, audio);
+      }
+
+      // Seek past leading dead silence if custom startTime offset is specified
+      audio.currentTime = startTime;
       this.currentAudio = audio;
-      audio.play().catch(() => {});
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+
       audio.onended = () => {
         if (onEnded) onEnded();
       };
@@ -39,11 +69,18 @@ class GlobalAudio {
 
   static stop() {
     if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.currentAudio.currentTime = 0;
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+      } catch (e) {}
       this.currentAudio = null;
     }
   }
+}
+
+// Preload the result losing horn asset immediately on client load
+if (typeof window !== 'undefined') {
+  GlobalAudio.preload('/Soundbites/the-price-is-right-losing-horn_2.mp3');
 }
 
 export { GlobalAudio };
@@ -54,6 +91,9 @@ export default function AnticipationOverlay({ onComplete }: AnticipationOverlayP
   const hasFinished = useRef(false);
 
   useEffect(() => {
+    // Preload losing horn asset when overlay mounts
+    GlobalAudio.preload('/Soundbites/the-price-is-right-losing-horn_2.mp3');
+
     // 2.5s total calculation progress
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -62,7 +102,7 @@ export default function AnticipationOverlay({ onComplete }: AnticipationOverlayP
 
           if (!hasFinished.current) {
             hasFinished.current = true;
-            // Play single instance of losing horn ONCE when reveal completes
+            // Play single preloaded instance of losing horn ONCE when reveal completes
             GlobalAudio.play('/Soundbites/the-price-is-right-losing-horn_2.mp3');
           }
 
