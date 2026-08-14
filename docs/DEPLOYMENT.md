@@ -1,71 +1,47 @@
-# Deployment Guide
+# Deployment & Production Guidelines
 
-The Delusion Calculator is optimized for deployment on Vercel, given its Next.js architecture.
+> **Project: The Delusion Calculator**
 
-## Vercel Deployment Instructions
+---
 
-1. Push your code to a GitHub, GitLab, or Bitbucket repository.
-2. Log in to [Vercel](https://vercel.com).
-3. Click **Add New** > **Project**.
-4. Import your repository.
-5. Vercel will automatically detect the Next.js framework.
-6. Click **Deploy**.
+## 1. Local Development Workflow
 
-## Environment Variables
+Run the Next.js development server locally:
 
-For Phase 1 (MVP), no environment variables are strictly required. 
-
-For Phase 2 (AI Integration), add the following to your Vercel project settings:
-
-```env
-# Phase 2: Gemini AI Integration
-GEMINI_API_KEY=your_gemini_api_key_here
-
-# Analytics (Optional)
-NEXT_PUBLIC_ANALYTICS_ID=your_analytics_id
+```bash
+npm run dev
 ```
 
-## Build Commands
+* Dev server will run on `http://localhost:3000` (or `http://localhost:3001` if port 3000 is occupied).
+* Changes are hot-reloaded automatically via Turbopack.
 
-Vercel automatically configures these, but for reference or manual CI/CD:
+---
 
-- **Build Command**: `npm run build`
-- **Output Directory**: `.next`
-- **Install Command**: `npm install`
-- **Start Command**: `npm run start`
+## 2. Production Build & Static Export
 
-## Custom Domain Setup
+The project is configured for optimal performance using static generation:
 
-1. In the Vercel Project dashboard, go to **Settings** > **Domains**.
-2. Enter your custom domain (e.g., `delusioncalculator.com`).
-3. Follow the instructions to configure your DNS settings (add the provided A Record or CNAME to your domain registrar).
-4. Vercel will automatically provision a free SSL certificate.
+```bash
+# Build optimized production bundle
+npm run build
 
-## Performance Monitoring
-
-- Utilize **Vercel Analytics** to track First Contentful Paint (FCP) and Cumulative Layout Shift (CLS) scores, crucial for the interactive calculator.
-- Vercel Speed Insights can be enabled in the dashboard to monitor real-user metrics (RUM).
-
-## CI/CD Pipeline Suggestion
-
-If deploying outside of Vercel (e.g., AWS Amplify or GitHub Pages), ensure you have a GitHub Action configured:
-
-```yaml
-name: Next.js CI
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run build
+# Start production server
+npm run start
 ```
+
+### Static Optimization Details:
+* All pages (`/`, `/about`, `/stream`) are fully prerendered at build time.
+* Fast client-side calculations execute with zero API latency.
+* Assets in `public/Assets/` and `public/Soundbites/` are served with static caching headers.
+
+---
+
+## 3. OBS Studio Broadcast Setup
+
+To embed the Delusion Calculator inside OBS Studio:
+
+1. In OBS, add a **Browser Source**.
+2. Set URL to `http://localhost:3000` (or your production deployment domain).
+3. Set Width: `1920` and Height: `1080` (or `1280` × `720`).
+4. Press **`[Space]`** or click **`STREAM MODE`** to activate the broadcast overlay.
+5. In Obsidian Dark theme, the background is pure `#080808` obsidian black for seamless broadcast integration.

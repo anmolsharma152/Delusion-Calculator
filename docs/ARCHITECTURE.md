@@ -1,80 +1,77 @@
-# Architecture
+# System Architecture & Technical Specifications
 
-This document outlines the system architecture for the Delusion Calculator.
+> **Project: The Delusion Calculator**
 
-## System Overview
+---
+
+## 1. Architectural Overview
+
+The application is built on **Next.js 15 (App Router)** with **TypeScript (Strict Mode)** and **Tailwind CSS v4**. It uses a **Unified Single-Shell Architecture** to handle both standard web visitors and live OBS broadcast overlays without state fragmentation or page reloads.
 
 ```mermaid
 graph TD
-    Client[Browser Client]
-    App[Next.js App Router]
-    UI[Tailwind + Framer Motion]
-    Calc[Client-side Probability Engine]
-    Data[(US Census & CDC Microdata)]
-    Gemini[Google Gemini AI API]
-    
-    Client --> App
-    App --> UI
-    UI <--> Calc
-    Calc --> Data
-    App -.-> Gemini
+    subgraph "Unified App Shell (src/app/page.tsx)"
+        State["Shared Global State<br/>• viewState: WELCOME | INPUT | RESULTS<br/>• criteria & activeCriteria<br/>• isStreamMode: true | false<br/>• bgMode: VAPORWAVE | OBSIDIAN<br/>• activeBank: 1 | 2<br/>• isVaultOpen: boolean<br/>• playingSound: object | null"]
+        
+        Header["Unified Top Header (src/components/Header.tsx)<br/>• Standard Mode: Sticky & Visible<br/>• Stream Mode: Auto-Hides on Proximity<br/>• Controls: Sound Vault, Bank 1/2, Theme, Stream Mode, Fullscreen"]
+        
+        Stage["Active View Stage (AnimatePresence)<br/>• WELCOME: WelcomeStage.tsx<br/>• INPUT: CriteriaForm.tsx (3x2 Grid)<br/>• RESULTS: ResultsPanel.tsx (Full Verdict)"]
+        
+        VaultModal["Sound Vault Modal (src/components/SoundVaultModal.tsx)<br/>• 45+ Categorized Soundbites with Search<br/>• Active Bank 1 & Bank 2 Presets"]
+        
+        AudioHUD["Floating Audio Toast<br/>• Non-intrusive sound playing feedback"]
+    end
+
+    State --> Header
+    State --> Stage
+    State --> VaultModal
+    State --> AudioHUD
 ```
 
-## Tech Stack Details
+---
 
-- **Framework**: Next.js 16 (React 19, Turbopack)
-- **Language**: TypeScript (Strict Mode)
-- **Styling**: Tailwind CSS v4 + 80s Vaporwave Aesthetics
-- **Animations**: Framer Motion
-- **Hosting**: Vercel
+## 2. Core State Management & Navigation Flow
 
-## Client-Side Calculation Flow
+1. **Single Source of Truth**:
+   - `viewState`: Switches between `'WELCOME'`, `'INPUT'`, and `'RESULTS'`.
+   - `isStreamMode`: Boolean state toggled by `[Space]` or Header button. Because state lives in the parent shell, toggling Stream Mode does not discard active form inputs or calculation results.
+   - `criteria`: Current form values.
+   - `activeCriteria`: Committed form values passed to `useCalculator` upon clicking *Calculate* or pressing `[Enter]`.
 
-The core of the application relies on instant client-side joint probability math:
+2. **Unified Navigation Matrix**:
+   - `[Space]`: In-place Stream Mode toggle.
+   - `[Enter]`: Advances `WELCOME` $\rightarrow$ `INPUT` $\rightarrow$ `RESULTS` $\rightarrow$ `INPUT`.
+   - `[Tab]` / `[` `]`: Swaps Sampler Bank 1 and Bank 2.
+   - `[1]` to `[0]`: Triggers audio drops corresponding to active bank presets.
 
-1. User inputs preferences (e.g., Age 22-35, Height > 6'0", Income > $80k).
-2. The UI triggers `calcCombinedProbability()` in `src/engine/probability.ts`.
-3. The calculator fetches static age-conditional distributions from `src/data/distributions.ts`.
-4. Independent probabilities are calculated and multiplied (adjusted for age-income and age-marital correlations).
-5. The result is returned to the UI in < 1ms.
+---
 
-## Data Flow Diagram
+## 3. Calculation Engine Flow
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant UI as React Components
-    participant Engine as Calc Engine
-    participant StaticData as US Census & CDC Datasets
-    
-    User->>UI: Adjusts Slider/Toggle/Input
-    UI->>Engine: Send raw criteria
-    Engine->>StaticData: Request relevant distributions
-    StaticData-->>Engine: Return age-adjusted stats
-    Engine->>Engine: Compute P(Match)
-    Engine-->>UI: Return % Match & Cat Lady Score
-    UI-->>User: Animate result & update roast
+    participant User as 👤 User / Host
+    participant UI as 🎛️ CriteriaForm (3x2 Grid)
+    participant Hook as 🔄 useCalculator Hook
+    participant Engine as 🧮 Probability Engine
+    participant Data as 📊 Census/CDC Datasets
+
+    User->>UI: Adjusts Age, Height, Income, Race, Education, Fitness
+    User->>UI: Presses [Enter] or clicks Calculate
+    UI->>Hook: Passes activeCriteria
+    Hook->>Engine: calcCombinedProbability(criteria)
+    Engine->>Data: Age-conditional lookups (ACS 2023 / NHANES)
+    Engine-->>Hook: { matchPercentage, breakdown }
+    Hook->>Hook: getDelusionScore(matchPercentage)
+    Hook-->>UI: { result, breakdown, comment }
+    UI->>User: Displays ResultsPanel (Gauge, %, Ratio, Roasts)
 ```
 
-## Planned Feature Architecture (Next Releases)
+---
 
-### 1. 👶 Children & Prior Marriage Criteria Engine
-- Expand `CriteriaState` interface with `excludeKids: boolean`, `wantsKids: boolean`, and `excludePriorMarriage: boolean`.
-- Incorporate Census ACS marital history and CDC family fertility tables into `src/engine/probability.ts`.
+## 4. Performance Benchmarks
 
-### 2. 📺 Streamer Mode (OBS Chromakey & Hotkeys)
-- Add hotkey event listener (`window.addEventListener('keydown')`) mapping keys 1-9 to trigger `GlobalAudio` soundboard clips.
-- Provide a dedicated `/stream` page with background transparency and green-screen chromakey color pickers.
-
-### 3. 📸 HD Image Export (`html-to-image`)
-- Integrate `html-to-image` canvas rendering to convert `#share-card-graphic` element directly into downloadable 1080x1920 PNG files for social media stories.
-
-### 4. 🤖 AI-Powered Podcast Roasts (Gemini API)
-- Introduce serverless route `/api/roast` using `@google/genai` SDK.
-- Prompt Google Gemini Flash API with user criteria to stream dynamic, context-aware podcast roast commentary.
-
-## Performance Requirements
-
-- **Calculation Time**: < 1ms
-- **Render Frame Rate**: 60 FPS for Framer Motion animations
-- **First Contentful Paint (FCP)**: < 1.0s
+* **Calculation Latency**: $< 1.0\text{ ms}$ (pure client-side synchronous arithmetic).
+* **Frame Rate**: $60\text{ FPS}$ smooth rendering on HTML5 canvas particle repulsion.
+* **First Contentful Paint (FCP)**: $< 1.2\text{ s}$.
+* **Zero Runtime Server Costs**: 100% static prerendered client-side application.

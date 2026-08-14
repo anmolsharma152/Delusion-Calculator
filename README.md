@@ -1,102 +1,142 @@
-# THE DELUSION CALCULATOR
+# 🧮 THE DELUSION CALCULATOR
+### *"The Numbers Don't Lie."* — Powered by Fresh & Fit Reality Checks
 
-> **"The Numbers Don't Lie."**
+[![Next.js 15](https://img.shields.io/badge/Next.js-15_(App_Router)-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0_(Strict)-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-crimson?style=for-the-badge)](LICENSE)
 
-The **Delusion Calculator** is a high-performance web application designed to evaluate dating partner expectations against empirical demographic data. Inspired by the *Fresh & Fit After Hours* podcast reality checks, it provides an unfiltered mathematical reality check by cross-referencing user partner preferences with real US government microdata (~100M+ adult population).
-
-Whether you're looking for a partner who is 6'0"+ tall, making $100k+, fit, unmarried, and highly educated, the calculator reveals the exact statistical probability of finding that "dream criteria" match in the real world.
-
----
-
-## 🎯 Application & Purpose
-
-Many individuals hold dating standards without realizing how overlapping joint probabilities compound. A requirement that sounds modest on its own (e.g. 14% tall, 12% high-earning) drops below **0.4% (1 in 233)** when required simultaneously in one single person.
-
-### 🔮 Sex-Agnostic Core Roadmap
-While currently focused on female expectations for male partners (where delusion trends are frequently discussed), the application is architected to become **100% Sex-Agnostic**:
-- **Female Standards for Males**: Evaluating hypergamy, height, income brackets, age range, and marital status.
-- **Male Standards for Females**: Evaluating age curves, fitness/BMI, relationship history, and realistic Sexual Market Value (SMV) expectations.
+A stream-ready, high-accuracy statistical calculator web application inspired by the **Fresh & Fit Podcast (Miami After Hours)**. It computes the exact percentage of adult US men matching a user's partner criteria using official **US Census Bureau ACS (2023)** and **CDC NHANES (2021–2023)** demographic datasets.
 
 ---
 
-## 🚀 Planned Feature Roadmap (Next Iterations)
+## 🌟 Key Features
 
-The following four major feature expansions are documented and scheduled for upcoming releases:
-
-### 1. 👶 Children & Prior Marriage Criteria Filters
-- **Single Mother & Kids Filter**: Toggle for *"Has Children / Single Mother Exclusion"* vs *"Wants Future Children"* (a core Fresh & Fit podcast debate topic).
-- **Prior Marriage Exclusion**: Filter for never-married individuals vs excluding prior marriages and divorces.
-
-### 2. 📺 Enhanced Streamer Mode (OBS Chromakey & Hotkeys)
-- **OBS Green Screen Overlay**: Custom chromakey background mode for live content creators streaming on YouTube, Rumble, and Twitch.
-- **Soundboard Hotkeys**: Keyboard shortcuts (`Key1` through `Key9`) for Chris & Big Mo soundboard buttons during live broadcasts.
-
-### 3. 📸 HD Image Download & Social Export (PNG/JPEG Export)
-- **Direct Canvas Export**: High-resolution PNG/JPEG image generation via `html-to-image` for downloading custom result cards formatted for Instagram Stories, Twitter/X, and TikTok sharing.
-
-### 4. 🤖 AI-Powered Dynamic Podcast Roasts (Gemini API)
-- **Context-Aware AI Roasts**: Serverless Next.js API integration with Google Gemini Flash API to generate dynamic, personalized Fresh & Fit podcast roasts tailored to specific user parameter combinations.
-
----
-
-## 📊 Empirical Government Datasets
-
-All calculations rely on real, official microdata:
-- **US Census Bureau ACS (2023)**: Age distributions, age-dependent income brackets, marital status, race/ethnicity, and educational attainment.
-- **CDC NHANES (2021–2023)**: Male & female physical height percentiles (Mean = 5'9.1", StdDev = 2.9") and BMI non-obesity rates.
+* **3 × 2 Spacious Calculator Grid**: Six clean, high-contrast, easily scannable cards (*Age Range*, *Minimum Height*, *Race / Ethnicity*, *Minimum Education*, *Minimum Income*, and *Status & Fitness*).
+* **Unified Single-Shell Stream Mode**: Press `[Space]` anywhere to toggle OBS broadcast mode without resetting your criteria or calculated results.
+* **Proximity Auto-Hide Studio Header**: Auto-hides on broadcast overlays with smooth slide animations when moving the cursor within the top 90px.
+* **45+ Soundboard Vault (Chris & Big Mo)**:
+  * **Bank 1 (Main Stage Hits)**: Hotkeys `[1]` to `[0]` (*Don Demarco*, *For The Streets*, *Stop The Cap*, *Top G Theme*, *Emotional Damage*, *Airhorn Blast*, *Falcon Punch*, *Spongebob Fail*, *FAHHH*, *Undertaker Bell*).
+  * **Bank 2 (Meme & Roast FX)**: Hotkeys `[1]` to `[0]` (*You're Broke*, *Button It*, *Breathe Air*, *Rizz Effect*, *Losing Horn*, *Stoopid*, *Bruh*, *Tuco Get Out*, *Rewind*, *Over 9000*).
+  * **Instant Bank Switch**: Press `[Tab]` or `[` `]` to swap active banks on the fly.
+  * **Sound Vault Modal**: Search and trigger across 45+ categorized soundbites.
+  * **Floating Audio HUD**: Non-intrusive bottom-right status badge during playback.
+* **Dual Theme Engine**: Instant switching between **`80s Vaporwave`** (floating particles + drifting cat bags) and **`Obsidian Dark`** (`#080808` pitch-black studio mode).
+* **Cat Lady Meter (0–5 Scale)**: Animated gauge and cat litter bag risk meter reflecting realistic dating market probabilities.
+* **Universal Hotkey Matrix**:
+  * `[Space]`: Toggle Stream Mode in place.
+  * `[Enter]`: Progress forward (`WELCOME` $\rightarrow$ `INPUT` $\rightarrow$ `RESULTS` $\rightarrow$ `INPUT`).
+  * `[Tab]` / `[` `]`: Toggle Soundboard Banks.
+  * `[1]`–`[0]`: Trigger Sampler Drops.
 
 ---
 
-## ⚡ Tech Stack
+## 📊 Demographic Methodology
 
-| Layer | Technology |
-| :--- | :--- |
-| **Framework** | Next.js 16 (App Router, Turbopack) |
-| **Language** | TypeScript (Strict Mode) |
-| **Styling** | Tailwind CSS v4 + 80s Vaporwave Outrun Aesthetics |
-| **Animations** | Framer Motion |
-| **Typography** | Bebas Neue, Anton, Inter, JetBrains Mono |
-| **Deployment** | Vercel |
+The calculation engine uses **age-conditional joint probabilities** to account for demographic correlations (e.g. income and marital status heavily correlate with age):
+
+$$P(\text{Match}) = P(\text{Age}) \times P(\text{Race}) \times P(\text{Height} \geq H) \times P(\text{Not Obese} \mid \text{Age}) \times P(\text{Income} \geq I \mid \text{Age}) \times P(\text{Single} \mid \text{Age}) \times P(\text{Edu} \geq E)$$
+
+* **Height**: Continuous Normal CDF with CDC NHANES parameters ($\mu = 69.1\text{ in}$, $\sigma = 2.9\text{ in}$).
+* **Income**: Age-bracket empirical distributions from US Census ACS 2023 1-year estimates.
+* **Marital Status**: Never-married percentages conditioned on selected age brackets.
+* **Obesity**: CDC NHANES BMI $< 30$ proportions conditioned on age.
+* **Education & Race**: US Census ACS empirical distributions.
 
 ---
 
 ## 🚀 Quick Start
 
+### Prerequisites
+* **Node.js**: v18.18+ or v20+
+* **npm**: v9+
+
+### Installation & Development
 ```bash
 # Clone the repository
 git clone https://github.com/anmolsharma152/Delusion-Calculator.git
-cd "Delusion Calculator"
+cd Delusion-Calculator
 
 # Install dependencies
 npm install
 
-# Run the development server
+# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) (or `http://localhost:3001`) in your browser.
+
+### Production Build
+```bash
+npm run build
+npm run start
+```
 
 ---
 
-## 🐈 Scoring System (Cat Lady Meter)
+## 📂 Project Architecture
 
-| Delusion Score | Population Match % | Tier Label | Reality Verdict |
-| :---: | :---: | :--- | :--- |
-| **0 / 5** | $> 30.0\%$ | **GROUNDED** | Plenty of realistic options in the real world. |
-| **1 / 5** | $10.0\% - 30.0\%$ | **REASONABLE** | Selective, but completely achievable. |
-| **2 / 5** | $3.0\% - 10.0\%$ | **SELECTIVE** | Above average expectations; high competition. |
-| **3 / 5** | $0.5\% - 3.0\%$ | **PICKY** | Unicorn hunter territory. |
-| **4 / 5** | $0.05\% - 0.5\%$ | **UNICORN HUNTER** | Statistically rare; high cat lady risk. |
-| **5 / 5** | $< 0.05\%$ | **DELUSIONAL** | 1 in 2,000+ rarity. The numbers don't lie! |
+```
+Delusion Calculator/
+├── public/
+│   ├── Assets/                 # Official banner, cover art, cat litter bag
+│   ├── Soundbites/             # 45+ Fresh & Fit stream sound effects
+│   ├── favicon.ico
+│   └── icon.png
+├── src/
+│   ├── app/
+│   │   ├── about/page.tsx      # Methodology & Census data documentation
+│   │   ├── stream/page.tsx     # Route alias to unified stream mode
+│   │   ├── globals.css         # Outrun neon glows & solid surface tokens
+│   │   ├── layout.tsx          # Root layout with metadata & fonts
+│   │   ├── page.tsx            # Unified Application Core & State Shell
+│   │   ├── robots.ts           # Search engine crawler configuration
+│   │   └── sitemap.ts          # SEO sitemap generator
+│   ├── components/
+│   │   ├── CriteriaForm.tsx    # 3x2 spacious input grid & banner header
+│   │   ├── Header.tsx          # Adaptive top header with auto-hide
+│   │   ├── SoundVaultModal.tsx # Full 45+ stream sound deck modal
+│   │   ├── ResultsPanel.tsx    # Gauge meter, %, ratio, breakdown & roast
+│   │   ├── WelcomeStage.tsx    # Hero intro landing screen
+│   │   ├── GaugeMeter.tsx      # Animated SVG semi-circular gauge
+│   │   ├── CatBagMeter.tsx     # 0-5 Cat litter bag risk visual
+│   │   ├── BreakdownChart.tsx  # Demographic filter horizontal bars
+│   │   ├── CommentBox.tsx      # Fresh & Fit podcast reality roast terminal
+│   │   ├── ShareCard.tsx       # Social export PNG card generator
+│   │   ├── AnticipationOverlay.tsx # Tension countdown with audio
+│   │   └── InteractiveBackground.tsx # Canvas particles & cat bag repulsion
+│   ├── data/
+│   │   └── distributions.ts    # US Census ACS 2023 & CDC NHANES datasets
+│   ├── engine/
+│   │   ├── probability.ts      # Joint probability math engine
+│   │   ├── scoring.ts          # 0-5 score & tier definitions
+│   │   └── commentPool.ts      # 150+ Fresh & Fit dark comedy roasts
+│   ├── hooks/
+│   │   └── useCalculator.ts    # Reactive calculation hook
+│   ├── types.ts                # TypeScript interfaces & enums
+│   └── utils/
+│       ├── math.ts             # Normal CDF & linear interpolation
+│       └── format.ts           # Number, height & percentage formatters
+├── docs/                       # Technical & Architectural Documentation
+│   ├── ARCHITECTURE.md
+│   ├── FRONTEND_DESIGN.md
+│   ├── DATA_STRATEGY.md
+│   └── DEPLOYMENT.md
+├── AGENTS.md                   # AI Assistant coding conventions
+└── README.md
+```
 
 ---
 
-## 👥 Credits & Acknowledgments
+## 👑 Credits & Team
 
-Inspired by the *Fresh & Fit Podcast* crew: Myron Gaines, Walter Weekes (Fresh), Chris the Producer, and Big Mo.
+* **Podcast Inspiration**: Fresh & Fit Podcast (Miami After Hours)
+* **Co-Hosts**: Myron Gaines & Walter Weekes (Fresh)
+* **Soundboard & Audio**: Chris the Producer & Big Mo
+* **Data Sources**: US Census Bureau (ACS 2023), CDC NHANES (2021–2023), BLS
 
 ---
 
-## 📜 License
+## 📄 License
 
-[MIT](LICENSE)
+MIT License. Open source for educational and streaming utility purposes.

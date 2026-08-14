@@ -1,67 +1,53 @@
-# Frontend Design System
+# Frontend Design & UI System Guide
 
-The visual language of the Delusion Calculator is inspired by the "Miami After Hours" aesthetic of the Fresh & Fit podcast—dark, sleek, confrontational, and neon-lit.
+> **Project: The Delusion Calculator**
 
-## Design Philosophy
+---
 
-- **Dark Mode Default**: No light mode exists. 
-- **High Contrast**: Neon accents against deep blacks.
-- **Brutalism mixed with Glassmorphism**: Sharp edges on typography, smooth frosted glass on UI panels.
+## 1. Aesthetic Foundations: Miami After Hours
 
-## Color System
+The visual design is inspired by the **Fresh & Fit Miami After Hours studio**: dark obsidian and deep purple foundations, neon crimson and electric cyan accents, scanlines, and solid high-contrast surfaces.
 
-| Name | Hex Code | Usage |
+### Color Tokens
+
+| Token | Hex Value | Role |
 | :--- | :--- | :--- |
-| Obsidian Black | `#0D0D0D` | Main background, deep shadows. |
-| Crimson Red | `#E50914` | Primary brand color, errors, "Delusional" states. |
-| Neon Cyan | `#00E5FF` | Secondary accents, sliders, "Realistic" states. |
-| Neon Pink | `#FF007F` | Tertiary highlights, Cat Lady Meter accents. |
-| Electric Gold | `#FFCC00` | Highlighting critical numbers, premium features. |
-| Slate Gray | `#2A2A2A` | Card backgrounds, borders, muted text. |
+| **Obsidian Dark** | `#080808` / `#0D0D0D` | Primary background in Obsidian mode |
+| **Outrun Purple** | `#0c0721` / `#180e38` | Card backgrounds in Vaporwave mode |
+| **Crimson Pink** | `#FF007F` / `#E50914` | Primary CTA, Delusional tiers, neon headers |
+| **Electric Cyan** | `#00F5FF` / `#00E5FF` | Secondary accents, low delusion, sliders |
+| **Laser Gold** | `#FFE600` / `#FFCC00` | Warnings, ratio highlights, soundboard tags |
+| **Stark White** | `#FFFFFF` | Primary headings, selected button states |
 
-## Typography System
+---
 
-| Font | Purpose | CSS Variable |
-| :--- | :--- | :--- |
-| **Bebas Neue** | Main Headlines, Title | `font-bebas` |
-| **Anton** | Sub-headlines, Impact text | `font-anton` |
-| **Inter** | Body text, UI labels | `font-inter` |
-| **JetBrains Mono** | Output numbers, Terminal/Code aesthetics | `font-mono` |
+## 2. 3 × 2 Spacious Calculator Grid Layout
 
-## Component Catalog
+The main calculator form ([`CriteriaForm.tsx`](file:///home/anmol/Projects/Delusion%20Calculator/src/components/CriteriaForm.tsx)) uses a **3-column by 2-row layout**:
 
-1. **DelusionSlider**: Range slider with a neon glowing thumb.
-2. **NeonToggle**: Custom checkbox that glows when active.
-3. **CatLadyMeter**: A semi-circle gauge dial charting from 0 to 5, transitioning from Cyan -> Pink -> Red.
-4. **StatDisplay**: Large, monospace readout of the final percentage.
-5. **RoastTerminal**: A brutalist box resembling a command-line interface that outputs the roasts.
+1. **Card 1: Age Range** — Dual range sliders with direct numerical indicators (`18` to `65+ Yrs`).
+2. **Card 2: Minimum Height** — Dropdown select menu (`5'0"` to `6'6"+`) + quick slider.
+3. **Card 3: Race / Ethnicity** — Checkbox-style multi-select grid.
+4. **Card 4: Minimum Education** — Dropdown select menu (*Any*, *High School*, *College*, *Bachelor's*, *Master's*, *Doctorate*).
+5. **Card 5: Minimum Income** — Custom dollar input + preset slider (`$0` to `$500k+`).
+6. **Card 6: Status & Fitness** — Checkbox toggles (*Must Be Single*, *Exclude Obese*) + Location Scope dropdown.
 
-## Visual Effects
+### Solid Non-Transparent Card Hygiene
+All cards use solid `#180e38` and `#0e0726` background fills with solid borders to ensure background canvas particles or grids never reduce typography contrast or legibility.
 
-- **Neon Glow**: Achieved using heavy `drop-shadow` and `box-shadow` Tailwind utilities.
-- **Glassmorphism**: `backdrop-blur-md bg-white/5` on overlapping panels.
-- **Scanlines**: A subtle CSS overlay simulating CRT monitor scanlines for the Roast Terminal.
+---
 
-## Animation Guidelines
+## 3. Typography Hierarchy
 
-- Powered by **Framer Motion**.
-- **Spring Physics**: Use `type: "spring", stiffness: 300, damping: 20` for UI interactions to make them feel punchy.
-- **CountUp**: All percentage numbers must animate from 0 to the target value dynamically as sliders move.
+* **Headlines / Scores**: **Bebas Neue** (`font-display`) — High-impact all-caps display font.
+* **Subheaders**: **Anton** (`font-subhead`) — Compact section headers.
+* **Body / Labels**: **Inter** (`font-sans`) — High legibility on mobile and desktop.
+* **Numbers & Roasts**: **JetBrains Mono** (`font-mono`) — Monospaced data displays and terminal roasts.
 
-## Responsive Breakpoints
+---
 
-- Mobile (`sm`, `<640px`): Single column, sticky results at the bottom.
-- Tablet (`md`, `768px`): 2-column layout (Inputs left, Results right).
-- Desktop (`lg`, `1024px+`): Expanded 2-column layout with extra stats sidebars.
+## 4. OBS Stream Mode Overlay & Auto-Hide
 
-## Stream Mode Specifications
-
-For Twitch/YouTube streamers (like F&F reacting live):
-- A toggle that injects `#00FF00` (chromakey green) as the background.
-- UI elements convert to high-opacity solids to prevent semi-transparent elements from keying out.
-
-## Accessibility Considerations
-
-- Maintain WCAG AA contrast for text.
-- Ensure all custom sliders and toggles are keyboard navigable (`tabIndex={0}`).
-- Use `aria-live="polite"` on the percentage output so screen readers announce the changing score.
+In Stream Mode:
+* Top header auto-hides with smooth CSS transforms when the cursor moves away from the top 90px.
+* In **Obsidian Dark Theme**, the background canvas is completely disabled for a 100% pitch-black background suitable for chromakeying or window capture.
