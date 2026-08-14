@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Tv, Moon, Sun, Eye, EyeOff, Maximize2, Music, Layers } from 'lucide-react';
@@ -62,14 +61,14 @@ export default function Header({
           : 'sticky top-0 px-4 sm:px-6 lg:px-8 h-16 flex items-center'
       }`}
     >
-      <div className="w-full flex items-center justify-between gap-3 sm:gap-6">
-        {/* Brand / Logo with Official Cover Art (Takes user home) */}
+      <div className="w-full flex items-center justify-between gap-4">
+        {/* Left: Fresh & Fit Logo Cover Art & DELUSION CALCULATOR Branding Only */}
         <button
           type="button"
           onClick={handleHomeClick}
           className="flex items-center gap-3 group cursor-pointer text-left shrink-0"
         >
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden border-2 border-[#FF007F] shadow-lg shadow-[#FF007F]/30 group-hover:shadow-[#00F5FF]/50 transition-all duration-300 relative shrink-0">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden border-2 border-[#E50914] shadow-lg shadow-[#E50914]/40 group-hover:shadow-[#00F5FF]/50 transition-all duration-300 relative shrink-0">
             <Image
               src="/Assets/FreshnFit After Hours - Cover Art.jpg"
               alt="Fresh & Fit After Hours"
@@ -80,7 +79,7 @@ export default function Header({
           </div>
           <div>
             <h1 className="font-display text-xl sm:text-2xl tracking-wider text-white flex items-center gap-1.5 leading-none">
-              DELUSION <span className="text-[#FF007F] text-glow-pink">CALCULATOR</span>
+              DELUSION <span className="text-[#E50914] text-glow-pink">CALCULATOR</span>
             </h1>
             <p className="text-[9px] sm:text-[10px] text-[#00F5FF] tracking-widest uppercase font-mono font-bold mt-0.5">
               FRESH & FIT MIAMI AFTER HOURS
@@ -88,123 +87,105 @@ export default function Header({
           </div>
         </button>
 
-        {/* Center: Soundboard Quick Controls & Vault Button */}
+        {/* Right: Minimal Icon-Only Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Sampler Bank Toggle Button */}
+          {/* Sampler Bank Toggle Icon with Active Badge Indicator */}
           {onToggleBank && (
             <button
               type="button"
               onClick={onToggleBank}
-              className="px-3 py-1.5 rounded-xl bg-[#180e38] border border-[#FF007F]/40 hover:border-[#FF007F] text-xs font-mono font-bold flex items-center gap-1.5 transition-all text-[#FFE600] hover:text-white cursor-pointer shadow-[0_0_10px_rgba(255,0,127,0.2)]"
-              title="Toggle Bank 1 & Bank 2 (Shortcut: Tab or `)"
+              className="p-2 sm:px-2.5 sm:py-1.5 rounded-xl bg-[#180e38] border border-[#FF007F]/40 hover:border-[#FF007F] text-xs font-mono font-bold flex items-center gap-1.5 transition-all text-[#FFE600] hover:text-white cursor-pointer shadow-[0_0_10px_rgba(255,0,127,0.2)]"
+              title={`Sampler Bank ${activeBank} [Keys 1–0] (Press Tab to switch)`}
             >
-              <Layers className="w-3.5 h-3.5 text-[#00F5FF]" />
-              <span className="hidden sm:inline">SAMPLER:</span>
-              <span className={activeBank === 1 ? 'text-[#FF007F]' : 'text-[#00F5FF]'}>
-                BANK {activeBank} [1–0]
+              <Layers className="w-4 h-4 text-[#00F5FF]" />
+              <span className={`text-xs font-bold font-mono ${activeBank === 1 ? 'text-[#FF007F]' : 'text-[#00F5FF]'}`}>
+                {activeBank}
               </span>
             </button>
           )}
 
-          {/* Sound Vault Modal Button */}
+          {/* Sound Vault Modal Button (Icon Only) */}
           {onOpenSoundVault && (
             <button
               type="button"
               onClick={onOpenSoundVault}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#FF007F]/30 to-[#8A2BE2]/30 hover:from-[#FF007F]/60 hover:to-[#8A2BE2]/60 border border-[#FF007F]/50 text-white text-xs font-mono font-bold transition-all shadow-[0_0_12px_rgba(255,0,127,0.3)] cursor-pointer whitespace-nowrap"
+              className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-r from-[#FF007F]/30 to-[#8A2BE2]/30 hover:from-[#FF007F]/60 hover:to-[#8A2BE2]/60 border border-[#FF007F]/50 text-[#FFE600] hover:text-white transition-all shadow-[0_0_12px_rgba(255,0,127,0.3)] cursor-pointer"
+              title="Sound Vault (45+ Audio Effects)"
             >
-              <Music className="w-3.5 h-3.5 text-[#FFE600]" />
-              <span className="hidden md:inline">SOUND VAULT (45+)</span>
-              <span className="md:hidden">VAULT</span>
+              <Music className="w-4 h-4 text-[#FFE600]" />
             </button>
           )}
-        </div>
 
-        {/* Right Side: Theme, Stream Mode, Auto-Hide & Fullscreen */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Theme Selector */}
+          {/* Theme Switcher (Sun & Moon Icons Only) */}
           {onSetBgMode && (
-            <div className="flex items-center gap-1 bg-[#180e38] p-0.5 rounded-xl border border-[#FF007F]/30 text-xs font-mono">
+            <div className="flex items-center gap-1 bg-[#180e38] p-1 rounded-xl border border-[#FF007F]/30">
               <button
                 type="button"
                 onClick={() => onSetBgMode('VAPORWAVE')}
-                className={`px-2.5 py-1 rounded-lg font-bold flex items-center gap-1 transition-all cursor-pointer ${
+                className={`p-1.5 rounded-lg transition-all cursor-pointer ${
                   bgMode === 'VAPORWAVE'
                     ? 'bg-[#FF007F] text-white shadow-[0_0_10px_#FF007F]'
                     : 'text-[#B3A0D2] hover:text-white'
                 }`}
-                title="80s Vaporwave Theme"
+                title="80s Vaporwave Theme (Sun)"
               >
-                <Sun className="w-3.5 h-3.5" />
-                <span className="hidden md:inline">Vaporwave</span>
+                <Sun className="w-4 h-4" />
               </button>
               <button
                 type="button"
                 onClick={() => onSetBgMode('OBSIDIAN')}
-                className={`px-2.5 py-1 rounded-lg font-bold flex items-center gap-1 transition-all cursor-pointer ${
+                className={`p-1.5 rounded-lg transition-all cursor-pointer ${
                   bgMode === 'OBSIDIAN'
                     ? 'bg-[#00F5FF] text-black shadow-[0_0_10px_#00F5FF]'
                     : 'text-[#B3A0D2] hover:text-white'
                 }`}
-                title="Obsidian Dark Theme"
+                title="Obsidian Dark Theme (Moon)"
               >
-                <Moon className="w-3.5 h-3.5" />
-                <span className="hidden md:inline">Obsidian</span>
+                <Moon className="w-4 h-4" />
               </button>
             </div>
           )}
 
-          {/* Stream Mode Toggle Button */}
-          {onToggleStreamMode ? (
+          {/* Stream Mode Toggle (TV Icon Only) */}
+          {onToggleStreamMode && (
             <button
               type="button"
               onClick={onToggleStreamMode}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer shadow-[0_0_12px_rgba(0,245,255,0.3)] whitespace-nowrap ${
+              className={`p-2 sm:p-2.5 rounded-xl border transition-all cursor-pointer shadow-[0_0_12px_rgba(0,245,255,0.3)] ${
                 isStreamMode
                   ? 'bg-[#FF007F] text-white border-[#FF007F] shadow-[0_0_15px_#FF007F] animate-pulse'
                   : 'border-[#00F5FF]/40 bg-[#00F5FF]/15 text-[#00F5FF] hover:bg-[#00F5FF]/30'
               }`}
-              title="Toggle Stream Mode (Shortcut: Spacebar)"
+              title="Toggle Stream Mode [Spacebar]"
             >
-              <Tv className="w-3.5 h-3.5" />
-              <span className="hidden lg:inline">{isStreamMode ? 'STREAM MODE: ON [SPACE]' : 'STREAM MODE [SPACE]'}</span>
-              <span className="lg:hidden">OBS</span>
+              <Tv className="w-4 h-4" />
             </button>
-          ) : (
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#00F5FF]/40 bg-[#00F5FF]/15 text-[#00F5FF] hover:bg-[#00F5FF]/30 text-xs font-mono font-bold transition-all shadow-[0_0_12px_rgba(0,245,255,0.3)]"
-            >
-              <Tv className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Calculator</span>
-            </Link>
           )}
 
-          {/* Auto-Hide Toggle Button (Visible in Stream Mode) */}
+          {/* Auto-Hide Toggle (Icon Only, in Stream Mode) */}
           {isStreamMode && onToggleAutoHide && (
             <button
               type="button"
               onClick={onToggleAutoHide}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer whitespace-nowrap ${
+              className={`p-2 sm:p-2.5 rounded-xl border transition-all cursor-pointer ${
                 autoHideMode
                   ? 'bg-[#FF007F]/20 text-[#FF007F] border-[#FF007F]/50 shadow-[0_0_10px_#FF007F]'
                   : 'bg-[#00F5FF]/20 text-[#00F5FF] border-[#00F5FF]/50 shadow-[0_0_10px_#00F5FF]'
               }`}
-              title="Toggle Auto-Hide Header on Hover"
+              title={autoHideMode ? 'Auto-Hide: ON' : 'Auto-Hide: OFF'}
             >
-              {autoHideMode ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5 text-[#00F5FF]" />}
-              <span className="hidden xl:inline">{autoHideMode ? 'AUTO-HIDE: ON' : 'AUTO-HIDE: OFF'}</span>
+              {autoHideMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4 text-[#00F5FF]" />}
             </button>
           )}
 
-          {/* Fullscreen Toggle */}
+          {/* Fullscreen Toggle (Icon Only) */}
           <button
             type="button"
             onClick={toggleFullscreen}
-            className="p-1.5 rounded-xl bg-[#180e38] hover:bg-[#2a0845] text-white transition-colors border border-[#00F5FF]/40 cursor-pointer shrink-0"
+            className="p-2 sm:p-2.5 rounded-xl bg-[#180e38] hover:bg-[#2a0845] text-[#00F5FF] hover:text-white transition-colors border border-[#00F5FF]/40 cursor-pointer"
             title="Toggle Fullscreen"
           >
-            <Maximize2 className="w-4 h-4 text-[#00F5FF]" />
+            <Maximize2 className="w-4 h-4" />
           </button>
         </div>
       </div>
