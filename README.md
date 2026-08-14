@@ -12,10 +12,30 @@ Whether you're looking for a partner who is 6'0"+ tall, making $100k+, fit, unma
 
 Many individuals hold dating standards without realizing how overlapping joint probabilities compound. A requirement that sounds modest on its own (e.g. 14% tall, 12% high-earning) drops below **0.4% (1 in 233)** when required simultaneously in one single person.
 
-### 🔮 Future Sex-Agnostic Roadmap
+### 🔮 Sex-Agnostic Core Roadmap
 While currently focused on female expectations for male partners (where delusion trends are frequently discussed), the application is architected to become **100% Sex-Agnostic**:
 - **Female Standards for Males**: Evaluating hypergamy, height, income brackets, age range, and marital status.
 - **Male Standards for Females**: Evaluating age curves, fitness/BMI, relationship history, and realistic Sexual Market Value (SMV) expectations.
+
+---
+
+## 🚀 Planned Feature Roadmap (Next Iterations)
+
+The following four major feature expansions are documented and scheduled for upcoming releases:
+
+### 1. 👶 Children & Prior Marriage Criteria Filters
+- **Single Mother & Kids Filter**: Toggle for *"Has Children / Single Mother Exclusion"* vs *"Wants Future Children"* (a core Fresh & Fit podcast debate topic).
+- **Prior Marriage Exclusion**: Filter for never-married individuals vs excluding prior marriages and divorces.
+
+### 2. 📺 Enhanced Streamer Mode (OBS Chromakey & Hotkeys)
+- **OBS Green Screen Overlay**: Custom chromakey background mode for live content creators streaming on YouTube, Rumble, and Twitch.
+- **Soundboard Hotkeys**: Keyboard shortcuts (`Key1` through `Key9`) for Chris & Big Mo soundboard buttons during live broadcasts.
+
+### 3. 📸 HD Image Download & Social Export (PNG/JPEG Export)
+- **Direct Canvas Export**: High-resolution PNG/JPEG image generation via `html-to-image` for downloading custom result cards formatted for Instagram Stories, Twitter/X, and TikTok sharing.
+
+### 4. 🤖 AI-Powered Dynamic Podcast Roasts (Gemini API)
+- **Context-Aware AI Roasts**: Serverless Next.js API integration with Google Gemini Flash API to generate dynamic, personalized Fresh & Fit podcast roasts tailored to specific user parameter combinations.
 
 ---
 

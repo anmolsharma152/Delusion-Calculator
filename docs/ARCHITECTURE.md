@@ -10,30 +10,32 @@ graph TD
     App[Next.js App Router]
     UI[Tailwind + Framer Motion]
     Calc[Client-side Probability Engine]
-    Data[(Hardcoded JSON Data)]
+    Data[(US Census & CDC Microdata)]
+    Gemini[Google Gemini AI API]
     
     Client --> App
     App --> UI
     UI <--> Calc
     Calc --> Data
+    App -.-> Gemini
 ```
 
 ## Tech Stack Details
 
-- **Framework**: Next.js 15 (React 19)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
+- **Framework**: Next.js 16 (React 19, Turbopack)
+- **Language**: TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS v4 + 80s Vaporwave Aesthetics
 - **Animations**: Framer Motion
 - **Hosting**: Vercel
 
 ## Client-Side Calculation Flow
 
-The core of the application relies entirely on client-side calculations for Phase 1. 
+The core of the application relies on instant client-side joint probability math:
 
-1. User inputs preferences (e.g., Age 25-35, Height > 6'0", Income > $100k).
-2. The UI triggers the `calculateProbability()` function in the `lib` folder.
-3. The calculator fetches the required static JSON data from the `data` folder.
-4. Independent probabilities are calculated and multiplied (assuming conditional independence adjusted for age).
+1. User inputs preferences (e.g., Age 22-35, Height > 6'0", Income > $80k).
+2. The UI triggers `calcCombinedProbability()` in `src/engine/probability.ts`.
+3. The calculator fetches static age-conditional distributions from `src/data/distributions.ts`.
+4. Independent probabilities are calculated and multiplied (adjusted for age-income and age-marital correlations).
 5. The result is returned to the UI in < 1ms.
 
 ## Data Flow Diagram
@@ -43,10 +45,10 @@ sequenceDiagram
     participant User
     participant UI as React Components
     participant Engine as Calc Engine
-    participant StaticData as JSON Datasets
+    participant StaticData as US Census & CDC Datasets
     
-    User->>UI: Adjusts Slider/Toggle
-    UI->>Engine: Send raw constraints
+    User->>UI: Adjusts Slider/Toggle/Input
+    UI->>Engine: Send raw criteria
     Engine->>StaticData: Request relevant distributions
     StaticData-->>Engine: Return age-adjusted stats
     Engine->>Engine: Compute P(Match)
@@ -54,50 +56,25 @@ sequenceDiagram
     UI-->>User: Animate result & update roast
 ```
 
-## Component Hierarchy
+## Planned Feature Architecture (Next Releases)
 
-```mermaid
-graph TD
-    AppRouter[App Router root]
-    Page[Main Page]
-    Header[Header / Theme]
-    Calculator[Calculator Container]
-    Controls[Input Controls]
-    Slider[Range Sliders]
-    Toggles[Checkbox Toggles]
-    Results[Results Panel]
-    Meter[Cat Lady Meter]
-    Roast[Roast Text]
-    Share[Share Card Generator]
-    
-    AppRouter --> Page
-    Page --> Header
-    Page --> Calculator
-    Calculator --> Controls
-    Controls --> Slider
-    Controls --> Toggles
-    Calculator --> Results
-    Results --> Meter
-    Results --> Roast
-    Page --> Share
-```
+### 1. 👶 Children & Prior Marriage Criteria Engine
+- Expand `CriteriaState` interface with `excludeKids: boolean`, `wantsKids: boolean`, and `excludePriorMarriage: boolean`.
+- Incorporate Census ACS marital history and CDC family fertility tables into `src/engine/probability.ts`.
 
-## File Structure
+### 2. 📺 Streamer Mode (OBS Chromakey & Hotkeys)
+- Add hotkey event listener (`window.addEventListener('keydown')`) mapping keys 1-9 to trigger `GlobalAudio` soundboard clips.
+- Provide a dedicated `/stream` page with background transparency and green-screen chromakey color pickers.
 
-- `src/app/page.tsx`: Entry point.
-- `src/components/`: Modular UI (e.g., `Slider.tsx`, `Meter.tsx`).
-- `src/lib/calculator.ts`: The math logic.
-- `src/data/`: `census.json`, `nhanes.json`, `roasts.json`.
+### 3. 📸 HD Image Export (`html-to-image`)
+- Integrate `html-to-image` canvas rendering to convert `#share-card-graphic` element directly into downloadable 1080x1920 PNG files for social media stories.
 
-## Phase 2 Architecture
-
-In Phase 2, the app will introduce Next.js API Routes (`src/app/api/`) to interact with the **Gemini AI API**. 
-- The client will send the user's specific inputs and score to the `/api/roast` endpoint.
-- The serverless function will prompt Gemini to generate a unique, context-aware Fresh & Fit style roast.
-- The response will be streamed back to the client.
+### 4. 🤖 AI-Powered Podcast Roasts (Gemini API)
+- Introduce serverless route `/api/roast` using `@google/genai` SDK.
+- Prompt Google Gemini Flash API with user criteria to stream dynamic, context-aware podcast roast commentary.
 
 ## Performance Requirements
 
 - **Calculation Time**: < 1ms
-- **Render Frame Rate**: < 16ms (60 FPS for animations)
-- **First Contentful Paint (FCP)**: < 1.5s
+- **Render Frame Rate**: 60 FPS for Framer Motion animations
+- **First Contentful Paint (FCP)**: < 1.0s
