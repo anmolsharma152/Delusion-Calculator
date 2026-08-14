@@ -14,9 +14,9 @@ export default function GaugeMeter({ score, tierLabel, tierEmoji }: GaugeMeterPr
   const angle = -90 + (score / 5) * 180;
 
   return (
-    <div className="relative flex flex-col items-center justify-center p-4">
+    <div className="relative flex flex-col items-center justify-center p-1">
       {/* SVG Semi-Circle Gauge */}
-      <div className="relative w-64 h-36 sm:w-80 sm:h-44 flex items-end justify-center overflow-hidden">
+      <div className="relative w-56 h-28 sm:w-64 sm:h-32 flex items-end justify-center overflow-hidden">
         <svg viewBox="0 0 200 110" className="w-full h-full">
           <defs>
             {/* Vaporwave Gradient for Arc */}
@@ -29,7 +29,7 @@ export default function GaugeMeter({ score, tierLabel, tierEmoji }: GaugeMeterPr
 
             {/* Vapor Glow Filter */}
             <filter id="vaporGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="5" result="blur" />
+              <feGaussianBlur stdDeviation="4" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
           </defs>
@@ -39,7 +39,7 @@ export default function GaugeMeter({ score, tierLabel, tierEmoji }: GaugeMeterPr
             d="M 20 100 A 80 80 0 0 1 180 100"
             fill="none"
             stroke="#180e38"
-            strokeWidth="18"
+            strokeWidth="16"
             strokeLinecap="round"
           />
 
@@ -48,7 +48,7 @@ export default function GaugeMeter({ score, tierLabel, tierEmoji }: GaugeMeterPr
             d="M 20 100 A 80 80 0 0 1 180 100"
             fill="none"
             stroke="url(#gaugeGradientVapor)"
-            strokeWidth="18"
+            strokeWidth="16"
             strokeLinecap="round"
             filter="url(#vaporGlow)"
             opacity="0.95"
@@ -57,10 +57,10 @@ export default function GaugeMeter({ score, tierLabel, tierEmoji }: GaugeMeterPr
           {/* Tick marks */}
           {[0, 1, 2, 3, 4, 5].map((t) => {
             const tickAngle = (-180 + (t / 5) * 180) * (Math.PI / 180);
-            const x1 = 100 + 66 * Math.cos(tickAngle);
-            const y1 = 100 + 66 * Math.sin(tickAngle);
-            const x2 = 100 + 73 * Math.cos(tickAngle);
-            const y2 = 100 + 73 * Math.sin(tickAngle);
+            const x1 = 100 + 68 * Math.cos(tickAngle);
+            const y1 = 100 + 68 * Math.sin(tickAngle);
+            const x2 = 100 + 74 * Math.cos(tickAngle);
+            const y2 = 100 + 74 * Math.sin(tickAngle);
             return (
               <line
                 key={t}
@@ -69,7 +69,7 @@ export default function GaugeMeter({ score, tierLabel, tierEmoji }: GaugeMeterPr
                 x2={x2}
                 y2={y2}
                 stroke="#B3A0D2"
-                strokeWidth="2"
+                strokeWidth="1.5"
               />
             );
           })}
@@ -77,25 +77,25 @@ export default function GaugeMeter({ score, tierLabel, tierEmoji }: GaugeMeterPr
 
         {/* Animated Needle */}
         <motion.div
-          className="absolute bottom-2 left-1/2 w-2 h-28 sm:h-32 bg-white origin-bottom rounded-t-full shadow-[0_0_16px_#FF007F]"
+          className="absolute bottom-2 left-1/2 w-1.5 h-22 sm:h-26 bg-white origin-bottom rounded-t-full shadow-[0_0_12px_#FF007F]"
           style={{ x: '-50%' }}
           initial={{ rotate: -90 }}
           animate={{ rotate: angle }}
           transition={{ type: 'spring', stiffness: 70, damping: 14 }}
         >
           {/* Needle Pivot Cap */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-6 h-6 rounded-full bg-[#FF007F] border-2 border-white shadow-[0_0_12px_#FF007F]" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-5 h-5 rounded-full bg-[#FF007F] border-2 border-white shadow-[0_0_10px_#FF007F]" />
         </motion.div>
       </div>
 
       {/* Score Number Display */}
-      <div className="mt-3 text-center">
-        <div className="font-display text-5xl sm:text-6xl text-white tracking-wider flex items-center justify-center gap-2">
+      <div className="mt-1 text-center">
+        <div className="font-display text-4xl sm:text-5xl text-white tracking-wider flex items-center justify-center gap-1.5 leading-none">
           <span>{score}</span>
-          <span className="text-xl sm:text-2xl text-[#B3A0D2]">/ 5</span>
-          <span className="text-3xl sm:text-4xl">{tierEmoji}</span>
+          <span className="text-lg text-[#B3A0D2]">/ 5</span>
+          <span className="text-2xl">{tierEmoji}</span>
         </div>
-        <p className="font-display text-xl sm:text-2xl uppercase tracking-widest text-[#FF007F] text-glow-pink mt-1">
+        <p className="font-display text-lg sm:text-xl uppercase tracking-wider text-[#FF007F] text-glow-pink mt-0.5 leading-none">
           {tierLabel}
         </p>
       </div>

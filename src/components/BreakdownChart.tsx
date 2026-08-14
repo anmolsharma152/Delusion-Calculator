@@ -10,26 +10,33 @@ interface BreakdownChartProps {
 
 export default function BreakdownChart({ breakdown }: BreakdownChartProps) {
   return (
-    <div className="w-full bg-[#180e38]/80 border border-[#FF007F]/30 rounded-xl p-5 space-y-3">
-      <h3 className="font-display tracking-wider text-xs uppercase text-[#B3A0D2] border-b border-[#FF007F]/20 pb-2">
-        Demographic Filter Breakdown
-      </h3>
+    <div className="w-full bg-[#0e0726] border border-[#FF007F]/30 rounded-2xl p-4 space-y-2.5 shadow-md">
+      <div className="flex items-center justify-between border-b border-[#FF007F]/20 pb-1.5">
+        <h3 className="font-display tracking-wider text-xs uppercase text-[#B3A0D2]">
+          Demographic Filter Breakdown
+        </h3>
+        <span className="text-[10px] font-mono text-[#00F5FF]">CENSUS ACS 2023</span>
+      </div>
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
         {breakdown.map((item, idx) => {
           const pct = Math.round(item.probability * 100);
           return (
-            <div key={idx} className="space-y-1">
-              <div className="flex justify-between text-xs font-mono">
-                <span className="text-[#F5D8F2]">{item.filterName}: <span className="text-white font-bold">{item.label}</span></span>
-                <span className="text-[#00F5FF] font-bold text-glow-cyan">{formatPercentage(item.probability)}</span>
+            <div key={idx} className="space-y-0.5">
+              <div className="flex justify-between text-[11px] font-mono">
+                <span className="text-[#F5D8F2] truncate max-w-[130px]" title={item.label}>
+                  {item.filterName}
+                </span>
+                <span className="text-[#00F5FF] font-bold text-glow-cyan">
+                  {formatPercentage(item.probability)}
+                </span>
               </div>
-              <div className="w-full h-2.5 bg-[#0c0721] rounded-full overflow-hidden border border-[#FF007F]/20">
+              <div className="w-full h-1.5 bg-[#180e38] rounded-full overflow-hidden border border-[#FF007F]/20">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-[#00F5FF] via-[#8A2BE2] to-[#FF007F] rounded-full shadow-[0_0_8px_#FF007F]"
+                  className="h-full bg-gradient-to-r from-[#00F5FF] via-[#8A2BE2] to-[#FF007F] rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${Math.max(2, Math.min(100, pct))}%` }}
-                  transition={{ duration: 0.5, delay: idx * 0.05 }}
+                  transition={{ duration: 0.4, delay: idx * 0.04 }}
                 />
               </div>
             </div>

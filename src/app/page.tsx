@@ -222,7 +222,7 @@ export default function Home() {
 
       {/* Main App Content View Switcher */}
       <main className={`flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 z-10 relative flex flex-col justify-center my-auto ${
-        isStreamMode ? 'pt-10 pb-6' : 'py-6'
+        isStreamMode ? 'pt-8 pb-3' : 'py-3 sm:py-4'
       }`}>
         <AnimatePresence mode="wait" initial={false}>
           {viewState === 'WELCOME' && (
