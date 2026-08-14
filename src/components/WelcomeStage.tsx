@@ -22,11 +22,17 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
             <span>FRESH & FIT MIAMI AFTER HOURS • OFFICIAL REALITY CALCULATOR</span>
           </div>
 
-          {/* Title - Clean single-line fit with balanced larger font */}
-          <div className="space-y-1.5 py-1">
-            <h1 className="font-display text-3xl sm:text-4xl md:text-[2.65rem] lg:text-[2.75rem] text-white tracking-wider uppercase leading-none text-glow-pink drop-shadow-2xl whitespace-nowrap overflow-hidden text-ellipsis">
-              FEMALE DELUSION CALCULATOR
-            </h1>
+          {/* Title - Clean single-line fit with official banner image /Assets/fnf_delusion_banner.png */}
+          <div className="space-y-2 py-1 flex flex-col items-center justify-center">
+            <div className="relative w-full max-w-xl h-24 sm:h-32 md:h-36 drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]">
+              <Image
+                src="/Assets/fnf_delusion_banner.png"
+                alt="Fresh & Fit Podcast - Female Delusion Calculator"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
             <p className="font-mono text-xs sm:text-sm text-[#00F5FF] font-bold text-glow-cyan">
               "HOW DELUSIONAL ARE YOUR STANDARDS IN A MAN?" — THE NUMBERS DON'T LIE
             </p>
