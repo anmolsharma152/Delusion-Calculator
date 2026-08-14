@@ -11,25 +11,25 @@ export default function CatBagMeter({ score }: CatBagMeterProps) {
   const totalBags = 5;
 
   const getGlowStyle = (bagNumber: number) => {
-    if (bagNumber <= 1) return 'drop-shadow-[0_0_10px_rgba(0,245,255,0.85)]';
-    if (bagNumber === 2) return 'drop-shadow-[0_0_10px_rgba(255,230,0,0.85)]';
-    if (bagNumber === 3) return 'drop-shadow-[0_0_12px_rgba(255,0,127,0.9)]';
-    return 'drop-shadow-[0_0_14px_rgba(229,9,20,1)]';
+    if (bagNumber <= 1) return 'drop-shadow-[0_0_12px_rgba(0,245,255,0.85)]';
+    if (bagNumber === 2) return 'drop-shadow-[0_0_12px_rgba(255,230,0,0.85)]';
+    if (bagNumber === 3) return 'drop-shadow-[0_0_14px_rgba(255,0,127,0.9)]';
+    return 'drop-shadow-[0_0_16px_rgba(229,9,20,1)]';
   };
 
   return (
-    <div className="w-full bg-[#0e0726] border border-[#FF007F]/40 rounded-2xl p-3.5 flex flex-col items-center gap-2 shadow-md">
+    <div className="w-full bg-[#0e0726] border border-[#FF007F]/40 rounded-2xl p-5 flex flex-col items-center gap-3 shadow-md">
       <div className="flex items-center justify-between w-full font-mono text-xs">
-        <span className="font-display tracking-wider uppercase text-[#B3A0D2] text-xs">
+        <span className="font-display tracking-wider uppercase text-[#B3A0D2] text-sm">
           Cat Lady Index (Purina Risk Meter)
         </span>
-        <span className="text-[#FF007F] font-bold text-glow-pink text-xs">
+        <span className="text-[#FF007F] font-bold text-glow-pink text-sm">
           {score} / 5 BAGS
         </span>
       </div>
 
       {/* 5 Bags Row */}
-      <div className="flex items-center justify-center gap-2.5 sm:gap-4 py-1 w-full">
+      <div className="flex items-center justify-center gap-3 sm:gap-6 py-2 w-full">
         {Array.from({ length: totalBags }).map((_, index) => {
           const bagNumber = index + 1;
           const isActive = score >= bagNumber;
@@ -38,14 +38,14 @@ export default function CatBagMeter({ score }: CatBagMeterProps) {
             <motion.div
               key={index}
               initial={false}
-              animate={isActive ? { scale: [1, 1.2, 1], rotate: [0, -4, 4, 0] } : { scale: 1 }}
-              transition={{ duration: 0.35, delay: index * 0.06 }}
+              animate={isActive ? { scale: [1, 1.25, 1], rotate: [0, -5, 5, 0] } : { scale: 1 }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
               className="relative flex flex-col items-center"
             >
               <div
-                className={`relative w-9 h-11 sm:w-11 sm:h-13 transition-all duration-300 ${
+                className={`relative w-12 h-14 sm:w-14 sm:h-16 transition-all duration-300 ${
                   isActive
-                    ? `${getGlowStyle(bagNumber)} scale-105 opacity-100`
+                    ? `${getGlowStyle(bagNumber)} scale-110 opacity-100`
                     : 'opacity-25 grayscale brightness-50'
                 }`}
               >
@@ -53,11 +53,11 @@ export default function CatBagMeter({ score }: CatBagMeterProps) {
                   src="/Assets/cat_litter_bag.png"
                   alt={`Cat Bag ${bagNumber}`}
                   fill
-                  sizes="48px"
+                  sizes="64px"
                   className="object-contain"
                 />
               </div>
-              <span className={`text-[9px] font-mono font-bold mt-0.5 ${isActive ? 'text-[#FFE600]' : 'text-gray-600'}`}>
+              <span className={`text-[10px] font-mono font-bold mt-1 ${isActive ? 'text-[#FFE600]' : 'text-gray-600'}`}>
                 BAG {bagNumber}
               </span>
             </motion.div>
@@ -65,7 +65,7 @@ export default function CatBagMeter({ score }: CatBagMeterProps) {
         })}
       </div>
 
-      <p className="text-[11px] font-mono text-[#F5D8F2] text-center italic leading-tight">
+      <p className="text-xs font-mono text-[#F5D8F2] text-center italic">
         {score === 0 && "Zero bags! Safe from the cat lady prophecy."}
         {score === 1 && "1 Bag. Dipping your toes into picky territory."}
         {score === 2 && "2 Bags. Stocking up on Purina just in case."}
