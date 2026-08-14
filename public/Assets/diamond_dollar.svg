@@ -1,29 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" width="160" height="180">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 200" width="180" height="200">
   <defs>
-    <!-- Ice Diamond Gradient -->
+    <!-- 24K Gold Frame Gradient -->
+    <linearGradient id="goldEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF0" />
+      <stop offset="25%" stop-color="#FFE600" />
+      <stop offset="60%" stop-color="#F59E0B" />
+      <stop offset="90%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#78350F" />
+    </linearGradient>
+
+    <!-- Ice Diamond Core Gradient -->
     <linearGradient id="iceDiamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="25%" stop-color="#E0F7FA" />
+      <stop offset="20%" stop-color="#E0F7FA" />
       <stop offset="50%" stop-color="#00F5FF" />
       <stop offset="80%" stop-color="#0284C7" />
-      <stop offset="100%" stop-color="#0369A1" />
+      <stop offset="100%" stop-color="#0F172A" />
     </linearGradient>
 
-    <linearGradient id="goldEdge" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFE600" />
-      <stop offset="50%" stop-color="#F59E0B" />
-      <stop offset="100%" stop-color="#D97706" />
-    </linearGradient>
-
-    <!-- Diamond Stud Gradient -->
-    <radialGradient id="studGrad" cx="30%" cy="30%" r="70%">
+    <!-- Round Pavé Diamond Stud Gradient -->
+    <radialGradient id="diamondStud" cx="35%" cy="35%" r="65%">
       <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="40%" stop-color="#E0F2FE" />
+      <stop offset="45%" stop-color="#E0F2FE" />
       <stop offset="80%" stop-color="#00F5FF" />
       <stop offset="100%" stop-color="#0369A1" />
     </radialGradient>
 
-    <!-- Ice Glow Filter -->
+    <!-- Neon Ice Glow -->
     <filter id="iceGlow" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="4" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
@@ -31,105 +34,115 @@
   </defs>
 
   <g filter="url(#iceGlow)">
-    <!-- 1. Gold Base Shadow Plate -->
-    <!-- Vertical Spine -->
-    <rect x="70" y="8" width="20" height="164" rx="10" fill="url(#goldEdge)" stroke="#78350F" stroke-width="2" />
+    <!-- 1. Two Vertical Parallel Pillar Bars (Classic Double-Stroked Dollar Sign) -->
+    <!-- Left Vertical Gold Pillar -->
+    <rect x="74" y="8" width="10" height="184" rx="5" fill="url(#goldEdge)" stroke="#78350F" stroke-width="1.5" />
+    <rect x="76" y="12" width="6" height="176" rx="3" fill="url(#iceDiamondGrad)" />
 
-    <!-- Outer S-Curve Body -->
+    <!-- Right Vertical Gold Pillar -->
+    <rect x="96" y="8" width="10" height="184" rx="5" fill="url(#goldEdge)" stroke="#78350F" stroke-width="1.5" />
+    <rect x="98" y="12" width="6" height="176" rx="3" fill="url(#iceDiamondGrad)" />
+
+    <!-- 2. Symmetrical 'S' Body (Outer Gold Chassis) -->
+    <!-- S Path with Equal Upper & Lower Arcs -->
     <path
-      d="M 125,56 
-         C 125,28 108,18 80,18 
-         C 46,18 36,36 36,60 
-         C 36,92 70,100 95,108 
-         C 118,116 126,126 126,140 
-         C 126,158 108,168 80,168 
-         C 50,168 34,152 32,126 
-         L 54,124 
-         C 56,140 68,150 80,150 
-         C 95,150 104,142 104,136 
-         C 104,116 74,106 50,98 
-         C 30,90 16,76 16,56 
-         C 16,30 38,4 80,4 
-         C 118,4 144,22 146,56 
+      d="M 136,66 
+         C 136,36 116,20 90,20 
+         C 64,20 44,36 44,66 
+         C 44,92 72,98 90,100 
+         C 108,102 136,108 136,134 
+         C 136,164 116,180 90,180 
+         C 64,180 44,164 44,134 
+         L 64,134 
+         C 64,152 74,162 90,162 
+         C 106,162 116,152 116,134 
+         C 116,112 92,106 72,102 
+         C 52,98 24,90 24,66 
+         C 24,36 48,4 90,4 
+         C 132,4 156,36 156,66 
          Z"
       fill="url(#goldEdge)"
       stroke="#78350F"
-      stroke-width="2.5"
+      stroke-width="2"
+      stroke-linejoin="round"
     />
 
-    <!-- 2. Iced-Out Diamond Infill Core -->
-    <!-- Vertical Spine Diamonds -->
-    <rect x="74" y="14" width="12" height="152" rx="6" fill="url(#iceDiamondGrad)" stroke="#FFFFFF" stroke-width="1.5" />
-
-    <!-- S-Curve Diamond Layer -->
+    <!-- 3. Iced-Out Diamond Fill (Equal Symmetrical Arcs) -->
     <path
-      d="M 120,56 
-         C 120,32 104,24 80,24 
-         C 50,24 42,40 42,60 
-         C 42,88 74,96 98,104 
-         C 122,112 120,122 120,136 
-         C 120,152 104,162 80,162 
-         C 56,162 40,148 38,126 
-         L 52,126 
-         C 54,138 66,146 80,146 
-         C 92,146 100,138 100,132 
-         C 100,118 72,110 48,102 
-         C 28,94 22,78 22,58 
-         C 22,34 44,10 80,10 
-         C 114,10 138,26 140,56 
+      d="M 132,66 
+         C 132,40 114,24 90,24 
+         C 66,24 48,40 48,66 
+         C 48,88 74,96 90,98 
+         C 106,100 132,108 132,134 
+         C 132,160 114,176 90,176 
+         C 66,176 48,160 48,134 
+         L 60,134 
+         C 60,150 72,164 90,164 
+         C 108,164 120,150 120,134 
+         C 120,116 94,108 76,104 
+         C 58,100 28,90 28,66 
+         C 28,40 52,8 90,8 
+         C 128,8 152,40 152,66 
          Z"
       fill="url(#iceDiamondGrad)"
       stroke="#FFFFFF"
-      stroke-width="2"
+      stroke-width="1.8"
     />
 
-    <!-- 3. Pavé Diamond Stud Clusters (Round Brilliant Studs Along the Shape) -->
-    <!-- Top Curve Studs -->
-    <circle cx="58" cy="24" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="78" cy="18" r="4.5" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="98" cy="20" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="116" cy="30" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="128" cy="46" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
+    <!-- 4. Symmetrical Round Pavé Diamond Studs -->
+    <!-- Top Arc Studs -->
+    <circle cx="56" cy="36" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="72" cy="28" r="4.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="90" cy="26" r="4.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="108" cy="28" r="4.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="124" cy="36" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="138" cy="52" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
 
-    <!-- Left Upper Studs -->
-    <circle cx="34" cy="44" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="30" cy="62" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="38" cy="78" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
+    <!-- Left Upper Arc Studs -->
+    <circle cx="42" cy="52" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="40" cy="70" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="52" cy="84" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
 
-    <!-- Center Diagonal Studs -->
-    <circle cx="56" cy="90" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="80" cy="98" r="4.5" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="104" cy="108" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
+    <!-- Center Waist Studs -->
+    <circle cx="70" cy="94" r="4.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="90" cy="100" r="5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="110" cy="106" r="4.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
 
-    <!-- Lower Curve Studs -->
-    <circle cx="120" cy="124" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="116" cy="144" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="100" cy="156" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="80" cy="158" r="4.5" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="60" cy="154" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="44" cy="140" r="4" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
+    <!-- Right Lower Arc Studs -->
+    <circle cx="128" cy="116" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="140" cy="130" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="138" cy="148" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
 
-    <!-- Center Vertical Studs -->
-    <circle cx="80" cy="42" r="3.5" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="80" cy="64" r="3.5" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
-    <circle cx="80" cy="126" r="3.5" fill="url(#studGrad)" stroke="#FFFFFF" stroke-width="1" />
+    <!-- Bottom Arc Studs -->
+    <circle cx="124" cy="164" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="108" cy="172" r="4.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="90" cy="174" r="4.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="72" cy="172" r="4.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="56" cy="164" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="42" cy="148" r="4" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
 
-    <!-- 4. Glistening Specular Diamond Flare Glints -->
-    <!-- Top Right Flare -->
-    <g transform="translate(132, 38)">
-      <polygon points="0,-12 3,-3 12,0 3,3 0,12 -3,3 -12,0 -3,-3" fill="#FFFFFF" />
+    <!-- 5. Vertical Pillar Diamond Studs (Top & Bottom Overhangs) -->
+    <circle cx="79" cy="14" r="3.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="101" cy="14" r="3.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="79" cy="186" r="3.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+    <circle cx="101" cy="186" r="3.5" fill="url(#diamondStud)" stroke="#FFFFFF" stroke-width="1" />
+
+    <!-- 6. Sparkling Specular Star Glints (Light Flares) -->
+    <!-- Top-Right Star -->
+    <g transform="translate(142, 44)">
+      <polygon points="0,-14 3,-3 14,0 3,3 0,14 -3,3 -14,0 -3,-3" fill="#FFFFFF" />
       <circle cx="0" cy="0" r="2.5" fill="#FFE600" />
     </g>
 
-    <!-- Center Left Flare -->
-    <g transform="translate(28, 70)">
-      <polygon points="0,-10 2.5,-2.5 10,0 2.5,2.5 0,10 -2.5,2.5 -10,0 -2.5,-2.5" fill="#FFFFFF" />
+    <!-- Center-Left Star -->
+    <g transform="translate(38, 76)">
+      <polygon points="0,-12 2.5,-2.5 12,0 2.5,2.5 0,12 -2.5,2.5 -12,0 -2.5,-2.5" fill="#FFFFFF" />
       <circle cx="0" cy="0" r="2" fill="#00F5FF" />
     </g>
 
-    <!-- Bottom Center Flare -->
-    <g transform="translate(80, 160)">
-      <polygon points="0,-12 3,-3 12,0 3,3 0,12 -3,3 -12,0 -3,-3" fill="#FFFFFF" />
+    <!-- Bottom-Center Star -->
+    <g transform="translate(90, 174)">
+      <polygon points="0,-14 3,-3 14,0 3,3 0,14 -3,3 -14,0 -3,-3" fill="#FFFFFF" />
       <circle cx="0" cy="0" r="2.5" fill="#FFFFFF" />
     </g>
   </g>

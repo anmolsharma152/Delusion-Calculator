@@ -267,7 +267,7 @@ export default function InteractiveBackground() {
           aspectRatio = 320 / 140;
         } else if (type === 'DOLLAR') {
           size = Math.random() * 20 + 60; // 60-80px Diamond Dollar Sign
-          aspectRatio = 160 / 180;
+          aspectRatio = 180 / 200;
         } else if (type === 'PALM') {
           size = Math.random() * 20 + 70; // 70-90px Palm
           aspectRatio = 1;
