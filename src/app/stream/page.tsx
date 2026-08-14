@@ -1,7 +1,15 @@
 'use client';
 
-import StreamMode from '@/components/StreamMode';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function StreamPage() {
-  return <StreamMode />;
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redirect to home where unified stream mode is handled in place
+    router.replace('/');
+  }, [router]);
+
+  return null;
 }
