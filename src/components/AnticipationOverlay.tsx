@@ -80,7 +80,7 @@ class GlobalAudio {
 
 // Preload the result losing horn asset immediately on client load
 if (typeof window !== 'undefined') {
-  GlobalAudio.preload('/Soundbites/the-price-is-right-losing-horn_2.mp3');
+  GlobalAudio.preload('/Soundbites/losing-horn.mp3');
 }
 
 export { GlobalAudio };
@@ -92,7 +92,7 @@ export default function AnticipationOverlay({ onComplete }: AnticipationOverlayP
 
   useEffect(() => {
     // Preload losing horn asset when overlay mounts
-    GlobalAudio.preload('/Soundbites/the-price-is-right-losing-horn_2.mp3');
+    GlobalAudio.preload('/Soundbites/losing-horn.mp3');
 
     // 2.5s total calculation progress
     const interval = setInterval(() => {
@@ -103,7 +103,7 @@ export default function AnticipationOverlay({ onComplete }: AnticipationOverlayP
           if (!hasFinished.current) {
             hasFinished.current = true;
             // Play single preloaded instance of losing horn ONCE when reveal completes
-            GlobalAudio.play('/Soundbites/the-price-is-right-losing-horn_2.mp3');
+            GlobalAudio.play('/Soundbites/losing-horn.mp3');
           }
 
           setTimeout(onComplete, 500);
