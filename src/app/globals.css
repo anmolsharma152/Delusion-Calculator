@@ -1,26 +1,189 @@
 @import "tailwindcss";
 
+/* ============================================================
+   THE DELUSION CALCULATOR — VAPORWAVE / MIAMI RETRO 80S SYSTEM
+   Outrun, Vaporwave Gradients, Neon Pink, Electric Cyan & Purple
+   ============================================================ */
+
+@utility font-display {
+  font-family: var(--font-bebas), 'Bebas Neue', sans-serif;
+}
+
+@utility font-subhead {
+  font-family: var(--font-anton), 'Anton', sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* Vaporwave Foundations */
+  --vapor-dark: #0c0721;
+  --vapor-purple: #180e38;
+  --vapor-deep: #2a0845;
+  --surface: rgba(24, 14, 56, 0.75);
+  --border-neon: rgba(255, 0, 127, 0.3);
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Neon Retro Accents */
+  --neon-pink: #FF007F;
+  --neon-fuchsia: #FF2AA3;
+  --electric-cyan: #00F5FF;
+  --synth-purple: #8A2BE2;
+  --sunset-orange: #FF7B00;
+  --laser-yellow: #FFE600;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Text Hierarchy */
+  --text-primary: #FFFFFF;
+  --text-secondary: #F5D8F2;
+  --text-muted: #B3A0D2;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #0c0721 0%, #180e38 40%, #2a0845 75%, #120326 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---- 80s Vaporwave Perspective Grid Background ---- */
+.vaporwave-grid-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.vaporwave-grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 50% 30%, rgba(255, 0, 127, 0.18) 0%, rgba(138, 43, 226, 0.12) 40%, transparent 70%),
+    radial-gradient(circle at 20% 80%, rgba(0, 245, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 123, 0, 0.12) 0%, transparent 50%);
+}
+
+/* Perspective Grid Lines Across Full Background */
+.vaporwave-grid-floor {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, rgba(255, 0, 127, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 245, 255, 0.15) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 90%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 90%);
+}
+
+/* Retro Sun Glow */
+.retro-sun {
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #ff7b00 0%, #ff007f 70%, #8a2be2 100%);
+  opacity: 0.15;
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- Neon Glow Utility Classes ---- */
+.glow-pink {
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.6), 0 0 35px rgba(255, 0, 127, 0.3), inset 0 0 15px rgba(255, 0, 127, 0.2);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.6), 0 0 35px rgba(0, 245, 255, 0.3), inset 0 0 15px rgba(0, 245, 255, 0.2);
+}
+
+.glow-fuchsia {
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.7), 0 0 40px rgba(255, 0, 127, 0.3);
+}
+
+.text-glow-pink {
+  text-shadow: 0 0 10px #FF007F, 0 0 25px rgba(255, 0, 127, 0.7), 0 0 50px rgba(255, 0, 127, 0.4);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 10px #00F5FF, 0 0 25px rgba(0, 245, 255, 0.7), 0 0 50px rgba(0, 245, 255, 0.4);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 10px #FFE600, 0 0 25px rgba(255, 230, 0, 0.7);
+}
+
+/* ---- Vaporwave Glassmorphism Cards ---- */
+.glass-card-vapor {
+  background: rgba(24, 14, 56, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 0, 127, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(12, 7, 33, 0.6), inset 0 0 20px rgba(138, 43, 226, 0.15);
+  border-radius: 16px;
+}
+
+.glass-card-cyan {
+  background: rgba(24, 14, 56, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(12, 7, 33, 0.6), inset 0 0 20px rgba(0, 245, 255, 0.15);
+  border-radius: 16px;
+}
+
+/* ---- Custom Vaporwave Range Sliders ---- */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: rgba(138, 43, 226, 0.3);
+  border: 1px solid rgba(0, 245, 255, 0.4);
+  border-radius: 4px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #FF007F, #00F5FF);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 12px #FF007F, 0 0 20px #00F5FF;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 18px #FF007F, 0 0 30px #00F5FF;
+}
+
+/* CRT Scanlines */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.12) 0px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Pulse Glow Keyframes */
+@keyframes neon-pulse-pink {
+  0%, 100% { box-shadow: 0 0 15px rgba(255,0,127,0.7), 0 0 30px rgba(255,0,127,0.4); }
+  50% { box-shadow: 0 0 25px rgba(255,0,127,0.9), 0 0 50px rgba(255,0,127,0.6); }
+}
+
+.animate-neon-pulse-pink {
+  animation: neon-pulse-pink 2s infinite;
 }
