@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Sparkles, ArrowRight, ShieldCheck, Award, DollarSign, CheckCircle2, Users } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck, Award, DollarSign, CheckCircle2, Users, ExternalLink } from 'lucide-react';
 
 interface WelcomeStageProps {
   onStart: () => void;
@@ -16,17 +16,16 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
         <div className="bg-[#0e0726] p-5 sm:p-7 rounded-2xl border-2 border-[#FF007F]/40 shadow-[0_0_45px_rgba(255,0,127,0.35)] text-center space-y-4 relative overflow-hidden">
           {/* Title - Official banner image with clockwise rotating cat litter bag */}
           <div className="space-y-2 py-1 flex flex-col items-center justify-center">
-            <div className="flex items-center justify-center gap-3 sm:gap-6 w-full">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 w-full">
               {/* Main Banner */}
-              <div className="relative w-full max-w-xl h-24 sm:h-32 md:h-36 drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]">
-                <Image
-                  src="/Assets/fnf_delusion_banner.png"
-                  alt="Fresh & Fit Podcast - Female Delusion Calculator"
-                  fill
-                  priority
-                  className="object-contain"
-                />
-              </div>
+              <Image
+                src="/Assets/fnf_delusion_banner.png"
+                alt="Fresh & Fit Podcast - Female Delusion Calculator"
+                width={1280}
+                height={488}
+                priority
+                className="w-auto h-24 sm:h-32 md:h-36 object-contain drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]"
+              />
 
               {/* Exactly 1 Clockwise Rotating Cat Litter Bag */}
               <div className="relative w-14 h-16 sm:w-20 sm:h-24 shrink-0 drop-shadow-[0_0_20px_rgba(255,0,127,0.8)] animate-spin-clockwise">
@@ -119,6 +118,20 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
                 <span className="text-[#B3A0D2] text-xs">Physical height percentiles (Mean = 5'9.1") & BMI non-obesity rates.</span>
               </div>
             </div>
+
+            {/* CPS Data Tables Citation */}
+            <a
+              href="https://www.census.gov/programs-surveys/cps/data/tables.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-2.5 bg-[#180e38] p-3 rounded-xl border border-[#FFE600]/30 hover:border-[#FFE600]/70 transition-colors sm:col-span-2 group"
+            >
+              <ExternalLink className="w-4 h-4 text-[#FFE600] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+              <div>
+                <span className="font-bold text-white block text-xs sm:text-sm">US Census Bureau CPS (Current Population Survey) Data Tables</span>
+                <span className="text-[#B3A0D2] text-xs">Official CPS data tables — monthly labor force, income & demographic statistics. <span className="text-[#FFE600] underline underline-offset-2">census.gov/programs-surveys/cps/data/tables.html</span></span>
+              </div>
+            </a>
           </div>
 
           {/* Action Button */}

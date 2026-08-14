@@ -117,17 +117,16 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
       >
         {/* Fresh & Fit Delusion Banner Logo Header */}
         <div className="flex flex-col items-center justify-center border-b border-[#FF007F]/30 pb-4 text-center space-y-2">
-          <div className="flex items-center justify-center gap-3 sm:gap-5 w-full">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 w-full">
             {/* Main Delusion Banner */}
-            <div className="relative w-full max-w-lg h-20 sm:h-24 md:h-28 drop-shadow-[0_0_25px_rgba(255,0,127,0.6)]">
-              <Image
-                src="/Assets/fnf_delusion_banner.png"
-                alt="Fresh & Fit Podcast - Female Delusion Calculator"
-                fill
-                priority
-                className="object-contain"
-              />
-            </div>
+            <Image
+              src="/Assets/fnf_delusion_banner.png"
+              alt="Fresh & Fit Podcast - Female Delusion Calculator"
+              width={1280}
+              height={488}
+              priority
+              className="w-auto h-20 sm:h-24 md:h-28 object-contain drop-shadow-[0_0_25px_rgba(255,0,127,0.6)]"
+            />
 
             {/* Exactly 1 Clockwise Rotating Cat Litter Bag */}
             <div className="relative w-12 h-14 sm:w-16 sm:h-18 md:w-20 md:h-22 shrink-0 drop-shadow-[0_0_18px_rgba(255,0,127,0.8)] animate-spin-clockwise">
