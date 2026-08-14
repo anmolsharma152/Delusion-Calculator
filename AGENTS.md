@@ -2,46 +2,51 @@
 
 > **Project: Delusion Calculator**
 
-This document serves as the context and convention manual for AI coding assistants working on this repository.
+Next.js web app (Fresh & Fit / Miami After Hours themed) that computes the probability of finding a partner matching criteria using US demographic data. All calculation is pure client-side TypeScript — there are **no API routes and no backend**.
 
-## Project Overview
+## Tech Stack
 
-The Delusion Calculator is a Next.js 15 web application inspired by the Fresh & Fit podcast (Miami After Hours). It calculates the statistical probability of finding a partner matching specific criteria using real US demographic data (Census ACS 2023 & CDC NHANES 2021–2023).
+- **Next.js 16** (App Router, Turbopack). `next` is pinned to `16.3.0` — **not** Next 15, despite README/badges.
+- **React 19**, TypeScript strict, Tailwind CSS v4, Framer Motion 13.
 
-## Tech Stack Summary
+## Commands
 
-- **Next.js 15** (App Router, Turbopack)
-- **TypeScript** (Strict mode)
-- **Tailwind CSS v4**
-- **Framer Motion** (UI animations)
+- `npm run dev` — dev server on port 3000 (or 3001 if 3000 is taken).
+- `npm run build` — the verification gate; currently passes clean. Run before finishing any task.
+- `npm run lint` — **NOT clean**: pre-existing `react-hooks/set-state-in-effect` and `no-unused-vars` errors. Don't gate on it or "fix" unrelated hits.
+- No test framework is configured (no jest/vitest).
 
-## Key File Locations
+## Architecture
 
-- `src/app/page.tsx`: Unified single-shell application core managing view states, Stream Mode, themes, and soundboard.
-- `src/components/CriteriaForm.tsx`: 3x2 spacious card layout with dropdowns, range sliders, and banner header.
-- `src/components/Header.tsx`: Adaptive top header with theme switcher, soundboard bank toggles, and stream auto-hide.
-- `src/components/SoundVaultModal.tsx`: 45+ categorized Fresh & Fit sound effects deck with live search.
-- `src/components/ResultsPanel.tsx`: Gauge meter, match %, ratio, breakdown chart, and roast commentary box.
-- `src/components/InteractiveBackground.tsx`: HTML5 canvas particle and cat litter bag mouse repulsion physics.
-- `src/engine/probability.ts`: Age-conditional demographic probability multiplication math.
-- `src/data/distributions.ts`: US Census & CDC demographic data arrays.
+- `src/app/page.tsx` is the entire app shell: WELCOME / INPUT / RESULTS view states, Stream Mode, theme (VAPORWAVE / OBSIDIAN), soundboard, and global hotkeys. Most UI work lands here or in `src/components/`.
+- `src/app/stream/page.tsx` is only a client-side redirect to `/` — Stream Mode is a state toggle in `page.tsx`, not a separate route.
+- `src/app/about/page.tsx` documents the methodology; `src/app/layout.tsx` hardcodes the Vercel SITE_URL and the four Google fonts.
+- Calculation flow: `CriteriaForm` → `page.tsx` state → `hooks/useCalculator.ts` → `engine/probability.ts` → `data/distributions.ts`. Pure functions, no server work, no fetching.
+- `next.config.ts` only adds security headers (no static-export config, despite `docs/DEPLOYMENT.md`).
 
-## Coding Conventions
+## Conventions & Gotchas
 
-- **TypeScript**: Strict typing required. Avoid `any`. Define interfaces in `src/types.ts`.
-- **Client vs Server**: Mark interactive components with `'use client'` at the top.
-- **Styling**: Use Tailwind CSS utility classes and solid `#180e38` / `#0e0726` surface tokens. Avoid semi-transparent glass fills that reduce text legibility.
-- **Imports**: Use absolute imports with `@/` alias (e.g. `import { useCalculator } from '@/hooks/useCalculator'`).
-- **Hotkeys**: Keep global hotkeys (`[Space]`, `[Enter]`, `[Tab]`, `[1]-[0]`) synchronized across all modes.
+- **TypeScript**: strict; no `any`. Shared types/enums live in `src/types.ts`.
+- **Client vs Server**: every interactive component starts with `'use client'`. Use `@/` absolute imports.
+- **Fonts**: Bebas Neue / Anton / Inter / JetBrains Mono load via `next/font/google` in `layout.tsx`. Apply with the Tailwind v4 `@utility` classes `font-display` and `font-subhead` — plain `font-bebas`/`font-anton` utilities do **not** exist.
+- **Surfaces**: use solid `#0e0726` cards (`.glass-card-vapor` / `.glass-card-cyan`) on the `#180e38` / `#0c0721` gradient. Avoid semi-transparent fills that hurt text legibility.
+- **Hotkeys** (`page.tsx`): `[Space]` toggles Stream Mode, `[Enter]` advances views, `[Tab]` / `` ` `` switches sound banks, `[1]`–`[0]` trigger drops. The handler early-returns while typing in INPUT/TEXTAREA — keep that guard when adding keys.
+- **Soundboard**: banks are hardcoded arrays in `SoundVaultModal.tsx` (`BANK_1_SOUNDS`, `BANK_2_SOUNDS`, `ALL_VAULT_SOUNDS`). Adding a sound means dropping the mp3 in `public/Soundbites/` **and** registering its path in those arrays (a prior commit fixed broken paths). Playback runs through `GlobalAudio`, exported from `components/AnticipationOverlay.tsx`.
+- **Canvas perf**: `InteractiveBackground.tsx` pre-renders sprites to offscreen canvases and deliberately avoids per-frame `shadowBlur` (was removed to reach near-0% CPU). Keep it that way.
+- `CLAUDE.md` just imports `@AGENTS.md` — update this file, not that one.
 
-## The Fresh & Fit Design System
+## Palette
 
-- **Obsidian Dark**: `#080808` / `#0D0D0D`
-- **Crimson Neon**: `#FF007F` / `#E50914`
-- **Electric Cyan**: `#00F5FF` / `#00E5FF`
-- **Laser Gold**: `#FFE600` / `#FFCC00`
-- **Fonts**: Bebas Neue (Headers), Anton (Subheaders), Inter (Body), JetBrains Mono (Numbers).
+- Obsidian Dark `#080808` / `#0D0D0D`; surfaces `#0e0726` / `#180e38`
+- Crimson Neon `#FF007F` / `#E50914`; Electric Cyan `#00F5FF`; Laser Gold `#FFE600`
+- Glow helpers (`.glow-pink`, `.glow-cyan`, `.text-glow-*`) and vaporwave grid/sun layers live in `src/app/globals.css`
 
-## Testing & Build
+<!-- BEGIN:nextjs-agent-rules -->
 
-Before completing any task, run `npm run build` to ensure zero TypeScript and Turbopack errors.
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
