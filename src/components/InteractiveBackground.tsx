@@ -31,7 +31,7 @@ export default function InteractiveBackground() {
       catImgRef.current = img;
     };
 
-    // 2. Pre-render High-Resolution Vector Sprites into Offscreen Canvases for 60fps performance
+    // 2. Pre-render High-Resolution Vector Sprites into Offscreen Canvases for optimal 60fps performance
     const createOffscreenCanvas = (w: number, h: number, draw: (ctx: CanvasRenderingContext2D) => void) => {
       const c = document.createElement('canvas');
       c.width = w;
@@ -44,23 +44,23 @@ export default function InteractiveBackground() {
     // 💎 Sprite 1: Multi-Faceted Brilliant Cut Diamond Gem
     spriteCache.current['DIAMOND'] = createOffscreenCanvas(120, 120, (ctx) => {
       ctx.translate(60, 60);
-      ctx.shadowBlur = 20;
+      ctx.shadowBlur = 22;
       ctx.shadowColor = '#00F5FF';
 
-      // Outer Outline of Brilliant Cut
+      // Outer Outline of Brilliant Cut Diamond
       ctx.beginPath();
-      ctx.moveTo(-22, -32); // Top-left table
-      ctx.lineTo(22, -32);  // Top-right table
-      ctx.lineTo(46, -10);  // Right girdle
-      ctx.lineTo(0, 44);    // Bottom culet point
-      ctx.lineTo(-46, -10); // Left girdle
+      ctx.moveTo(-24, -34); // Top-left table
+      ctx.lineTo(24, -34);  // Top-right table
+      ctx.lineTo(50, -10);  // Right girdle
+      ctx.lineTo(0, 48);    // Bottom culet point
+      ctx.lineTo(-50, -10); // Left girdle
       ctx.closePath();
 
       const grad = ctx.createLinearGradient(-40, -30, 40, 40);
-      grad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-      grad.addColorStop(0.3, 'rgba(0, 245, 255, 0.9)');
-      grad.addColorStop(0.7, 'rgba(138, 43, 226, 0.85)');
-      grad.addColorStop(1, 'rgba(0, 229, 255, 0.95)');
+      grad.addColorStop(0, '#FFFFFF');
+      grad.addColorStop(0.3, '#00F5FF');
+      grad.addColorStop(0.7, '#8A2BE2');
+      grad.addColorStop(1, '#00E5FF');
       ctx.fillStyle = grad;
       ctx.fill();
       ctx.strokeStyle = '#FFFFFF';
@@ -69,88 +69,109 @@ export default function InteractiveBackground() {
 
       // Facet Lines: Table border & Kite facets
       ctx.beginPath();
-      // Table horizontal line
-      ctx.moveTo(-46, -10);
-      ctx.lineTo(46, -10);
+      ctx.moveTo(-50, -10);
+      ctx.lineTo(50, -10);
 
       // Crown facets
-      ctx.moveTo(-22, -32);
-      ctx.lineTo(-12, -10);
-      ctx.lineTo(0, -32);
-      ctx.lineTo(12, -10);
-      ctx.lineTo(22, -32);
+      ctx.moveTo(-24, -34);
+      ctx.lineTo(-14, -10);
+      ctx.lineTo(0, -34);
+      ctx.lineTo(14, -10);
+      ctx.lineTo(24, -34);
 
       // Pavilion facets to bottom point
-      ctx.moveTo(-46, -10);
-      ctx.lineTo(0, 44);
-      ctx.moveTo(-12, -10);
-      ctx.lineTo(0, 44);
-      ctx.moveTo(12, -10);
-      ctx.lineTo(0, 44);
-      ctx.moveTo(46, -10);
-      ctx.lineTo(0, 44);
+      ctx.moveTo(-50, -10);
+      ctx.lineTo(0, 48);
+      ctx.moveTo(-14, -10);
+      ctx.lineTo(0, 48);
+      ctx.moveTo(14, -10);
+      ctx.lineTo(0, 48);
+      ctx.moveTo(50, -10);
+      ctx.lineTo(0, 48);
 
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
-      ctx.lineWidth = 1.8;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       // Sparkling Specular Star Glint
       ctx.beginPath();
-      ctx.arc(-16, -20, 3.5, 0, Math.PI * 2);
+      ctx.arc(-18, -22, 4, 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
       ctx.fill();
     });
 
-    // ⛓️ Sprite 2: Heavy Cuban Link Gold Chain Loop
+    // ⛓️ Sprite 2: Continuous Circular Cuban Link Gold Chain Necklace (Joined End-to-End with Medallion)
     spriteCache.current['CHAIN'] = createOffscreenCanvas(140, 140, (ctx) => {
       ctx.translate(70, 70);
-      ctx.shadowBlur = 20;
+      ctx.shadowBlur = 22;
       ctx.shadowColor = '#FFE600';
 
-      const drawGoldLink = (x: number, y: number, rot: number, scale = 1) => {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(rot);
-        ctx.scale(scale, scale);
+      const totalLinks = 14;
+      const radius = 40;
 
-        // Outer Link Ring
+      // Draw continuous circular loop of joined gold links
+      for (let i = 0; i < totalLinks; i++) {
+        const theta = (i / totalLinks) * Math.PI * 2;
+        const cx = Math.cos(theta) * radius;
+        const cy = Math.sin(theta) * radius;
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(theta + Math.PI / 2);
+
+        // Gold link ring
         ctx.beginPath();
-        ctx.ellipse(0, 0, 26, 16, 0, 0, Math.PI * 2);
-        const goldGrad = ctx.createLinearGradient(-26, -16, 26, 16);
+        ctx.ellipse(0, 0, 12, 7, 0, 0, Math.PI * 2);
+        const goldGrad = ctx.createLinearGradient(-12, -7, 12, 7);
         goldGrad.addColorStop(0, '#FFE600');
-        goldGrad.addColorStop(0.3, '#FFF7A0');
-        goldGrad.addColorStop(0.6, '#F59E0B');
+        goldGrad.addColorStop(0.4, '#FFF8B2');
+        goldGrad.addColorStop(0.8, '#F59E0B');
         goldGrad.addColorStop(1, '#D97706');
         ctx.strokeStyle = goldGrad;
-        ctx.lineWidth = 8;
+        ctx.lineWidth = 5;
         ctx.stroke();
 
-        // Inner Cutout / Dark Shadow
+        // Inner dark hole
         ctx.beginPath();
-        ctx.ellipse(0, 0, 18, 9, 0, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(12, 7, 33, 0.6)';
+        ctx.ellipse(0, 0, 8, 3.5, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#0c0721';
         ctx.fill();
 
-        // Metallic Specular Bevel
+        // Specular highlight edge
         ctx.beginPath();
-        ctx.ellipse(0, 0, 26, 16, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 1.5;
+        ctx.ellipse(0, 0, 12, 7, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.lineWidth = 1.2;
         ctx.stroke();
 
         ctx.restore();
-      };
+      }
 
-      // Interlocking chain links in a stylish curve
-      drawGoldLink(-36, -20, -0.5, 0.9);
-      drawGoldLink(-18, -6, -0.2, 0.95);
-      drawGoldLink(0, 8, 0.1, 1.0);
-      drawGoldLink(20, 2, 0.4, 0.95);
-      drawGoldLink(38, -12, 0.7, 0.9);
-
-      // Specular shine star
+      // Center Gold Medallion / Pendant at bottom of necklace
+      ctx.save();
+      ctx.translate(0, 36);
       ctx.beginPath();
-      ctx.arc(0, 0, 3, 0, Math.PI * 2);
+      ctx.arc(0, 0, 14, 0, Math.PI * 2);
+      const coinGrad = ctx.createRadialGradient(-3, -3, 2, 0, 0, 14);
+      coinGrad.addColorStop(0, '#FFF9C4');
+      coinGrad.addColorStop(0.5, '#FFE600');
+      coinGrad.addColorStop(1, '#B45309');
+      ctx.fillStyle = coinGrad;
+      ctx.fill();
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Inner Coin Star
+      ctx.beginPath();
+      ctx.arc(0, 0, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.restore();
+
+      // Specular shine spark
+      ctx.beginPath();
+      ctx.arc(-22, -26, 3.5, 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
       ctx.fill();
     });
@@ -161,7 +182,7 @@ export default function InteractiveBackground() {
       ctx.shadowBlur = 18;
       ctx.shadowColor = '#FF007F';
 
-      // Stem & Round Base
+      // Stem & Base
       ctx.beginPath();
       ctx.ellipse(0, 44, 22, 5, 0, 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
@@ -210,7 +231,7 @@ export default function InteractiveBackground() {
     // 🌴 Sprite 4: Vibrant Miami Palm Tree
     spriteCache.current['PALM'] = createOffscreenCanvas(140, 140, (ctx) => {
       ctx.translate(70, 70);
-      ctx.shadowBlur = 20;
+      ctx.shadowBlur = 22;
       ctx.shadowColor = '#00F5FF';
 
       // High-Contrast Textured Trunk
@@ -258,23 +279,23 @@ export default function InteractiveBackground() {
       drawLushFrond(10, -44, 18, -58, '#10B981');
     });
 
-    // 🛥️ Sprite 5: Miami Luxury Superyacht / Speedboat (16:9 Aspect Ratio)
-    spriteCache.current['YACHT'] = createOffscreenCanvas(160, 90, (ctx) => {
-      ctx.translate(80, 45);
-      ctx.shadowBlur = 22;
+    // 🛥️ Sprite 5: Pristine White Multi-Tier Luxury Superyacht (Real Yacht Profile)
+    spriteCache.current['YACHT'] = createOffscreenCanvas(180, 100, (ctx) => {
+      ctx.translate(90, 50);
+      ctx.shadowBlur = 24;
       ctx.shadowColor = '#00F5FF';
 
-      // 1. Sleek Superyacht Hull
+      // 1. Lower Keel & Deep-V Hull (Pure White with subtle ocean blue tint & sleek lines)
       ctx.beginPath();
-      ctx.moveTo(-60, 18); // Stern bottom
-      ctx.lineTo(44, 18);  // Bow keel
-      ctx.lineTo(68, -2);  // Bow tip
-      ctx.lineTo(48, -4);  // Bow deck
-      ctx.lineTo(-56, -4); // Stern deck
+      ctx.moveTo(-74, 22); // Stern swim platform
+      ctx.lineTo(48, 22);  // Keel bottom
+      ctx.lineTo(76, -4);  // Raked clipper bow tip
+      ctx.lineTo(44, -6);  // Foredeck
+      ctx.lineTo(-70, -6); // Aft deck
       ctx.closePath();
-      const hullGrad = ctx.createLinearGradient(-60, -4, 60, 18);
+      const hullGrad = ctx.createLinearGradient(-70, -6, 70, 22);
       hullGrad.addColorStop(0, '#FFFFFF');
-      hullGrad.addColorStop(0.5, '#E0F2FE');
+      hullGrad.addColorStop(0.6, '#F0F9FF');
       hullGrad.addColorStop(1, '#FFFFFF');
       ctx.fillStyle = hullGrad;
       ctx.fill();
@@ -282,20 +303,26 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Neon Crimson Waterline Accent Stripe
+      // Neon Cyan/Pink Waterline Racing Stripe
       ctx.beginPath();
-      ctx.moveTo(-58, 10);
-      ctx.lineTo(54, 10);
-      ctx.strokeStyle = '#FF007F';
+      ctx.moveTo(-72, 14);
+      ctx.lineTo(60, 14);
+      ctx.strokeStyle = '#00F5FF';
       ctx.lineWidth = 3;
       ctx.stroke();
-
-      // 2. Cabin / Flybridge Deck
       ctx.beginPath();
-      ctx.moveTo(-35, -4);
-      ctx.lineTo(24, -4);
+      ctx.moveTo(-72, 17);
+      ctx.lineTo(54, 17);
+      ctx.strokeStyle = '#FF007F';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 2. Main Deck Superstructure & Panoramic Tinted Windows
+      ctx.beginPath();
+      ctx.moveTo(-45, -6);
+      ctx.lineTo(26, -6);
       ctx.lineTo(14, -22);
-      ctx.lineTo(-24, -22);
+      ctx.lineTo(-38, -22);
       ctx.closePath();
       ctx.fillStyle = '#FFFFFF';
       ctx.fill();
@@ -303,36 +330,63 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // 3. Tinted Panoramic Windshield Glass
+      // Panoramic Tinted Salon Windows
       ctx.beginPath();
-      ctx.moveTo(-18, -8);
-      ctx.lineTo(16, -8);
+      ctx.moveTo(-32, -10);
+      ctx.lineTo(18, -10);
       ctx.lineTo(10, -18);
-      ctx.lineTo(-12, -18);
+      ctx.lineTo(-26, -18);
       ctx.closePath();
-      ctx.fillStyle = '#0c0721';
+      ctx.fillStyle = '#0a0f29';
       ctx.fill();
       ctx.strokeStyle = '#00F5FF';
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // 4. Radar Dome / Mast
+      // 3. Upper Flybridge / Sun Deck Hardtop
       ctx.beginPath();
-      ctx.moveTo(-6, -22);
-      ctx.lineTo(-6, -30);
+      ctx.moveTo(-25, -22);
+      ctx.lineTo(5, -22);
+      ctx.lineTo(0, -32);
+      ctx.lineTo(-20, -32);
+      ctx.closePath();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.strokeStyle = '#00F5FF';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // 4. Dual Satellite Radar Domes & Mast
+      ctx.beginPath();
+      ctx.arc(-8, -37, 5, 0, Math.PI * 2);
+      ctx.arc(-18, -35, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.strokeStyle = '#FFE600';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Radar Mast
+      ctx.beginPath();
+      ctx.moveTo(-13, -32);
+      ctx.lineTo(-13, -42);
       ctx.strokeStyle = '#FFE600';
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.beginPath();
-      ctx.ellipse(-6, -30, 7, 3.5, 0, 0, Math.PI * 2);
-      ctx.fillStyle = '#FFE600';
-      ctx.fill();
 
-      // 5. Stern Wake Spray Bubbles
+      // 5. Bow Stainless Steel Railings & Stern Platform
       ctx.beginPath();
-      ctx.arc(-64, 16, 4, 0, Math.PI * 2);
-      ctx.arc(-72, 18, 3, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 245, 255, 0.7)';
+      ctx.moveTo(44, -6);
+      ctx.lineTo(68, -4);
+      ctx.lineTo(76, -4);
+      ctx.strokeStyle = '#E0F2FE';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Stern Swimming Step Platform
+      ctx.beginPath();
+      ctx.rect(-80, 16, 8, 5);
+      ctx.fillStyle = '#F59E0B'; // Teak wood swim deck
       ctx.fill();
     });
 
@@ -377,48 +431,40 @@ export default function InteractiveBackground() {
 
     const initItems = () => {
       items = [];
-      // Rich, prominent mix of Miami After Hours assets
       const itemTypes: ItemType[] = [
-        // 4x Cat Litter Bags
         'CAT_BAG', 'CAT_BAG', 'CAT_BAG', 'CAT_BAG',
-        // 4x Gold Chains
         'CHAIN', 'CHAIN', 'CHAIN', 'CHAIN',
-        // 4x Diamonds
         'DIAMOND', 'DIAMOND', 'DIAMOND', 'DIAMOND',
-        // 4x Tropical Cocktails
         'COCKTAIL', 'COCKTAIL', 'COCKTAIL', 'COCKTAIL',
-        // 4x Miami Palm Trees
         'PALM', 'PALM', 'PALM', 'PALM',
-        // 3x Luxury Yachts
-        'YACHT', 'YACHT', 'YACHT',
-        // 8x Glowing Orbs
-        'ORB', 'ORB', 'ORB', 'ORB', 'ORB', 'ORB', 'ORB', 'ORB'
+        'YACHT', 'YACHT', 'YACHT', 'YACHT',
+        'ORB', 'ORB', 'ORB', 'ORB', 'ORB', 'ORB'
       ];
 
       itemTypes.forEach((type) => {
-        let size = 50;
+        let size = 55;
         let aspectRatio = 1;
 
         if (type === 'CAT_BAG') {
           size = Math.random() * 20 + 60; // 60-80px
           aspectRatio = 1.15;
         } else if (type === 'YACHT') {
-          size = Math.random() * 25 + 75; // 75-100px wide
-          aspectRatio = 160 / 90;
+          size = Math.random() * 25 + 85; // 85-110px superyacht
+          aspectRatio = 180 / 100;
         } else if (type === 'PALM') {
-          size = Math.random() * 20 + 65; // 65-85px
+          size = Math.random() * 20 + 70; // 70-90px palm
           aspectRatio = 1;
         } else if (type === 'CHAIN') {
-          size = Math.random() * 18 + 58; // 58-76px
+          size = Math.random() * 18 + 65; // 65-83px circular chain
           aspectRatio = 1;
         } else if (type === 'DIAMOND') {
-          size = Math.random() * 16 + 50; // 50-66px
+          size = Math.random() * 16 + 52; // 52-68px diamond
           aspectRatio = 1;
         } else if (type === 'COCKTAIL') {
-          size = Math.random() * 18 + 52; // 52-70px
+          size = Math.random() * 18 + 55; // 55-73px cocktail
           aspectRatio = 1;
         } else {
-          size = Math.random() * 16 + 18;  // 18-34px orbs
+          size = Math.random() * 16 + 20;  // 20-36px orbs
           aspectRatio = 1;
         }
 
@@ -445,7 +491,7 @@ export default function InteractiveBackground() {
       ctx.clearRect(0, 0, width, height);
 
       items.forEach((item) => {
-        // Cursor Repulsion Physics for EVERY item
+        // Cursor Repulsion Physics
         const dx = mouse.x - item.x;
         const dy = mouse.y - item.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
