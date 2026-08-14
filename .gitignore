@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Playwright MCP
+.playwright-mcp/
+
+# Local design references
+welcome-current.png
+welcome-fit.png
