@@ -67,22 +67,26 @@ export default function Home() {
     const HIDE_DELAY = 4000;
 
     const scheduleHide = () => {
+      // Idle-based hide: never restart an already-running countdown, so
+      // moving the mouse around the calculator can't keep the panel up.
+      if (hideTimeoutRef.current) return;
+      hideTimeoutRef.current = setTimeout(() => {
+        hideTimeoutRef.current = null;
+        setIsTopVisible(false);
+      }, HIDE_DELAY);
+    };
+
+    const cancelHide = () => {
       if (hideTimeoutRef.current) {
         clearTimeout(hideTimeoutRef.current);
         hideTimeoutRef.current = null;
       }
-      hideTimeoutRef.current = setTimeout(() => {
-        setIsTopVisible(false);
-      }, HIDE_DELAY);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
       lastMouseYRef.current = e.clientY;
       if (e.clientY <= topThreshold) {
-        if (hideTimeoutRef.current) {
-          clearTimeout(hideTimeoutRef.current);
-          hideTimeoutRef.current = null;
-        }
+        cancelHide();
         setIsTopVisible(true);
       } else {
         scheduleHide();
@@ -91,16 +95,16 @@ export default function Home() {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // If the cursor is not known to be in the top band, start the hide
-    // countdown immediately so stream mode auto-hides even when the user
-    // toggles it with a hotkey and never moves the mouse.
+    // If the cursor is not parked in the top band, start the hide countdown
+    // immediately so stream mode auto-hides even when the user toggles it with
+    // a hotkey and never moves the mouse.
     if (lastMouseYRef.current > topThreshold) {
       scheduleHide();
     }
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+      cancelHide();
     };
   }, [isStreamMode, autoHideMode, isVaultOpen, isShareModalOpen]);
 
