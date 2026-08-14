@@ -20,18 +20,24 @@ interface FloatingItem {
 
 export default function InteractiveBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const catImgRef = useRef<HTMLImageElement | null>(null);
+  const imageAssets = useRef<Record<string, HTMLImageElement>>({});
   const spriteCache = useRef<Record<string, { canvas: HTMLCanvasElement; aspect: number }>>({});
 
   useEffect(() => {
-    // 1. Load official Cat Litter Bag Image
-    const img = new Image();
-    img.src = '/Assets/cat_litter_bag.png';
-    img.onload = () => {
-      catImgRef.current = img;
+    // 1. Preload Dedicated High-Quality SVG Assets
+    const loadAsset = (key: string, src: string) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        imageAssets.current[key] = img;
+      };
     };
 
-    // 2. Pre-render High-Resolution Vector Sprites into Offscreen Canvases for optimal 60fps performance
+    loadAsset('CAT_BAG', '/Assets/cat_litter_bag.png');
+    loadAsset('CHAIN', '/Assets/gold_chain.svg');
+    loadAsset('YACHT', '/Assets/luxury_yacht.svg');
+
+    // 2. Pre-render High-Resolution Vector Sprites for Remaining Items
     const createOffscreenCanvas = (w: number, h: number, draw: (ctx: CanvasRenderingContext2D) => void) => {
       const c = document.createElement('canvas');
       c.width = w;
@@ -49,11 +55,11 @@ export default function InteractiveBackground() {
 
       // Outer Outline of Brilliant Cut Diamond
       ctx.beginPath();
-      ctx.moveTo(-24, -34); // Top-left table
-      ctx.lineTo(24, -34);  // Top-right table
-      ctx.lineTo(50, -10);  // Right girdle
-      ctx.lineTo(0, 48);    // Bottom culet point
-      ctx.lineTo(-50, -10); // Left girdle
+      ctx.moveTo(-24, -34);
+      ctx.lineTo(24, -34);
+      ctx.lineTo(50, -10);
+      ctx.lineTo(0, 48);
+      ctx.lineTo(-50, -10);
       ctx.closePath();
 
       const grad = ctx.createLinearGradient(-40, -30, 40, 40);
@@ -67,19 +73,15 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Facet Lines: Table border & Kite facets
+      // Facet Lines
       ctx.beginPath();
       ctx.moveTo(-50, -10);
       ctx.lineTo(50, -10);
-
-      // Crown facets
       ctx.moveTo(-24, -34);
       ctx.lineTo(-14, -10);
       ctx.lineTo(0, -34);
       ctx.lineTo(14, -10);
       ctx.lineTo(24, -34);
-
-      // Pavilion facets to bottom point
       ctx.moveTo(-50, -10);
       ctx.lineTo(0, 48);
       ctx.moveTo(-14, -10);
@@ -93,90 +95,14 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Sparkling Specular Star Glint
+      // Specular Glint
       ctx.beginPath();
       ctx.arc(-18, -22, 4, 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
       ctx.fill();
     });
 
-    // ⛓️ Sprite 2: Continuous Circular Cuban Link Gold Chain Necklace (Joined End-to-End with Medallion)
-    spriteCache.current['CHAIN'] = createOffscreenCanvas(140, 140, (ctx) => {
-      ctx.translate(70, 70);
-      ctx.shadowBlur = 22;
-      ctx.shadowColor = '#FFE600';
-
-      const totalLinks = 14;
-      const radius = 40;
-
-      // Draw continuous circular loop of joined gold links
-      for (let i = 0; i < totalLinks; i++) {
-        const theta = (i / totalLinks) * Math.PI * 2;
-        const cx = Math.cos(theta) * radius;
-        const cy = Math.sin(theta) * radius;
-
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(theta + Math.PI / 2);
-
-        // Gold link ring
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 12, 7, 0, 0, Math.PI * 2);
-        const goldGrad = ctx.createLinearGradient(-12, -7, 12, 7);
-        goldGrad.addColorStop(0, '#FFE600');
-        goldGrad.addColorStop(0.4, '#FFF8B2');
-        goldGrad.addColorStop(0.8, '#F59E0B');
-        goldGrad.addColorStop(1, '#D97706');
-        ctx.strokeStyle = goldGrad;
-        ctx.lineWidth = 5;
-        ctx.stroke();
-
-        // Inner dark hole
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 8, 3.5, 0, 0, Math.PI * 2);
-        ctx.fillStyle = '#0c0721';
-        ctx.fill();
-
-        // Specular highlight edge
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 12, 7, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.lineWidth = 1.2;
-        ctx.stroke();
-
-        ctx.restore();
-      }
-
-      // Center Gold Medallion / Pendant at bottom of necklace
-      ctx.save();
-      ctx.translate(0, 36);
-      ctx.beginPath();
-      ctx.arc(0, 0, 14, 0, Math.PI * 2);
-      const coinGrad = ctx.createRadialGradient(-3, -3, 2, 0, 0, 14);
-      coinGrad.addColorStop(0, '#FFF9C4');
-      coinGrad.addColorStop(0.5, '#FFE600');
-      coinGrad.addColorStop(1, '#B45309');
-      ctx.fillStyle = coinGrad;
-      ctx.fill();
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Inner Coin Star
-      ctx.beginPath();
-      ctx.arc(0, 0, 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fill();
-      ctx.restore();
-
-      // Specular shine spark
-      ctx.beginPath();
-      ctx.arc(-22, -26, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fill();
-    });
-
-    // 🍸 Sprite 3: Miami Vice Tropical Cocktail Drink
+    // 🍸 Sprite 2: Miami Vice Tropical Cocktail Drink
     spriteCache.current['COCKTAIL'] = createOffscreenCanvas(120, 120, (ctx) => {
       ctx.translate(60, 60);
       ctx.shadowBlur = 18;
@@ -228,13 +154,13 @@ export default function InteractiveBackground() {
       ctx.stroke();
     });
 
-    // 🌴 Sprite 4: Vibrant Miami Palm Tree
+    // 🌴 Sprite 3: Vibrant Miami Palm Tree
     spriteCache.current['PALM'] = createOffscreenCanvas(140, 140, (ctx) => {
       ctx.translate(70, 70);
       ctx.shadowBlur = 22;
       ctx.shadowColor = '#00F5FF';
 
-      // High-Contrast Textured Trunk
+      // Trunk
       ctx.beginPath();
       ctx.moveTo(-6, 52);
       ctx.quadraticCurveTo(-18, 10, -2, -10);
@@ -260,7 +186,6 @@ export default function InteractiveBackground() {
         ctx.lineCap = 'round';
         ctx.stroke();
 
-        // Leaflet details
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(cx + 6, cy + 8);
@@ -277,117 +202,6 @@ export default function InteractiveBackground() {
       drawLushFrond(38, -14, 58, 8, '#10B981');
       drawLushFrond(-12, -44, -18, -58, '#00F5FF');
       drawLushFrond(10, -44, 18, -58, '#10B981');
-    });
-
-    // 🛥️ Sprite 5: Pristine White Multi-Tier Luxury Superyacht (Real Yacht Profile)
-    spriteCache.current['YACHT'] = createOffscreenCanvas(180, 100, (ctx) => {
-      ctx.translate(90, 50);
-      ctx.shadowBlur = 24;
-      ctx.shadowColor = '#00F5FF';
-
-      // 1. Lower Keel & Deep-V Hull (Pure White with subtle ocean blue tint & sleek lines)
-      ctx.beginPath();
-      ctx.moveTo(-74, 22); // Stern swim platform
-      ctx.lineTo(48, 22);  // Keel bottom
-      ctx.lineTo(76, -4);  // Raked clipper bow tip
-      ctx.lineTo(44, -6);  // Foredeck
-      ctx.lineTo(-70, -6); // Aft deck
-      ctx.closePath();
-      const hullGrad = ctx.createLinearGradient(-70, -6, 70, 22);
-      hullGrad.addColorStop(0, '#FFFFFF');
-      hullGrad.addColorStop(0.6, '#F0F9FF');
-      hullGrad.addColorStop(1, '#FFFFFF');
-      ctx.fillStyle = hullGrad;
-      ctx.fill();
-      ctx.strokeStyle = '#00F5FF';
-      ctx.lineWidth = 2.5;
-      ctx.stroke();
-
-      // Neon Cyan/Pink Waterline Racing Stripe
-      ctx.beginPath();
-      ctx.moveTo(-72, 14);
-      ctx.lineTo(60, 14);
-      ctx.strokeStyle = '#00F5FF';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(-72, 17);
-      ctx.lineTo(54, 17);
-      ctx.strokeStyle = '#FF007F';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // 2. Main Deck Superstructure & Panoramic Tinted Windows
-      ctx.beginPath();
-      ctx.moveTo(-45, -6);
-      ctx.lineTo(26, -6);
-      ctx.lineTo(14, -22);
-      ctx.lineTo(-38, -22);
-      ctx.closePath();
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fill();
-      ctx.strokeStyle = '#00F5FF';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Panoramic Tinted Salon Windows
-      ctx.beginPath();
-      ctx.moveTo(-32, -10);
-      ctx.lineTo(18, -10);
-      ctx.lineTo(10, -18);
-      ctx.lineTo(-26, -18);
-      ctx.closePath();
-      ctx.fillStyle = '#0a0f29';
-      ctx.fill();
-      ctx.strokeStyle = '#00F5FF';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // 3. Upper Flybridge / Sun Deck Hardtop
-      ctx.beginPath();
-      ctx.moveTo(-25, -22);
-      ctx.lineTo(5, -22);
-      ctx.lineTo(0, -32);
-      ctx.lineTo(-20, -32);
-      ctx.closePath();
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fill();
-      ctx.strokeStyle = '#00F5FF';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // 4. Dual Satellite Radar Domes & Mast
-      ctx.beginPath();
-      ctx.arc(-8, -37, 5, 0, Math.PI * 2);
-      ctx.arc(-18, -35, 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fill();
-      ctx.strokeStyle = '#FFE600';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Radar Mast
-      ctx.beginPath();
-      ctx.moveTo(-13, -32);
-      ctx.lineTo(-13, -42);
-      ctx.strokeStyle = '#FFE600';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // 5. Bow Stainless Steel Railings & Stern Platform
-      ctx.beginPath();
-      ctx.moveTo(44, -6);
-      ctx.lineTo(68, -4);
-      ctx.lineTo(76, -4);
-      ctx.strokeStyle = '#E0F2FE';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Stern Swimming Step Platform
-      ctx.beginPath();
-      ctx.rect(-80, 16, 8, 5);
-      ctx.fillStyle = '#F59E0B'; // Teak wood swim deck
-      ctx.fill();
     });
 
     const canvas = canvasRef.current;
@@ -449,22 +263,22 @@ export default function InteractiveBackground() {
           size = Math.random() * 20 + 60; // 60-80px
           aspectRatio = 1.15;
         } else if (type === 'YACHT') {
-          size = Math.random() * 25 + 85; // 85-110px superyacht
-          aspectRatio = 180 / 100;
-        } else if (type === 'PALM') {
-          size = Math.random() * 20 + 70; // 70-90px palm
-          aspectRatio = 1;
+          size = Math.random() * 30 + 95; // 95-125px Superyacht
+          aspectRatio = 320 / 140;
         } else if (type === 'CHAIN') {
-          size = Math.random() * 18 + 65; // 65-83px circular chain
+          size = Math.random() * 20 + 70; // 70-90px Gold Chain Loop
+          aspectRatio = 1;
+        } else if (type === 'PALM') {
+          size = Math.random() * 20 + 70; // 70-90px Palm
           aspectRatio = 1;
         } else if (type === 'DIAMOND') {
-          size = Math.random() * 16 + 52; // 52-68px diamond
+          size = Math.random() * 16 + 54; // 54-70px Diamond
           aspectRatio = 1;
         } else if (type === 'COCKTAIL') {
-          size = Math.random() * 18 + 55; // 55-73px cocktail
+          size = Math.random() * 18 + 55; // 55-73px Cocktail
           aspectRatio = 1;
         } else {
-          size = Math.random() * 16 + 20;  // 20-36px orbs
+          size = Math.random() * 16 + 20;  // 20-36px Orbs
           aspectRatio = 1;
         }
 
@@ -477,7 +291,7 @@ export default function InteractiveBackground() {
           speedY: Math.random() * 0.5 + 0.25,
           rotation: Math.random() * Math.PI * 2,
           rotSpeed: (Math.random() - 0.5) * 0.015,
-          opacity: Math.random() * 0.25 + 0.7,
+          opacity: Math.random() * 0.25 + 0.75,
           type,
           color: colors[Math.floor(Math.random() * colors.length)],
         });
@@ -525,27 +339,31 @@ export default function InteractiveBackground() {
           ctx.shadowColor = item.color;
           ctx.fill();
           ctx.shadowBlur = 0;
-        } else if (item.type === 'CAT_BAG') {
-          ctx.save();
-          ctx.translate(item.x, item.y);
-          ctx.rotate(item.rotation);
-          ctx.globalAlpha = item.opacity;
-          if (catImgRef.current && catImgRef.current.complete) {
-            const s = item.size;
-            ctx.drawImage(catImgRef.current, -s / 2, -s / 2, s, s * item.aspectRatio);
-          }
-          ctx.restore();
         } else {
-          const cached = spriteCache.current[item.type];
-          if (cached) {
+          // Check if we have a dedicated loaded Image asset (e.g. CAT_BAG, CHAIN, YACHT)
+          const dedicatedImg = imageAssets.current[item.type];
+          if (dedicatedImg && dedicatedImg.complete) {
             ctx.save();
             ctx.translate(item.x, item.y);
             ctx.rotate(item.rotation);
             ctx.globalAlpha = item.opacity;
             const w = item.size;
-            const h = w / cached.aspect;
-            ctx.drawImage(cached.canvas, -w / 2, -h / 2, w, h);
+            const h = w / item.aspectRatio;
+            ctx.drawImage(dedicatedImg, -w / 2, -h / 2, w, h);
             ctx.restore();
+          } else {
+            // Fallback to vector sprite cache
+            const cached = spriteCache.current[item.type];
+            if (cached) {
+              ctx.save();
+              ctx.translate(item.x, item.y);
+              ctx.rotate(item.rotation);
+              ctx.globalAlpha = item.opacity;
+              const w = item.size;
+              const h = w / cached.aspect;
+              ctx.drawImage(cached.canvas, -w / 2, -h / 2, w, h);
+              ctx.restore();
+            }
           }
         }
       });
