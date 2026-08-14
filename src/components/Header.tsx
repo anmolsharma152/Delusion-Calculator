@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Tv, Moon, Sun, Eye, EyeOff, Maximize2, Music, Layers } from 'lucide-react';
@@ -18,7 +19,7 @@ interface HeaderProps {
   isAutoHidden?: boolean;
 }
 
-export default function Header({
+function Header({
   onGoHome,
   isStreamMode = false,
   onToggleStreamMode,
@@ -51,7 +52,7 @@ export default function Header({
 
   return (
     <header
-      className={`w-full z-40 transition-transform duration-300 ease-in-out bg-[#0c0721]/95 backdrop-blur-xl border-b-2 border-[#FF007F]/40 shadow-[0_4px_30px_rgba(255,0,127,0.25)] ${
+      className={`w-full z-40 transition-transform duration-300 ease-in-out bg-[#0c0721] border-b-2 border-[#FF007F]/40 ${
         isStreamMode
           ? `fixed top-0 left-0 right-0 px-4 sm:px-6 lg:px-8 py-2.5 ${
               isAutoHidden
@@ -61,7 +62,7 @@ export default function Header({
           : 'sticky top-0 px-4 sm:px-6 lg:px-8 h-16 flex items-center'
       }`}
     >
-      <div className="w-full flex items-center justify-between gap-4">
+      <div className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
         {/* Left: Fresh & Fit Logo Cover Art & DELUSION CALCULATOR Branding Only */}
         <button
           type="button"
@@ -192,3 +193,5 @@ export default function Header({
     </header>
   );
 }
+
+export default memo(Header);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 type ItemType = 'CAT_BAG' | 'DOLLAR' | 'DIAMOND' | 'COCKTAIL' | 'PALM' | 'YACHT' | 'ORB';
 
@@ -9,8 +9,10 @@ interface FloatingItem {
   y: number;
   size: number;
   aspectRatio: number;
-  speedX: number;
-  speedY: number;
+  vx: number;
+  vy: number;
+  driftX: number;
+  fallTarget: number;
   rotation: number;
   rotSpeed: number;
   opacity: number;
@@ -18,7 +20,15 @@ interface FloatingItem {
   color: string;
 }
 
-export default function InteractiveBackground() {
+// Physics tuning — tuned for near-0% CPU. All arithmetic is allocation-free:
+// no objects or arrays are created inside the animation loop.
+const GRAVITY_STEP = 0.18; // px/frame^2 pulled toward terminal velocity
+const MAX_BOUNCE_UP = -7; // fastest upward rebound after a collision
+const MAX_SIDE_SPEED = 6; // horizontal velocity clamp
+const RESTITUTION = 0.7; // bounciness of item-to-item collisions
+const VEL_DAMP = 0.05; // how quickly horizontal drift returns to its baseline
+
+function InteractiveBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imageAssets = useRef<Record<string, HTMLImageElement>>({});
   const spriteCache = useRef<Record<string, { canvas: HTMLCanvasElement; aspect: number }>>({});
@@ -212,7 +222,7 @@ export default function InteractiveBackground() {
     const mouse = {
       x: -1000,
       y: -1000,
-      radius: 180,
+      radius: 200,
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -239,16 +249,24 @@ export default function InteractiveBackground() {
 
     let items: FloatingItem[] = [];
 
+    const clampVelocity = (item: FloatingItem) => {
+      if (Math.abs(item.vx) < 0.05) item.vx = 0;
+      if (Math.abs(item.vy) < 0.05) item.vy = 0;
+      item.vx = Math.max(-MAX_SIDE_SPEED, Math.min(MAX_SIDE_SPEED, item.vx));
+      item.vy = Math.max(MAX_BOUNCE_UP, Math.min(item.fallTarget, item.vy));
+    };
+
     const initItems = () => {
       items = [];
-      // Clean, ultra-performant set of 18 floating items:
+
+      // Clean set of 25 floating items (matches censuscalc particle count)
       const itemTypes: ItemType[] = [
-        'CAT_BAG', 'CAT_BAG', 'CAT_BAG',
-        'DOLLAR', 'DOLLAR', 'DOLLAR',
-        'DIAMOND', 'DIAMOND', 'DIAMOND',
-        'COCKTAIL', 'COCKTAIL', 'COCKTAIL',
-        'PALM', 'PALM', 'PALM',
-        'YACHT', 'YACHT', 'YACHT',
+        'CAT_BAG', 'CAT_BAG', 'CAT_BAG', 'CAT_BAG',
+        'DOLLAR', 'DOLLAR', 'DOLLAR', 'DOLLAR',
+        'DIAMOND', 'DIAMOND', 'DIAMOND', 'DIAMOND',
+        'COCKTAIL', 'COCKTAIL', 'COCKTAIL', 'COCKTAIL',
+        'PALM', 'PALM', 'PALM', 'PALM',
+        'YACHT', 'YACHT', 'YACHT', 'YACHT', 'YACHT',
       ];
 
       itemTypes.forEach((type) => {
@@ -275,13 +293,16 @@ export default function InteractiveBackground() {
           aspectRatio = 1;
         }
 
+        const fallTarget = Math.random() * 1.5 + 4.0; // Census-style constant fall (4.0 - 5.5 px/frame)
         items.push({
           x: Math.random() * width,
           y: Math.random() * height,
           size,
           aspectRatio,
-          speedX: (Math.random() - 0.5) * 1.0,
-          speedY: Math.random() * 2.0 + 1.8, // Snappy gravity fall speed (1.8 - 3.8 px/frame)
+          vx: (Math.random() - 0.5) * 1.2,
+          vy: fallTarget,
+          driftX: (Math.random() - 0.5) * 1.2,
+          fallTarget,
           rotation: Math.random() * Math.PI * 2,
           rotSpeed: (Math.random() - 0.5) * 0.024,
           opacity: Math.random() * 0.2 + 0.8,
@@ -293,41 +314,102 @@ export default function InteractiveBackground() {
 
     initItems();
 
-    // High-Performance 60FPS Render Loop (GPU-Accelerated drawImage only, zero per-frame shadow blur)
+    // High-Performance 60FPS Render Loop (GPU-Accelerated drawImage only, zero per-frame shadow blur, zero allocation)
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
+      // 1. Forces: terminal-velocity gravity + horizontal drift + cursor repulse (censuscalc formula)
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
 
-        // Cursor Repulsion Physics
-        const dx = mouse.x - item.x;
-        const dy = mouse.y - item.y;
+        item.vy = Math.min(item.vy + GRAVITY_STEP, item.fallTarget);
+        item.vx += (item.driftX - item.vx) * VEL_DAMP;
+
+        // dx = item.x - mouse.x, so the push is away from the cursor.
+        // strength = clamp((1 - (dist/radius)^2) * 100, 0, 50) — applied as a velocity shove.
+        const dx = item.x - mouse.x;
+        const dy = item.y - mouse.y;
         const distSq = dx * dx + dy * dy;
         const radiusSq = mouse.radius * mouse.radius;
-
-        if (distSq < radiusSq) {
+        if (distSq < radiusSq && distSq > 0.001) {
           const dist = Math.sqrt(distSq);
-          const force = (mouse.radius - dist) / mouse.radius;
-          const angle = Math.atan2(dy, dx);
-          item.x -= Math.cos(angle) * force * 7.5;
-          item.y -= Math.sin(angle) * force * 7.5;
-        } else {
-          item.y += item.speedY;
-          item.x += item.speedX;
+          const strength = Math.min((1 - distSq / radiusSq) * 100, 50);
+          item.vx += (dx / dist) * strength;
+          item.vy += (dy / dist) * strength;
+        }
+
+        clampVelocity(item);
+        item.x += item.vx;
+        item.y += item.vy;
+      }
+
+      // 2. Collision resolution: cheap pairwise impulse + separation. 25 items = 300
+      //    distance checks/frame of pure arithmetic — no solver, no allocation.
+      for (let i = 0; i < items.length; i++) {
+        for (let j = i + 1; j < items.length; j++) {
+          const a = items[i];
+          const b = items[j];
+
+          const nx = b.x - a.x;
+          const ny = b.y - a.y;
+          const distSq = nx * nx + ny * ny;
+          const hitRadius = (a.size + b.size) * 0.35;
+          if (distSq >= hitRadius * hitRadius || distSq < 0.001) continue;
+
+          const dist = Math.sqrt(distSq);
+          const invDist = 1 / dist;
+          const nxU = nx * invDist;
+          const nyU = ny * invDist;
+
+          // Positional separation — heavier (bigger) item moves less
+          const massA = a.size * a.size;
+          const massB = b.size * b.size;
+          const totalMass = massA + massB;
+          const overlap = hitRadius - dist;
+          a.x -= nxU * overlap * (massB / totalMass);
+          a.y -= nyU * overlap * (massB / totalMass);
+          b.x += nxU * overlap * (massA / totalMass);
+          b.y += nyU * overlap * (massA / totalMass);
+
+          // Impulse: reflect the approach velocity along the normal with restitution
+          const rvx = b.vx - a.vx;
+          const rvy = b.vy - a.vy;
+          const rvN = rvx * nxU + rvy * nyU;
+          if (rvN < 0) {
+            const impulse = (-(1 + RESTITUTION) * rvN) / (1 / massA + 1 / massB);
+            const ix = impulse * nxU;
+            const iy = impulse * nyU;
+            a.vx -= ix / massA;
+            a.vy -= iy / massA;
+            b.vx += ix / massB;
+            b.vy += iy / massB;
+            clampVelocity(a);
+            clampVelocity(b);
+          }
+        }
+      }
+
+      // 3. Screen boundary wrap
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+
+        if (item.y > height + 120) {
+          item.y = -120;
+          item.x = Math.random() * width;
+          item.vx = item.driftX;
+          item.vy = item.fallTarget;
+        } else if (item.x < -120) {
+          item.x = width + 120;
+        } else if (item.x > width + 120) {
+          item.x = -120;
         }
 
         item.rotation += item.rotSpeed;
+      }
 
-        // Screen Boundary Wrap
-        if (item.y > height + 90) {
-          item.y = -90;
-          item.x = Math.random() * width;
-        }
-        if (item.x < -90) item.x = width + 90;
-        if (item.x > width + 90) item.x = -90;
-
-        // Render Item via GPU Blitting
+      // 4. Render Items via GPU Blitting
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
         const dedicatedImg = imageAssets.current[item.type];
         if (dedicatedImg && dedicatedImg.complete) {
           ctx.save();
@@ -372,3 +454,5 @@ export default function InteractiveBackground() {
     />
   );
 }
+
+export default memo(InteractiveBackground);

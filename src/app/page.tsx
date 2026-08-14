@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Header from '@/components/Header';
 import WelcomeStage from '@/components/WelcomeStage';
 import CriteriaForm from '@/components/CriteriaForm';
@@ -32,7 +32,7 @@ export default function Home() {
   const [activeCriteria, setActiveCriteria] = useState<CriteriaState>(defaultCriteria);
 
   // App Flow View State (WELCOME, INPUT, RESULTS)
-  const [viewState, setViewState] = useState<'WELCOME' | 'INPUT' | 'RESULTS'>('INPUT');
+  const [viewState, setViewState] = useState<'WELCOME' | 'INPUT' | 'RESULTS'>('WELCOME');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
@@ -49,49 +49,60 @@ export default function Home() {
   const [autoHideMode, setAutoHideMode] = useState(true);
   const [isTopVisible, setIsTopVisible] = useState(true);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // On initial mount: check localStorage for first-time visitors
-  useEffect(() => {
-    const hasVisited = localStorage.getItem('has_visited_delusion_calc');
-    if (!hasVisited) {
-      setViewState('WELCOME');
-      localStorage.setItem('has_visited_delusion_calc', 'true');
-    }
-  }, []);
+  const lastMouseYRef = useRef<number>(typeof window !== 'undefined' ? window.innerHeight : 9999);
 
   // Hook calculates results based on activeCriteria
   const { result, breakdown } = useCalculator(activeCriteria);
 
-  // Stream Mode Auto-Hide Proximity (Top 90px brings header into view)
+  // Stream Mode Auto-Hide: the header only appears when the cursor enters a
+  // tight band along the very top edge (~64px) — moving the mouse elsewhere
+  // never pops it open. Once the cursor leaves the band it hides after 4s.
   useEffect(() => {
-    if (!isStreamMode || !autoHideMode) {
+    if (!isStreamMode || !autoHideMode || isVaultOpen || isShareModalOpen) {
       setIsTopVisible(true);
       return;
     }
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const topThreshold = 90;
+    const topThreshold = 64;
+    const HIDE_DELAY = 4000;
 
+    const scheduleHide = () => {
       if (hideTimeoutRef.current) {
         clearTimeout(hideTimeoutRef.current);
         hideTimeoutRef.current = null;
       }
+      hideTimeoutRef.current = setTimeout(() => {
+        setIsTopVisible(false);
+      }, HIDE_DELAY);
+    };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      lastMouseYRef.current = e.clientY;
       if (e.clientY <= topThreshold) {
+        if (hideTimeoutRef.current) {
+          clearTimeout(hideTimeoutRef.current);
+          hideTimeoutRef.current = null;
+        }
         setIsTopVisible(true);
       } else {
-        hideTimeoutRef.current = setTimeout(() => {
-          setIsTopVisible(false);
-        }, 1200);
+        scheduleHide();
       }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+
+    // If the cursor is not known to be in the top band, start the hide
+    // countdown immediately so stream mode auto-hides even when the user
+    // toggles it with a hotkey and never moves the mouse.
+    if (lastMouseYRef.current > topThreshold) {
+      scheduleHide();
+    }
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
     };
-  }, [isStreamMode, autoHideMode]);
+  }, [isStreamMode, autoHideMode, isVaultOpen, isShareModalOpen]);
 
   const playSoundbite = (sound: SoundBite, hotkey?: string) => {
     setPlayingSound({ id: sound.id, name: sound.name, hotkey });
@@ -110,8 +121,12 @@ export default function Home() {
   // Unified Global Hotkeys:
   // - [Space]: Toggle Stream Mode in place without losing screen or calculations
   // - [Enter]: Progress forward (WELCOME -> INPUT -> RESULTS -> INPUT)
-  // - [Tab] / [`]: Toggle Sampler Bank 1 & Bank 2
+  // - [Tab] / [`] / [q]: Toggle Sampler Bank 1 & Bank 2
   // - [1]–[0]: Trigger Sampler Soundbite
+  // - [m]: Toggle Sound Vault
+  // - [s]: Toggle Stream Mode
+  // - [f]: Toggle Fullscreen
+  // - [t]: Toggle Theme (Vaporwave <-> Obsidian)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
@@ -155,23 +170,62 @@ export default function Home() {
           playSoundbite(sound, KEY_LABELS[keyIndex]);
         }
       }
+
+      // 5. m -> Toggle Sound Vault (open/close)
+      if (e.key.toLowerCase() === 'm') {
+        e.preventDefault();
+        setIsVaultOpen((prev) => !prev);
+        return;
+      }
+
+      // 6. s -> Toggle Stream Mode (on/off)
+      if (e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        setIsStreamMode((prev) => !prev);
+        return;
+      }
+
+      // 7. f -> Toggle Fullscreen (enter/exit)
+      if (e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+        return;
+      }
+
+      // 8. q -> Toggle Sampler Bank 1 & Bank 2
+      if (e.key.toLowerCase() === 'q') {
+        e.preventDefault();
+        setActiveBank((prev) => (prev === 1 ? 2 : 1));
+        return;
+      }
+
+      // 9. t -> Toggle Theme (Vaporwave <-> Obsidian)
+      if (e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        setBgMode((prev) => (prev === 'VAPORWAVE' ? 'OBSIDIAN' : 'VAPORWAVE'));
+        return;
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [viewState, isAnalyzing, activeBank, playingSound]);
 
-  const handleGoHome = () => {
+  const handleGoHome = useCallback(() => {
     setViewState('WELCOME');
-  };
+  }, []);
 
   const handleStartTest = () => {
     setViewState('INPUT');
   };
 
-  const handleStartCalculation = () => {
+  const handleStartCalculation = useCallback(() => {
     setIsAnalyzing(true);
-  };
+  }, []);
 
   const handleAnalysisComplete = () => {
     setActiveCriteria(criteria);
@@ -182,6 +236,28 @@ export default function Home() {
   const handleResetToInput = () => {
     setViewState('INPUT');
   };
+
+  const isAutoHidden = isStreamMode && autoHideMode && !isTopVisible;
+
+  // Stable handler identities so the memoized Header / CriteriaForm never
+  // re-render when unrelated state (e.g. typing income) changes.
+  const handleToggleStreamMode = useCallback(() => {
+    setIsStreamMode((prev) => !prev);
+  }, []);
+
+  const handleToggleBank = useCallback(() => {
+    setActiveBank((prev) => (prev === 1 ? 2 : 1));
+  }, []);
+
+  const handleOpenSoundVault = useCallback(() => {
+    setIsVaultOpen(true);
+  }, []);
+
+  const handleToggleAutoHide = useCallback(() => {
+    const next = !autoHideMode;
+    setAutoHideMode(next);
+    if (!next) setIsTopVisible(true);
+  }, [autoHideMode]);
 
   return (
     <div
@@ -205,24 +281,22 @@ export default function Home() {
       <Header
         onGoHome={handleGoHome}
         isStreamMode={isStreamMode}
-        onToggleStreamMode={() => setIsStreamMode((prev) => !prev)}
+        onToggleStreamMode={handleToggleStreamMode}
         bgMode={bgMode}
         onSetBgMode={setBgMode}
         activeBank={activeBank}
-        onToggleBank={() => setActiveBank((prev) => (prev === 1 ? 2 : 1))}
-        onOpenSoundVault={() => setIsVaultOpen(true)}
+        onToggleBank={handleToggleBank}
+        onOpenSoundVault={handleOpenSoundVault}
         autoHideMode={autoHideMode}
-        onToggleAutoHide={() => {
-          const next = !autoHideMode;
-          setAutoHideMode(next);
-          if (!next) setIsTopVisible(true);
-        }}
-        isAutoHidden={isStreamMode && autoHideMode && !isTopVisible}
+        onToggleAutoHide={handleToggleAutoHide}
+        isAutoHidden={isAutoHidden}
       />
 
       {/* Main App Content View Switcher */}
-      <main className={`flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 z-10 relative flex flex-col justify-center my-auto ${
-        isStreamMode ? 'pt-8 pb-3' : 'py-3 sm:py-4'
+      <main className={`flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 z-10 relative flex flex-col justify-center my-auto transition-[padding-top] duration-300 ${
+        isStreamMode
+          ? `pb-3 ${isAutoHidden ? 'pt-6' : 'pt-20'}`
+          : 'py-1 sm:py-1.5'
       }`}>
         <AnimatePresence mode="wait" initial={false}>
           {viewState === 'WELCOME' && (

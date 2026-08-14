@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { CriteriaState, Race, EducationLevel, MaritalPreference, LocationScope } from '../types';
@@ -53,7 +53,7 @@ const HEIGHT_OPTIONS = [
   { value: 69, label: "5'9\" (175 cm) — US Average" },
   { value: 70, label: "5'10\" (178 cm)" },
   { value: 71, label: "5'11\" (180 cm)" },
-  { value: 72, label: "6'0\" (183 cm) — 6-Foot Standard" },
+  { value: 72, label: "6'0\" (183 cm)" },
   { value: 73, label: "6'1\" (185 cm)" },
   { value: 74, label: "6'2\" (188 cm)" },
   { value: 75, label: "6'3\" (191 cm)" },
@@ -61,7 +61,7 @@ const HEIGHT_OPTIONS = [
   { value: 78, label: "6'6\"+ (198 cm)" },
 ];
 
-export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyzing }: CriteriaFormProps) {
+function CriteriaForm({ criteria, onChange, onCalculate, isAnalyzing }: CriteriaFormProps) {
   const updateCriteria = <K extends keyof CriteriaState>(key: K, value: CriteriaState[K]) => {
     onChange({
       ...criteria,
@@ -116,28 +116,28 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
         className="w-full bg-[#0e0726] p-5 sm:p-7 md:p-8 space-y-6 border-2 border-[#FF007F]/50 shadow-[0_0_55px_rgba(0,0,0,0.9)] relative overflow-hidden rounded-3xl"
       >
         {/* Fresh & Fit Delusion Banner Logo Header */}
-        <div className="flex flex-col items-center justify-center border-b border-[#FF007F]/30 pb-4 text-center space-y-2">
-          <div className="flex items-center justify-center gap-3 sm:gap-4 w-full">
-            {/* Main Delusion Banner */}
-            <Image
-              src="/Assets/fnf_delusion_banner.png"
-              alt="Fresh & Fit Podcast - Female Delusion Calculator"
-              width={1280}
-              height={488}
-              priority
-              className="w-auto h-20 sm:h-24 md:h-28 object-contain drop-shadow-[0_0_25px_rgba(255,0,127,0.6)]"
-            />
-
-            {/* Exactly 1 Clockwise Rotating Cat Litter Bag */}
-            <div className="relative w-12 h-14 sm:w-16 sm:h-18 md:w-20 md:h-22 shrink-0 drop-shadow-[0_0_18px_rgba(255,0,127,0.8)] animate-spin-clockwise">
+          <div className="flex flex-col items-center justify-center border-b border-[#FF007F]/30 pb-4 text-center space-y-2">
+            <div className="relative">
+              {/* Main Delusion Banner */}
               <Image
-                src="/Assets/cat_litter_bag.png"
-                alt="Cat Litter Bag"
-                fill
-                className="object-contain"
+                src="/Assets/fnf_delusion_banner.png"
+                alt="Fresh & Fit Podcast - Female Delusion Calculator"
+                width={1280}
+                height={488}
+                priority
+                className="block w-auto h-20 sm:h-24 md:h-28 object-contain drop-shadow-[0_0_25px_rgba(255,0,127,0.6)]"
               />
+
+              {/* Exactly 1 Clockwise Rotating Cat Litter Bag */}
+              <div className="absolute top-1/2 -translate-y-1/2 left-full -ml-4 sm:-ml-5 w-12 h-14 sm:w-16 sm:h-18 md:w-20 md:h-22 drop-shadow-[0_0_18px_rgba(255,0,127,0.8)] animate-spin-clockwise">
+                <Image
+                  src="/Assets/cat_litter_bag.png"
+                  alt="Cat Litter Bag"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </div>
-          </div>
 
           <p className="font-mono text-xs sm:text-sm text-[#00F5FF] font-bold tracking-wider uppercase text-glow-cyan">
             "YOUR STANDARDS FOR YOUR IDEAL PARTNER" — THE NUMBERS DON'T LIE
@@ -280,7 +280,7 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
                 { id: Race.ANY, label: 'Any Race' },
                 { id: Race.WHITE, label: 'White' },
                 { id: Race.BLACK, label: 'Black' },
-                { id: Race.HISPANIC, label: 'Hispanic / Latino' },
+                { id: Race.HISPANIC, label: 'Hispanic' },
                 { id: Race.ASIAN, label: 'Asian' },
                 { id: Race.OTHER, label: 'Other / Mixed' },
               ].map((r) => {
@@ -353,27 +353,35 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
                   Minimum Income
                 </h3>
               </div>
-
-              {/* Number Input without arrows */}
-              <div className="flex items-center gap-1 bg-[#0c0721] px-3 py-1 rounded-lg border border-[#FFE600]/40 shadow-[0_0_10px_rgba(255,230,0,0.2)]">
-                <span className="text-[#FFE600] font-bold text-xs sm:text-sm">$</span>
-                <input
-                  type="number"
-                  min="0"
-                  max="10000000"
-                  step="any"
-                  value={criteria.minIncome || ''}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value) || 0;
-                    updateCriteria('minIncome', Math.max(0, val));
-                  }}
-                  placeholder="80000"
-                  className="w-24 bg-transparent text-[#FFE600] font-bold text-xs sm:text-sm font-mono outline-none text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                />
-              </div>
             </div>
 
             <div className="space-y-3">
+              {/* Number Input without arrows (centered between title and slider) */}
+              <div className="flex justify-center">
+                <div className="flex items-center gap-2 bg-[#0c0721] px-4 py-2 rounded-xl border border-[#FFE600]/40 shadow-[0_0_10px_rgba(255,230,0,0.2)]">
+                  <span className="text-[#FFE600] font-bold text-sm sm:text-base">$</span>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    autoComplete="off"
+                    value={criteria.minIncome || ''}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, '').slice(0, 8);
+                      updateCriteria('minIncome', digits ? parseInt(digits, 10) : 0);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key.length === 1 && !/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onFocus={(e) => e.target.select()}
+                    placeholder="80000"
+                    className="w-28 sm:w-32 bg-transparent text-white font-bold text-base sm:text-lg font-mono outline-none text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                </div>
+              </div>
+
               <input
                 type="range"
                 min="0"
@@ -410,7 +418,7 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
 
             <div className="space-y-3">
               {/* Toggles */}
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="flex flex-col gap-2.5">
                 {/* Single Only Checkbox */}
                 <button
                   type="button"
@@ -505,3 +513,5 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
     </div>
   );
 }
+
+export default memo(CriteriaForm);
