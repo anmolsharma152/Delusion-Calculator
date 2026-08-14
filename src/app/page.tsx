@@ -1,69 +1,144 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Header from '@/components/Header';
+import WelcomeStage from '@/components/WelcomeStage';
+import CriteriaForm from '@/components/CriteriaForm';
+import ResultsPanel from '@/components/ResultsPanel';
+import ShareCard from '@/components/ShareCard';
+import AnticipationOverlay from '@/components/AnticipationOverlay';
+import SoundboardBar from '@/components/SoundboardBar';
+import { useCalculator } from '@/hooks/useCalculator';
+import { CriteriaState, Race, EducationLevel, MaritalPreference, LocationScope } from '@/types';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Default Criteria: $80k Income Baseline, 6'0" Height, Unmarked Toggles
+const defaultCriteria: CriteriaState = {
+  minAge: 22,
+  maxAge: 35,
+  minHeight: 72, // 6'0" (72 inches)
+  minIncome: 80000, // $80k default baseline
+  maritalPref: MaritalPreference.DONT_CARE, // Unmarked by default
+  excludeObese: false, // Unmarked by default
+  selectedRaces: [Race.ANY],
+  minEducation: EducationLevel.HIGH_SCHOOL,
+  location: LocationScope.SAME_COUNTRY,
+};
 
 export default function Home() {
+  const [criteria, setCriteria] = useState<CriteriaState>(defaultCriteria);
+  const [activeCriteria, setActiveCriteria] = useState<CriteriaState>(defaultCriteria);
+
+  // 3-Step Flow: 'WELCOME' -> 'INPUT' -> 'RESULTS'
+  const [viewState, setViewState] = useState<'WELCOME' | 'INPUT' | 'RESULTS'>('WELCOME');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  // Hook receives activeCriteria
+  const { result, breakdown } = useCalculator(activeCriteria);
+
+  const handleGoHome = () => {
+    setViewState('WELCOME');
+  };
+
+  const handleStartTest = () => {
+    setViewState('INPUT');
+  };
+
+  const handleStartCalculation = () => {
+    setIsAnalyzing(true);
+  };
+
+  const handleAnalysisComplete = () => {
+    setActiveCriteria(criteria);
+    setViewState('RESULTS');
+    setIsAnalyzing(false);
+  };
+
+  const handleResetToInput = () => {
+    // Preserve current entered criteria when adjusting standards
+    setViewState('INPUT');
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="min-h-screen flex flex-col relative vaporwave-grid-container bg-[#0c0721] overflow-x-hidden">
+      {/* 80s Vaporwave Background Elements */}
+      <div className="vaporwave-grid-bg" />
+      <div className="vaporwave-grid-floor" />
+      <div className="retro-sun" />
+
+      <Header onGoHome={handleGoHome} />
+      <SoundboardBar />
+
+      <main className="flex-1 max-w-6xl sm:max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 z-10 relative">
+        {/* 3-Step App Flow View Switcher (initial={false} guarantees instant initial render visibility) */}
+        <AnimatePresence mode="wait" initial={false}>
+          {viewState === 'WELCOME' && (
+            <motion.div
+              key="welcome-stage"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25 }}
+              className="w-full"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <WelcomeStage onStart={handleStartTest} />
+            </motion.div>
+          )}
+
+          {viewState === 'INPUT' && (
+            <motion.div
+              key="input-stage"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25 }}
+              className="w-full"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              <CriteriaForm
+                criteria={criteria}
+                onChange={setCriteria}
+                onCalculate={handleStartCalculation}
+                isAnalyzing={isAnalyzing}
+              />
+            </motion.div>
+          )}
+
+          {viewState === 'RESULTS' && (
+            <motion.div
+              key="results-stage"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.3 }}
+              className="w-full"
+            >
+              <ResultsPanel
+                result={result}
+                breakdown={breakdown}
+                onOpenShareModal={() => setIsShareModalOpen(true)}
+                onReset={handleResetToInput}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
+
+      {/* Anticipation Build-Up Overlay */}
+      <AnimatePresence>
+        {isAnalyzing && (
+          <AnticipationOverlay onComplete={handleAnalysisComplete} />
+        )}
+      </AnimatePresence>
+
+      {/* Social Export Share Modal */}
+      {isShareModalOpen && (
+        <ShareCard
+          result={result}
+          criteria={activeCriteria}
+          onClose={() => setIsShareModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
