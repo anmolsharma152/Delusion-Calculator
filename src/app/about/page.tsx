@@ -53,6 +53,17 @@ export default function AboutPage() {
                 <li>
                   <strong className="text-white">Bureau of Labor Statistics (BLS):</strong> Employment status and income cross-tabulations.
                 </li>
+                <li>
+                  <strong className="text-white">US Census Bureau CPS (Current Population Survey):</strong> Monthly labor force and demographic data tables.{" "}
+                  <a
+                    href="https://www.census.gov/programs-surveys/cps/data/tables.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#00E5FF] underline underline-offset-2 hover:text-white"
+                  >
+                    census.gov/programs-surveys/cps/data/tables.html
+                  </a>
+                </li>
               </ul>
             </div>
           </section>
