@@ -2,7 +2,16 @@
 
 import { useEffect, useRef } from 'react';
 
-type ItemType = 'CAT_BAG' | 'DOLLAR' | 'DIAMOND' | 'COCKTAIL' | 'PALM' | 'YACHT' | 'ORB';
+type ItemType =
+  | 'CAT_BAG'
+  | 'DOLLAR'
+  | 'DIAMOND'
+  | 'COCKTAIL'
+  | 'PALM'
+  | 'YACHT'
+  | 'MIAMI_MAN'
+  | 'MIAMI_WOMAN'
+  | 'ORB';
 
 interface FloatingItem {
   x: number;
@@ -24,7 +33,7 @@ export default function InteractiveBackground() {
   const spriteCache = useRef<Record<string, { canvas: HTMLCanvasElement; aspect: number }>>({});
 
   useEffect(() => {
-    // 1. Preload Dedicated High-Quality Assets
+    // 1. Preload Dedicated High-Quality Vector & Character Assets
     const loadAsset = (key: string, src: string) => {
       const img = new Image();
       img.src = src;
@@ -36,6 +45,8 @@ export default function InteractiveBackground() {
     loadAsset('CAT_BAG', '/Assets/cat_litter_bag.png');
     loadAsset('DOLLAR', '/Assets/diamond_dollar.svg');
     loadAsset('YACHT', '/Assets/luxury_yacht.svg');
+    loadAsset('MIAMI_MAN', '/Assets/miami_man.svg');
+    loadAsset('MIAMI_WOMAN', '/Assets/miami_woman.svg');
 
     // 2. Pre-render High-Resolution Vector Sprites for Remaining Items
     const createOffscreenCanvas = (w: number, h: number, draw: (ctx: CanvasRenderingContext2D) => void) => {
@@ -53,7 +64,6 @@ export default function InteractiveBackground() {
       ctx.shadowBlur = 22;
       ctx.shadowColor = '#00F5FF';
 
-      // Outer Outline of Brilliant Cut Diamond
       ctx.beginPath();
       ctx.moveTo(-24, -34);
       ctx.lineTo(24, -34);
@@ -108,7 +118,6 @@ export default function InteractiveBackground() {
       ctx.shadowBlur = 18;
       ctx.shadowColor = '#FF007F';
 
-      // Stem & Base
       ctx.beginPath();
       ctx.ellipse(0, 44, 22, 5, 0, 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
@@ -119,7 +128,6 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 3.5;
       ctx.stroke();
 
-      // V-Shaped Martini Glass Body
       ctx.beginPath();
       ctx.moveTo(-38, -28);
       ctx.lineTo(38, -28);
@@ -135,7 +143,6 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Lime Wheel on Rim
       ctx.beginPath();
       ctx.arc(26, -28, 12, 0, Math.PI * 2);
       ctx.fillStyle = '#10B981';
@@ -144,7 +151,6 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // Cocktail Umbrella
       ctx.beginPath();
       ctx.arc(-14, -34, 16, Math.PI, 0);
       ctx.fillStyle = '#FFE600';
@@ -160,7 +166,6 @@ export default function InteractiveBackground() {
       ctx.shadowBlur = 22;
       ctx.shadowColor = '#00F5FF';
 
-      // Trunk
       ctx.beginPath();
       ctx.moveTo(-6, 52);
       ctx.quadraticCurveTo(-18, 10, -2, -10);
@@ -176,7 +181,6 @@ export default function InteractiveBackground() {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // 6 Lush Spreading Tropical Fronds
       const drawLushFrond = (cx: number, cy: number, ex: number, ey: number, color: string) => {
         ctx.beginPath();
         ctx.moveTo(-2, -10);
@@ -246,13 +250,15 @@ export default function InteractiveBackground() {
     const initItems = () => {
       items = [];
       const itemTypes: ItemType[] = [
-        'CAT_BAG', 'CAT_BAG', 'CAT_BAG', 'CAT_BAG',
+        'CAT_BAG', 'CAT_BAG', 'CAT_BAG',
         'DOLLAR', 'DOLLAR', 'DOLLAR', 'DOLLAR',
-        'DIAMOND', 'DIAMOND', 'DIAMOND', 'DIAMOND',
-        'COCKTAIL', 'COCKTAIL', 'COCKTAIL', 'COCKTAIL',
-        'PALM', 'PALM', 'PALM', 'PALM',
-        'YACHT', 'YACHT', 'YACHT', 'YACHT',
-        'ORB', 'ORB', 'ORB', 'ORB', 'ORB', 'ORB'
+        'DIAMOND', 'DIAMOND', 'DIAMOND',
+        'COCKTAIL', 'COCKTAIL', 'COCKTAIL',
+        'PALM', 'PALM', 'PALM',
+        'YACHT', 'YACHT', 'YACHT',
+        'MIAMI_MAN', 'MIAMI_MAN', 'MIAMI_MAN',
+        'MIAMI_WOMAN', 'MIAMI_WOMAN', 'MIAMI_WOMAN',
+        'ORB', 'ORB', 'ORB', 'ORB'
       ];
 
       itemTypes.forEach((type) => {
@@ -268,6 +274,9 @@ export default function InteractiveBackground() {
         } else if (type === 'DOLLAR') {
           size = Math.random() * 20 + 60; // 60-80px Diamond Dollar Sign
           aspectRatio = 180 / 200;
+        } else if (type === 'MIAMI_MAN' || type === 'MIAMI_WOMAN') {
+          size = Math.random() * 25 + 90; // 90-115px Character Full Body
+          aspectRatio = 540 / 960;
         } else if (type === 'PALM') {
           size = Math.random() * 20 + 70; // 70-90px Palm
           aspectRatio = 1;
@@ -290,7 +299,7 @@ export default function InteractiveBackground() {
           speedX: (Math.random() - 0.5) * 0.5,
           speedY: Math.random() * 0.5 + 0.25,
           rotation: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.015,
+          rotSpeed: (Math.random() - 0.5) * 0.012,
           opacity: Math.random() * 0.25 + 0.75,
           type,
           color: colors[Math.floor(Math.random() * colors.length)],
@@ -323,12 +332,12 @@ export default function InteractiveBackground() {
         item.rotation += item.rotSpeed;
 
         // Wrap around screen boundaries
-        if (item.y > height + 100) {
-          item.y = -100;
+        if (item.y > height + 120) {
+          item.y = -120;
           item.x = Math.random() * width;
         }
-        if (item.x < -100) item.x = width + 100;
-        if (item.x > width + 100) item.x = -100;
+        if (item.x < -120) item.x = width + 120;
+        if (item.x > width + 120) item.x = -120;
 
         // Render Item
         if (item.type === 'ORB') {
@@ -340,13 +349,18 @@ export default function InteractiveBackground() {
           ctx.fill();
           ctx.shadowBlur = 0;
         } else {
-          // Check for dedicated preloaded image asset
           const dedicatedImg = imageAssets.current[item.type];
           if (dedicatedImg && dedicatedImg.complete) {
             ctx.save();
             ctx.translate(item.x, item.y);
             ctx.rotate(item.rotation);
             ctx.globalAlpha = item.opacity;
+
+            // Use screen blend mode for character illustrations to blend dark backgrounds seamlessly
+            if (item.type === 'MIAMI_MAN' || item.type === 'MIAMI_WOMAN') {
+              ctx.globalCompositeOperation = 'screen';
+            }
+
             const w = item.size;
             const h = w / item.aspectRatio;
             ctx.drawImage(dedicatedImg, -w / 2, -h / 2, w, h);
