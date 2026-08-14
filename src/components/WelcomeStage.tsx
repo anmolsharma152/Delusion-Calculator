@@ -132,7 +132,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
               whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.985 }}
               onClick={onStart}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#FF007F] via-[#8A2BE2] to-[#00F5FF] text-white font-display text-xl uppercase tracking-widest font-bold shadow-[0_0_35px_rgba(255,0,127,0.6)] hover:shadow-[0_0_45px_rgba(0,245,255,0.8)] transition-all flex items-center justify-center gap-3 cursor-pointer"
+              className="w-full max-w-lg mx-auto py-3 rounded-xl bg-gradient-to-r from-[#FF007F] via-[#8A2BE2] to-[#00F5FF] text-white font-display text-xl uppercase tracking-widest font-bold shadow-[0_0_35px_rgba(255,0,127,0.6)] hover:shadow-[0_0_45px_rgba(0,245,255,0.8)] transition-all flex items-center justify-center gap-3 cursor-pointer"
             >
               <Sparkles className="w-6 h-6 text-[#FFE600] animate-spin" />
               <span>START DELUSION TEST</span>

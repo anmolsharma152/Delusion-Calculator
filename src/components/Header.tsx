@@ -90,18 +90,23 @@ function Header({
 
         {/* Right: Minimal Icon-Only Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Sampler Bank Toggle Icon with Active Badge Indicator */}
+          {/* Sampler Bank Toggle Icon with Color-Coded Active Bank Indicator */}
           {onToggleBank && (
             <button
               type="button"
               onClick={onToggleBank}
-              className="p-2 sm:px-2.5 sm:py-1.5 rounded-xl bg-[#180e38] border border-[#FF007F]/40 hover:border-[#FF007F] text-xs font-mono font-bold flex items-center gap-1.5 transition-all text-[#FFE600] hover:text-white cursor-pointer shadow-[0_0_10px_rgba(255,0,127,0.2)]"
+              className={`p-2 sm:px-2.5 sm:py-1.5 rounded-xl bg-[#180e38] border flex items-center justify-center transition-all cursor-pointer shadow-[0_0_10px_rgba(255,0,127,0.2)] ${
+                activeBank === 1
+                  ? 'border-[#FF007F] shadow-[0_0_12px_rgba(255,0,127,0.45)] hover:border-[#FF007F]'
+                  : 'border-[#00F5FF] shadow-[0_0_12px_rgba(0,245,255,0.45)] hover:border-[#00F5FF]'
+              }`}
               title={`Sampler Bank ${activeBank} [Keys 1–0] (Press Tab to switch)`}
             >
-              <Layers className="w-4 h-4 text-[#00F5FF]" />
-              <span className={`text-xs font-bold font-mono ${activeBank === 1 ? 'text-[#FF007F]' : 'text-[#00F5FF]'}`}>
-                {activeBank}
-              </span>
+              <Layers
+                className={`w-4 h-4 transition-colors ${
+                  activeBank === 1 ? 'text-[#FF007F]' : 'text-[#00F5FF]'
+                }`}
+              />
             </button>
           )}
 
