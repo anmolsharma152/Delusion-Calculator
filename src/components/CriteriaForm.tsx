@@ -466,22 +466,22 @@ export default function CriteriaForm({ criteria, onChange, onCalculate, isAnalyz
           </div>
         </div>
 
-        {/* Big Calculated Delusion Score CTA Button */}
-        <div className="pt-3 flex justify-center">
+        {/* Calculated Delusion Score CTA Button */}
+        <div className="pt-2 flex justify-center">
           <button
             type="submit"
             disabled={isAnalyzing}
-            className="w-full max-w-2xl py-4 px-8 rounded-2xl bg-gradient-to-r from-[#FF007F] via-[#8A2BE2] to-[#00F5FF] hover:opacity-95 text-white font-display text-2xl sm:text-3xl uppercase tracking-widest font-bold shadow-[0_0_40px_rgba(255,0,127,0.6)] hover:shadow-[0_0_55px_rgba(0,245,255,0.85)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer"
+            className="w-full max-w-lg py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#E50914] via-[#8A2BE2] to-[#00F5FF] hover:opacity-95 text-white font-display text-xl sm:text-2xl uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(229,9,20,0.4)] hover:shadow-[0_0_35px_rgba(0,245,255,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer"
           >
             {isAnalyzing ? (
               <>
-                <Flame className="w-7 h-7 text-[#FFE600] animate-bounce" />
+                <Flame className="w-5 h-5 text-[#FFE600] animate-bounce" />
                 <span>ANALYZING CENSUS DATA...</span>
               </>
             ) : (
               <>
-                <Sparkles className="w-7 h-7 text-[#FFE600] animate-spin" />
-                <span>CALCULATE DELUSION SCORE [ENTER]</span>
+                <Sparkles className="w-5 h-5 text-[#FFE600] animate-spin" />
+                <span>CALCULATE DELUSION SCORE</span>
               </>
             )}
           </button>

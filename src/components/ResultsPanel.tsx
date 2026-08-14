@@ -8,6 +8,7 @@ import GaugeMeter from './GaugeMeter';
 import CatBagMeter from './CatBagMeter';
 import BreakdownChart from './BreakdownChart';
 import CommentBox from './CommentBox';
+import RealityTipsCard from './RealityTipsCard';
 import { Share2, Users, RotateCcw } from 'lucide-react';
 
 interface ResultsPanelProps {
@@ -27,12 +28,12 @@ export default function ResultsPanel({ result, breakdown, onOpenShareModal, onRe
 
   return (
     <div className="w-full space-y-6 max-w-7xl mx-auto my-auto">
-      {/* Balanced 2-Column Layout (2 cards on Left, 2 cards on Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        {/* LEFT COLUMN (2 Cards: Scorecard & Cat Lady Risk Index) */}
+      {/* Balanced 2x2 Grid (2 cards on Left, 2 cards on Right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        {/* LEFT COLUMN (Scorecard + Cat Lady Risk Index) */}
         <div className="space-y-6 flex flex-col justify-between">
           {/* Card 1: Main Verdict Scorecard */}
-          <div className="glass-card-vapor p-6 flex flex-col items-center justify-between text-center border-t-4 border-t-[#FF007F] shadow-[0_0_35px_rgba(255,0,127,0.35)] space-y-4 rounded-2xl">
+          <div className="bg-[#0e0726] p-6 flex flex-col items-center justify-between text-center border-t-4 border-t-[#FF007F] border-x border-b border-[#FF007F]/40 shadow-[0_0_35px_rgba(255,0,127,0.25)] space-y-4 rounded-2xl flex-1">
             <div className="w-full flex items-center justify-between border-b border-[#FF007F]/30 pb-2">
               <span className="font-mono text-xs text-[#00F5FF] uppercase font-bold text-glow-cyan">
                 Step 3: Reality Verdict Reveal
@@ -68,8 +69,9 @@ export default function ResultsPanel({ result, breakdown, onOpenShareModal, onRe
             <div className="w-full grid grid-cols-2 gap-3 pt-2">
               {onOpenShareModal && (
                 <button
+                  type="button"
                   onClick={onOpenShareModal}
-                  className="py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#FF007F] to-[#8A2BE2] hover:opacity-95 text-white font-mono font-bold text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_15px_rgba(255,0,127,0.5)] flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="py-3 px-4 rounded-xl bg-gradient-to-r from-[#E50914] to-[#8A2BE2] hover:opacity-95 text-white font-mono font-bold text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_15px_rgba(229,9,20,0.5)] flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <Share2 className="w-4 h-4 text-[#FFE600]" />
                   <span>SHARE / SAVE CARD</span>
@@ -78,8 +80,9 @@ export default function ResultsPanel({ result, breakdown, onOpenShareModal, onRe
 
               {onReset && (
                 <button
+                  type="button"
                   onClick={onReset}
-                  className="py-3.5 px-4 rounded-xl bg-[#0c0721] border border-[#00F5FF] text-[#00F5FF] hover:bg-[#00F5FF]/20 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_15px_rgba(0,245,255,0.3)] flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="py-3 px-4 rounded-xl bg-[#180e38] border border-[#00F5FF] text-[#00F5FF] hover:bg-[#00F5FF]/20 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_15px_rgba(0,245,255,0.3)] flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <RotateCcw className="w-4 h-4" />
                   <span>TEST NEW STANDARDS</span>
@@ -88,19 +91,20 @@ export default function ResultsPanel({ result, breakdown, onOpenShareModal, onRe
             </div>
           </div>
 
-          {/* Card 2: Cat Lady Risk Index (Moved below Scorecard on Left Side) */}
-          <div className="glass-card-vapor p-5 rounded-2xl border border-[#FF007F]/40 shadow-[0_0_20px_rgba(255,0,127,0.2)]">
-            <CatBagMeter score={result.delusionScore} />
-          </div>
+          {/* Card 2: Cat Lady Risk Index */}
+          <CatBagMeter score={result.delusionScore} />
         </div>
 
-        {/* RIGHT COLUMN (2 Cards: Demographic Breakdown Chart & Reality Check Terminal) */}
+        {/* RIGHT COLUMN (Demographic Breakdown + Reality Roast Terminal + Odds Optimizer) */}
         <div className="space-y-6 flex flex-col justify-between">
           {/* Card 1: Per-Filter Demographic Breakdown Chart */}
           <BreakdownChart breakdown={breakdown} />
 
           {/* Card 2: Fresh & Fit Reality Check Terminal */}
           <CommentBox comment={currentComment} onRefreshComment={handleRefreshRoast} />
+
+          {/* Card 3: Reality Tips & Odds Optimizer (Fills bottom right gap perfectly) */}
+          <RealityTipsCard result={result} breakdown={breakdown} />
         </div>
       </div>
     </div>
