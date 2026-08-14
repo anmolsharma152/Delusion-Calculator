@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { DelusionResult, FilterBreakdown } from '../types';
 import { formatPercentage } from '../utils/format';
 import { getRandomComment } from '../engine/commentPool';
@@ -22,14 +22,25 @@ interface ResultsPanelProps {
 export default function ResultsPanel({ result, breakdown, onOpenShareModal, onReset }: ResultsPanelProps) {
   const [currentComment, setCurrentComment] = useState<string>(result.catchphrase);
   const [showDetails, setShowDetails] = useState<boolean>(false);
+  const detailsRef = useRef<HTMLDivElement | null>(null);
 
   const handleRefreshRoast = () => {
     const newRoast = getRandomComment(result.tier);
     setCurrentComment(newRoast);
   };
 
+  const handleToggleDetails = () => {
+    const nextState = !showDetails;
+    setShowDetails(nextState);
+    if (nextState) {
+      setTimeout(() => {
+        detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  };
+
   return (
-    <div className="w-full space-y-6 max-w-6xl mx-auto my-auto">
+    <div className="w-full space-y-6 max-w-6xl mx-auto my-auto pb-6">
       {/* Primary Hero Stage: 3 Core Components (Scorecard, Cat Lady Index, Reality Terminal) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT COLUMN: Main Scorecard (7 cols on large screens) */}
@@ -58,10 +69,10 @@ export default function ResultsPanel({ result, breakdown, onOpenShareModal, onRe
               <div className="text-xs uppercase tracking-widest text-[#E0E0E0] font-mono font-bold">
                 Qualifying Population Match
               </div>
-              <div className="font-display text-6xl sm:text-7xl text-[#FF007F] text-glow-pink tracking-tight">
+              <div className="font-display text-6xl sm:text-7xl text-[#FF007F] text-glow-pink tracking-tight leading-none">
                 {formatPercentage(result.matchPercentage)}
               </div>
-              <div className="text-lg font-mono font-bold text-[#FFE600] text-glow-gold flex items-center justify-center gap-1.5">
+              <div className="text-lg font-mono font-bold text-[#FFE600] text-glow-gold flex items-center justify-center gap-1.5 mt-2">
                 <Users className="w-5 h-5 text-[#FFE600]" />
                 <span>{result.matchRatio}</span>
               </div>
@@ -105,30 +116,33 @@ export default function ResultsPanel({ result, breakdown, onOpenShareModal, onRe
           {/* More Details Collapsible Trigger Button */}
           <button
             type="button"
-            onClick={() => setShowDetails((prev) => !prev)}
-            className="w-full py-3.5 px-4 rounded-2xl bg-[#180e38] hover:bg-[#25154d] border border-[#00F5FF]/40 text-[#00F5FF] hover:text-white font-mono font-bold text-xs sm:text-sm flex items-center justify-between transition-all shadow-[0_0_15px_rgba(0,245,255,0.2)] cursor-pointer"
+            onClick={handleToggleDetails}
+            className="w-full py-4 px-5 rounded-2xl bg-gradient-to-r from-[#180e38] to-[#25154d] hover:from-[#25154d] hover:to-[#35156d] border border-[#00F5FF]/50 text-[#00F5FF] hover:text-white font-mono font-bold text-xs sm:text-sm flex items-center justify-between transition-all shadow-[0_0_20px_rgba(0,245,255,0.25)] cursor-pointer"
           >
-            <div className="flex items-center gap-2">
-              <BarChart2 className="w-4 h-4 text-[#FFE600]" />
-              <span>{showDetails ? 'HIDE STATISTICAL BREAKDOWN' : 'VIEW STATISTICAL BREAKDOWN & TIPS'}</span>
+            <div className="flex items-center gap-2.5">
+              <BarChart2 className="w-5 h-5 text-[#FFE600]" />
+              <span className="tracking-wide">
+                {showDetails ? 'HIDE STATISTICAL BREAKDOWN' : 'VIEW STATISTICAL BREAKDOWN & TIPS'}
+              </span>
             </div>
             {showDetails ? <ChevronUp className="w-5 h-5 text-[#FF007F]" /> : <ChevronDown className="w-5 h-5 text-[#00F5FF]" />}
           </button>
         </div>
       </div>
 
-      {/* Expandable Deep Dive Section: Demographic Breakdown & Odds Optimizer */}
+      {/* Expandable Deep Dive Section: Spacious Demographic Breakdown & Odds Optimizer */}
       <AnimatePresence>
         {showDetails && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35, ease: 'easeInOut' }}
-            className="overflow-hidden"
+            ref={detailsRef}
+            initial={{ opacity: 0, height: 0, y: 15 }}
+            animate={{ opacity: 1, height: 'auto', y: 0 }}
+            exit={{ opacity: 0, height: 0, y: 15 }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            className="overflow-hidden pt-4"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-2">
-              {/* Card 4: Per-Filter Demographic Breakdown Chart */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Card 4: Per-Filter Demographic Breakdown Chart (Spacious & Bold) */}
               <BreakdownChart breakdown={breakdown} />
 
               {/* Card 5: How To Improve Your Odds (Bottleneck Analysis) */}
