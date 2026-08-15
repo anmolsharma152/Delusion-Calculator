@@ -68,26 +68,52 @@ export default function ShortcutsCheatsheet({ isOpen, onClose }: ShortcutsCheats
                 </h3>
               </div>
               <div className="space-y-2">
-                {group.entries.map((entry) => (
-                  <div
-                    key={`${group.title}-${entry.label}`}
-                    className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-[#140b2e]/80 px-4 py-2.5"
-                  >
-                    <span className="text-sm sm:text-base text-[#E0E0E0] font-sans font-medium">
-                      {entry.label}
-                    </span>
-                    <span className="flex items-center gap-1.5 flex-wrap justify-end">
-                      {entry.keys.map((key) => (
-                        <kbd
-                          key={key}
-                          className="min-w-9 px-2 py-1 rounded-lg bg-[#0e0726] border border-[#00F5FF]/50 text-[#00F5FF] font-mono text-sm font-bold text-center shadow-[0_0_8px_rgba(0,245,255,0.25)]"
-                        >
-                          {key}
-                        </kbd>
-                      ))}
-                    </span>
-                  </div>
-                ))}
+                {group.entries.map((entry) => {
+                  const multiRow = entry.keys.length > 6;
+                  const rows: string[][] = [];
+                  if (multiRow) {
+                    for (let i = 0; i < entry.keys.length; i += 5) {
+                      rows.push(entry.keys.slice(i, i + 5));
+                    }
+                  }
+                  return (
+                    <div
+                      key={`${group.title}-${entry.label}`}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-[#140b2e]/80 px-4 py-2.5"
+                    >
+                      <span className="text-sm sm:text-base text-[#E0E0E0] font-sans font-medium">
+                        {entry.label}
+                      </span>
+                      {multiRow ? (
+                        <div className="flex flex-col gap-1.5">
+                          {rows.map((row, ri) => (
+                            <span key={ri} className="grid grid-cols-5 gap-1.5">
+                              {row.map((key) => (
+                                <kbd
+                                  key={key}
+                                  className="min-w-9 w-full px-2 py-1 rounded-lg bg-[#0e0726] border border-[#00F5FF]/50 text-[#00F5FF] font-mono text-sm font-bold text-center shadow-[0_0_8px_rgba(0,245,255,0.25)]"
+                                >
+                                  {key}
+                                </kbd>
+                              ))}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="flex items-center gap-1.5 flex-wrap justify-end">
+                          {entry.keys.map((key) => (
+                            <kbd
+                              key={key}
+                              className="min-w-9 px-2 py-1 rounded-lg bg-[#0e0726] border border-[#00F5FF]/50 text-[#00F5FF] font-mono text-sm font-bold text-center shadow-[0_0_8px_rgba(0,245,255,0.25)]"
+                            >
+                              {key}
+                            </kbd>
+                          ))}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))}
