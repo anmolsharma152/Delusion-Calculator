@@ -98,7 +98,7 @@ export default function ResultsPanel({ result, breakdown, onOpenShareModal, onRe
                   className="py-3 px-4 rounded-xl bg-[#180e38] border border-[#00F5FF] text-[#00F5FF] hover:bg-[#00F5FF]/20 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_15px_rgba(0,245,255,0.3)] flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <RotateCcw className="w-4 h-4" />
-                  <span>TEST NEW STANDARDS</span>
+                  <span>RESET THE DELUSION</span>
                 </button>
               )}
             </div>

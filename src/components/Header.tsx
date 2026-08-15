@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Tv, Moon, Sun, Maximize2, Music, Layers, CircleHelp } from 'lucide-react';
+import { Tv, Moon, Sun, Maximize2, Music, Layers, CircleHelp, Info } from 'lucide-react';
 
 interface HeaderProps {
   onGoHome?: () => void;
@@ -15,6 +15,7 @@ interface HeaderProps {
   onToggleBank?: () => void;
   onOpenSoundVault?: () => void;
   onOpenShortcuts?: () => void;
+  onOpenMethodology?: () => void;
 }
 
 function Header({
@@ -27,6 +28,7 @@ function Header({
   onToggleBank,
   onOpenSoundVault,
   onOpenShortcuts,
+  onOpenMethodology,
 }: HeaderProps) {
   const router = useRouter();
 
@@ -157,6 +159,18 @@ function Header({
               title="Toggle Stream Mode [Spacebar]"
             >
               <Tv className="w-4 h-4" />
+            </button>
+          )}
+
+          {/* Methodology / Info Button (Icon Only) */}
+          {onOpenMethodology && (
+            <button
+              type="button"
+              onClick={onOpenMethodology}
+              className="p-2 sm:p-2.5 rounded-xl bg-[#180e38] hover:bg-[#2a0845] text-[#00F5FF] hover:text-white transition-colors border border-[#00F5FF]/40 cursor-pointer"
+              title="Methodology & Data [A]"
+            >
+              <Info className="w-4 h-4" />
             </button>
           )}
 

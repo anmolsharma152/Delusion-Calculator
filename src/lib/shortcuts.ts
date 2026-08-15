@@ -18,6 +18,7 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
       { keys: ['Enter'], label: 'Next stage / Calculate' },
       { keys: ['H'], label: 'Go to home / landing page' },
       { keys: ['C'], label: 'Go to calculator' },
+      { keys: ['A'], label: 'Toggle methodology / info overlay' },
     ],
   },
   {

@@ -9,6 +9,7 @@ import ShareCard from '@/components/ShareCard';
 import AnticipationOverlay, { GlobalAudio } from '@/components/AnticipationOverlay';
 import SoundVaultModal, { BANK_1_SOUNDS, BANK_2_SOUNDS, KEY_LABELS, SoundBite } from '@/components/SoundVaultModal';
 import ShortcutsCheatsheet from '@/components/ShortcutsCheatsheet';
+import MethodologyModal from '@/components/MethodologyModal';
 import InteractiveBackground from '@/components/InteractiveBackground';
 import { useCalculator } from '@/hooks/useCalculator';
 import { CriteriaState, Race, EducationLevel, MaritalPreference, LocationScope } from '@/types';
@@ -45,6 +46,7 @@ export default function Home() {
   const [activeBank, setActiveBank] = useState<1 | 2>(1);
   const [isVaultOpen, setIsVaultOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
   const [playingSound, setPlayingSound] = useState<{ id: string; name: string; hotkey?: string } | null>(null);
 
   // Hook calculates results based on activeCriteria
@@ -75,6 +77,7 @@ export default function Home() {
   // - [t]: Toggle Theme (Vaporwave <-> Obsidian)
   // - [h]: Go to Home / Landing Page
   // - [c]: Go to Calculator (Input)
+  // - [a]: Toggle Methodology / Info Overlay
   // - [/]: Toggle Keyboard Shortcuts Cheatsheet
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -180,6 +183,13 @@ export default function Home() {
         setViewState('INPUT');
         return;
       }
+
+      // 11. a -> Toggle Methodology (Info)
+      if (e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        setIsMethodologyOpen((prev) => !prev);
+        return;
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -226,6 +236,10 @@ export default function Home() {
     setIsShortcutsOpen(true);
   }, []);
 
+  const handleOpenMethodology = useCallback(() => {
+    setIsMethodologyOpen(true);
+  }, []);
+
   return (
     <div
       className={`min-h-screen flex flex-col justify-between select-none relative overflow-x-hidden transition-colors duration-500 ${
@@ -255,6 +269,7 @@ export default function Home() {
         onToggleBank={handleToggleBank}
         onOpenSoundVault={handleOpenSoundVault}
         onOpenShortcuts={handleOpenShortcuts}
+        onOpenMethodology={handleOpenMethodology}
       />
 
       {/* Main App Content View Switcher */}
@@ -362,6 +377,12 @@ export default function Home() {
       <ShortcutsCheatsheet
         isOpen={isShortcutsOpen}
         onClose={() => setIsShortcutsOpen(false)}
+      />
+
+      {/* Methodology & Data Overlay */}
+      <MethodologyModal
+        isOpen={isMethodologyOpen}
+        onClose={() => setIsMethodologyOpen(false)}
       />
 
       {/* Anticipation Build-Up Overlay */}

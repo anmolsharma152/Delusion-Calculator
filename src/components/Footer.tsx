@@ -31,10 +31,6 @@ export default function Footer() {
 
         {/* Right: Quick Nav */}
         <div className="flex items-center gap-4 text-[#B3A0D2] font-bold">
-          <Link href="/about" className="hover:text-[#00F5FF] transition-colors">
-            METHODOLOGY
-          </Link>
-          <span>•</span>
           <Link href="/stream" className="hover:text-[#FF007F] transition-colors">
             OBS STREAM MODE
           </Link>

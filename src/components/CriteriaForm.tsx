@@ -504,7 +504,7 @@ function CriteriaForm({ criteria, onChange, onCalculate, isAnalyzing }: Criteria
             ) : (
               <>
                 <Sparkles className="w-5 h-5 text-[#FFE600] animate-spin" />
-                <span>CALCULATE DELUSION SCORE</span>
+                <span>RUN THE NUMBERS</span>
               </>
             )}
           </button>

@@ -9,7 +9,7 @@ interface AnticipationOverlayProps {
 }
 
 const STAGES = [
-  { text: "PULLING US CENSUS ACS 2023 MICRODATA...", icon: Database, color: "text-[#00F5FF]" },
+  { text: "CROSS-REFERENCING US CENSUS ACS 2023 MICRODATA...", icon: Database, color: "text-[#00F5FF]" },
   { text: "CROSS-REFERENCING CDC NHANES HEIGHT & BMI STATS...", icon: Cpu, color: "text-[#FF007F]" },
   { text: "CALCULATING HYPERGAMY CORRELATIONS...", icon: ShieldAlert, color: "text-[#FFE600]" },
   { text: "COMPUTING CAT LADY PROBABILITY METER...", icon: Flame, color: "text-[#FF2AA3]" },
