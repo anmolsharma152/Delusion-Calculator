@@ -57,15 +57,15 @@ export default function Home() {
   const { result, breakdown } = useCalculator(activeCriteria);
 
   // Stream Mode Auto-Hide: the header only appears when the cursor enters a
-  // tight band along the very top edge (~64px) — moving the mouse elsewhere
-  // never pops it open. Once the cursor leaves the band it hides after 4s.
+  // tight band along the very top edge — moving the mouse elsewhere never
+  // pops it open. Once the cursor leaves the band it hides after 4s.
   useEffect(() => {
     if (!isStreamMode || !autoHideMode || isVaultOpen || isShareModalOpen) {
       setIsTopVisible(true);
       return;
     }
 
-    const topThreshold = 64;
+    const topThreshold = 72;
     const HIDE_DELAY = 4000;
 
     const scheduleHide = () => {
@@ -97,12 +97,10 @@ export default function Home() {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // If the cursor is not parked in the top band, start the hide countdown
-    // immediately so stream mode auto-hides even when the user toggles it with
-    // a hotkey and never moves the mouse.
-    if (lastMouseYRef.current > topThreshold) {
-      scheduleHide();
-    }
+    // Always start the hide countdown when stream mode becomes active — even
+    // if the cursor is parked at the top (e.g. right after clicking the TV
+    // button) — so the panel never stays up indefinitely.
+    scheduleHide();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
