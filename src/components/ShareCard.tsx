@@ -76,10 +76,12 @@ export default function ShareCard({ result, criteria, onClose }: ShareCardProps)
       >
         {/* Close Button */}
         <button
+          type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-[#E0E0E0] hover:text-white transition-colors cursor-pointer p-1"
+          className="absolute top-4 right-4 z-10 text-[#E0E0E0] hover:text-white transition-colors cursor-pointer p-1.5 rounded-xl bg-[#180e38] border border-[#FF007F]/60 shadow-[0_0_12px_rgba(255,0,127,0.3)] hover:border-[#FF007F]"
+          title="Close [Esc]"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5" />
         </button>
 
         {/* Share Card Content to Capture */}
