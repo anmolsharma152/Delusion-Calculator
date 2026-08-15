@@ -93,11 +93,10 @@ export default function ShortcutsCheatsheet({ isOpen, onClose }: ShortcutsCheats
           ))}
         </div>
 
-        {/* Footer Hint */}
+        {/* Footer Branding */}
         <div className="px-7 sm:px-10 pb-6 text-center">
-          <p className="text-sm font-mono text-[#B3A0D2] uppercase tracking-[0.25em]">
-            Press <span className="text-[#00F5FF] font-bold">[/]</span> to toggle ·{' '}
-            <span className="text-[#FF007F] font-bold">[Esc]</span> to close
+          <p className="text-xs font-mono text-[#B3A0D2] uppercase tracking-[0.35em]">
+            Fresh &amp; Fit Miami After Hours · The Numbers Don't Lie
           </p>
         </div>
       </div>
