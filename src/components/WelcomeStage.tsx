@@ -138,6 +138,10 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
               <span>START DELUSION TEST</span>
               <ArrowRight className="w-6 h-6 text-white animate-pulse" />
             </motion.button>
+
+            <p className="text-center text-[11px] font-mono text-[#B3A0D2] pt-2">
+              Press <kbd className="px-1.5 py-0.5 rounded-md bg-[#0e0726] border border-[#00F5FF]/50 text-[#00F5FF] font-bold">?</kbd> for keyboard shortcuts
+            </p>
           </div>
         </div>
       </div>
