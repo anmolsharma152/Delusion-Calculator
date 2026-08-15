@@ -48,7 +48,7 @@ export default function ShortcutsCheatsheet({ isOpen, onClose }: ShortcutsCheats
             KEYBOARD <span className="text-[#00F5FF] text-glow-cyan">SHORTCUTS</span>
           </h2>
           <p className="text-xs font-mono text-[#B3A0D2] uppercase tracking-widest mt-1.5">
-            Press [?] any time to toggle this overlay
+            Press [/] any time to toggle this overlay
           </p>
         </div>
 

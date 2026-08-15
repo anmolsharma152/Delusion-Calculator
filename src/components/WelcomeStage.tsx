@@ -140,7 +140,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
             </motion.button>
 
             <p className="text-center text-[11px] font-mono text-[#B3A0D2] pt-2">
-              Press <kbd className="px-1.5 py-0.5 rounded-md bg-[#0e0726] border border-[#00F5FF]/50 text-[#00F5FF] font-bold">?</kbd> for keyboard shortcuts
+              Press <kbd className="px-1.5 py-0.5 rounded-md bg-[#0e0726] border border-[#00F5FF]/50 text-[#00F5FF] font-bold">/</kbd> for keyboard shortcuts
             </p>
           </div>
         </div>

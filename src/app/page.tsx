@@ -133,7 +133,7 @@ export default function Home() {
   // - [s]: Toggle Stream Mode
   // - [f]: Toggle Fullscreen
   // - [t]: Toggle Theme (Vaporwave <-> Obsidian)
-  // - [?]: Toggle Keyboard Shortcuts Cheatsheet
+  // - [/]: Toggle Keyboard Shortcuts Cheatsheet
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
@@ -141,16 +141,15 @@ export default function Home() {
       }
 
       // Never hijack browser shortcuts: Alt+1-0 switches tabs, Ctrl/Cmd+F
-      // searches, etc. Only unmodified keys (Shift is fine, needed for "?")
-      // trigger app hotkeys — this prevents soundbites from firing during
-      // Alt+1-0 tab switching.
+      // searches, etc. Only unmodified keys trigger app hotkeys — this
+      // prevents soundbites from firing during Alt+1-0 tab switching.
       if (e.altKey || e.ctrlKey || e.metaKey) {
         return;
       }
 
-      // 0. ? -> Toggle Keyboard Shortcuts Cheatsheet (handled first so
+      // 0. / -> Toggle Keyboard Shortcuts Cheatsheet (handled first so
       // preventDefault always fires before any browser quick-find behavior)
-      if (e.key === '?') {
+      if (e.key === '/') {
         e.preventDefault();
         setIsShortcutsOpen((prev) => !prev);
         return;
@@ -230,13 +229,6 @@ export default function Home() {
       if (e.key.toLowerCase() === 't') {
         e.preventDefault();
         setBgMode((prev) => (prev === 'VAPORWAVE' ? 'OBSIDIAN' : 'VAPORWAVE'));
-        return;
-      }
-
-      // 10. ? -> Toggle Keyboard Shortcuts Cheatsheet
-      if (e.key === '?') {
-        e.preventDefault();
-        setIsShortcutsOpen((prev) => !prev);
         return;
       }
     };

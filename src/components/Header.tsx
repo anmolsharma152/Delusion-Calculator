@@ -192,7 +192,7 @@ function Header({
               type="button"
               onClick={onOpenShortcuts}
               className="p-2 sm:p-2.5 rounded-xl bg-[#180e38] hover:bg-[#2a0845] text-[#FFE600] hover:text-white transition-colors border border-[#FFE600]/40 cursor-pointer"
-              title="Keyboard Shortcuts [?]"
+              title="Keyboard Shortcuts [/]"
             >
               <CircleHelp className="w-4 h-4" />
             </button>
