@@ -133,6 +133,8 @@ export default function Home() {
   // - [s]: Toggle Stream Mode
   // - [f]: Toggle Fullscreen
   // - [t]: Toggle Theme (Vaporwave <-> Obsidian)
+  // - [h]: Go to Home / Landing Page
+  // - [c]: Go to Calculator (Input)
   // - [/]: Toggle Keyboard Shortcuts Cheatsheet
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -222,6 +224,20 @@ export default function Home() {
       if (e.key.toLowerCase() === 't') {
         e.preventDefault();
         setBgMode((prev) => (prev === 'VAPORWAVE' ? 'OBSIDIAN' : 'VAPORWAVE'));
+        return;
+      }
+
+      // 9. h -> Go to Home / Landing Page
+      if (e.key.toLowerCase() === 'h') {
+        e.preventDefault();
+        setViewState('WELCOME');
+        return;
+      }
+
+      // 10. c -> Go to Calculator (Input)
+      if (e.key.toLowerCase() === 'c') {
+        e.preventDefault();
+        setViewState('INPUT');
         return;
       }
     };

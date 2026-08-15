@@ -14,7 +14,11 @@ export type ShortcutGroup = {
 export const SHORTCUT_GROUPS: ShortcutGroup[] = [
   {
     title: 'Navigation',
-    entries: [{ keys: ['Enter'], label: 'Next stage / Calculate' }],
+    entries: [
+      { keys: ['Enter'], label: 'Next stage / Calculate' },
+      { keys: ['H'], label: 'Go to home / landing page' },
+      { keys: ['C'], label: 'Go to calculator' },
+    ],
   },
   {
     title: 'Stream Mode',
