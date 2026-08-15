@@ -8,6 +8,7 @@ import ResultsPanel from '@/components/ResultsPanel';
 import ShareCard from '@/components/ShareCard';
 import AnticipationOverlay, { GlobalAudio } from '@/components/AnticipationOverlay';
 import SoundVaultModal, { BANK_1_SOUNDS, BANK_2_SOUNDS, KEY_LABELS, SoundBite } from '@/components/SoundVaultModal';
+import ShortcutsCheatsheet from '@/components/ShortcutsCheatsheet';
 import InteractiveBackground from '@/components/InteractiveBackground';
 import { useCalculator } from '@/hooks/useCalculator';
 import { CriteriaState, Race, EducationLevel, MaritalPreference, LocationScope } from '@/types';
@@ -43,6 +44,7 @@ export default function Home() {
   // Soundboard State
   const [activeBank, setActiveBank] = useState<1 | 2>(1);
   const [isVaultOpen, setIsVaultOpen] = useState(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
   const [playingSound, setPlayingSound] = useState<{ id: string; name: string; hotkey?: string } | null>(null);
 
   // Stream Mode Auto-Hide Control for Top Header
@@ -131,6 +133,7 @@ export default function Home() {
   // - [s]: Toggle Stream Mode
   // - [f]: Toggle Fullscreen
   // - [t]: Toggle Theme (Vaporwave <-> Obsidian)
+  // - [?]: Toggle Keyboard Shortcuts Cheatsheet
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
@@ -213,6 +216,13 @@ export default function Home() {
         setBgMode((prev) => (prev === 'VAPORWAVE' ? 'OBSIDIAN' : 'VAPORWAVE'));
         return;
       }
+
+      // 10. ? -> Toggle Keyboard Shortcuts Cheatsheet
+      if (e.key === '?') {
+        e.preventDefault();
+        setIsShortcutsOpen((prev) => !prev);
+        return;
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -257,6 +267,10 @@ export default function Home() {
     setIsVaultOpen(true);
   }, []);
 
+  const handleOpenShortcuts = useCallback(() => {
+    setIsShortcutsOpen(true);
+  }, []);
+
   const handleToggleAutoHide = useCallback(() => {
     const next = !autoHideMode;
     setAutoHideMode(next);
@@ -291,6 +305,7 @@ export default function Home() {
         activeBank={activeBank}
         onToggleBank={handleToggleBank}
         onOpenSoundVault={handleOpenSoundVault}
+        onOpenShortcuts={handleOpenShortcuts}
         autoHideMode={autoHideMode}
         onToggleAutoHide={handleToggleAutoHide}
         isAutoHidden={isAutoHidden}
@@ -395,6 +410,12 @@ export default function Home() {
         playingSoundName={playingSound?.name || null}
         onPlaySound={(s) => playSoundbite(s)}
         onStopSound={stopSoundbite}
+      />
+
+      {/* Keyboard Shortcuts Cheatsheet Overlay */}
+      <ShortcutsCheatsheet
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
       />
 
       {/* Anticipation Build-Up Overlay */}

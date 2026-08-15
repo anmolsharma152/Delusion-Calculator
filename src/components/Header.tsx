@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Tv, Moon, Sun, Eye, EyeOff, Maximize2, Music, Layers } from 'lucide-react';
+import { Tv, Moon, Sun, Eye, EyeOff, Maximize2, Music, Layers, CircleHelp } from 'lucide-react';
 
 interface HeaderProps {
   onGoHome?: () => void;
@@ -14,6 +14,7 @@ interface HeaderProps {
   activeBank?: 1 | 2;
   onToggleBank?: () => void;
   onOpenSoundVault?: () => void;
+  onOpenShortcuts?: () => void;
   autoHideMode?: boolean;
   onToggleAutoHide?: () => void;
   isAutoHidden?: boolean;
@@ -28,6 +29,7 @@ function Header({
   activeBank = 1,
   onToggleBank,
   onOpenSoundVault,
+  onOpenShortcuts,
   autoHideMode = true,
   onToggleAutoHide,
   isAutoHidden = false,
@@ -181,6 +183,18 @@ function Header({
               title={autoHideMode ? 'Auto-Hide: ON' : 'Auto-Hide: OFF'}
             >
               {autoHideMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4 text-[#00F5FF]" />}
+            </button>
+          )}
+
+          {/* Keyboard Shortcuts Help Button (Icon Only) */}
+          {onOpenShortcuts && (
+            <button
+              type="button"
+              onClick={onOpenShortcuts}
+              className="p-2 sm:p-2.5 rounded-xl bg-[#180e38] hover:bg-[#2a0845] text-[#FFE600] hover:text-white transition-colors border border-[#FFE600]/40 cursor-pointer"
+              title="Keyboard Shortcuts [?]"
+            >
+              <CircleHelp className="w-4 h-4" />
             </button>
           )}
 
