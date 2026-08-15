@@ -140,6 +140,22 @@ export default function Home() {
         return;
       }
 
+      // Never hijack browser shortcuts: Alt+1-0 switches tabs, Ctrl/Cmd+F
+      // searches, etc. Only unmodified keys (Shift is fine, needed for "?")
+      // trigger app hotkeys — this prevents soundbites from firing during
+      // Alt+1-0 tab switching.
+      if (e.altKey || e.ctrlKey || e.metaKey) {
+        return;
+      }
+
+      // 0. ? -> Toggle Keyboard Shortcuts Cheatsheet (handled first so
+      // preventDefault always fires before any browser quick-find behavior)
+      if (e.key === '?') {
+        e.preventDefault();
+        setIsShortcutsOpen((prev) => !prev);
+        return;
+      }
+
       // 1. Spacebar -> In-place Stream Mode Toggle
       if (e.code === 'Space' || e.key === ' ') {
         e.preventDefault();
