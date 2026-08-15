@@ -127,7 +127,7 @@ export default function Home() {
   // Unified Global Hotkeys:
   // - [Space]: Toggle Stream Mode in place without losing screen or calculations
   // - [Enter]: Progress forward (WELCOME -> INPUT -> RESULTS -> INPUT)
-  // - [Tab] / [`] / [q]: Toggle Sampler Bank 1 & Bank 2
+  // - [Tab]: Toggle Sampler Bank 1 & Bank 2
   // - [1]–[0]: Trigger Sampler Soundbite
   // - [m]: Toggle Sound Vault
   // - [s]: Toggle Stream Mode
@@ -173,8 +173,8 @@ export default function Home() {
         return;
       }
 
-      // 3. Tab or ` Key -> Toggle Sampler Bank
-      if (e.key === 'Tab' || e.key === '`') {
+      // 3. Tab Key -> Toggle Sampler Bank
+      if (e.key === 'Tab') {
         e.preventDefault();
         setActiveBank((prev) => (prev === 1 ? 2 : 1));
         return;
@@ -218,14 +218,7 @@ export default function Home() {
         return;
       }
 
-      // 8. q -> Toggle Sampler Bank 1 & Bank 2
-      if (e.key.toLowerCase() === 'q') {
-        e.preventDefault();
-        setActiveBank((prev) => (prev === 1 ? 2 : 1));
-        return;
-      }
-
-      // 9. t -> Toggle Theme (Vaporwave <-> Obsidian)
+      // 8. t -> Toggle Theme (Vaporwave <-> Obsidian)
       if (e.key.toLowerCase() === 't') {
         e.preventDefault();
         setBgMode((prev) => (prev === 'VAPORWAVE' ? 'OBSIDIAN' : 'VAPORWAVE'));

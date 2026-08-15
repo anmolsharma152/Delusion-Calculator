@@ -22,7 +22,7 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
   },
   {
     title: 'Sound Bank',
-    entries: [{ keys: ['Tab', '`', 'Q'], label: 'Switch sound bank 1 / 2' }],
+    entries: [{ keys: ['Tab'], label: 'Switch sound bank 1 / 2' }],
   },
   {
     title: 'Sound Effects',
