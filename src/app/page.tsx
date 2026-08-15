@@ -20,7 +20,7 @@ import { Volume2, Square } from 'lucide-react';
 const defaultCriteria: CriteriaState = {
   minAge: 22,
   maxAge: 35,
-  minHeight: 72, // 6'0" (72 inches)
+  minHeight: 69, // 5'9" (69 inches)
   minIncome: 80000, // $80k default baseline
   maritalPref: MaritalPreference.DONT_CARE, // Unmarked by default
   excludeObese: false, // Unmarked by default
@@ -163,9 +163,9 @@ export default function Home() {
       if (e.key.toLowerCase() === 'f') {
         e.preventDefault();
         if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().catch(() => {});
+          document.documentElement.requestFullscreen().catch(() => { });
         } else {
-          document.exitFullscreen().catch(() => {});
+          document.exitFullscreen().catch(() => { });
         }
         return;
       }
@@ -249,11 +249,10 @@ export default function Home() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col justify-between select-none relative overflow-x-hidden transition-colors duration-500 ${
-        bgMode === 'OBSIDIAN'
+      className={`min-h-screen flex flex-col justify-between select-none relative overflow-x-hidden transition-colors duration-500 ${bgMode === 'OBSIDIAN'
           ? 'bg-[#080808]'
           : 'bg-[#080414] vaporwave-grid-container'
-      }`}
+        }`}
     >
       {/* Background Interactive Layer: ONLY in 80s Vaporwave mode; in Obsidian Dark mode it is 100% Pitch Black */}
       {bgMode === 'VAPORWAVE' && (
@@ -280,11 +279,10 @@ export default function Home() {
       />
 
       {/* Main App Content View Switcher */}
-      <main className={`flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 z-10 relative flex flex-col justify-center my-auto transition-[padding-top] duration-300 ${
-        isStreamMode
+      <main className={`flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 z-10 relative flex flex-col justify-center my-auto transition-[padding-top] duration-300 ${isStreamMode
           ? 'pb-3 pt-20'
           : 'py-1 sm:py-1.5'
-      }`}>
+        }`}>
         <AnimatePresence mode="wait" initial={false}>
           {viewState === 'WELCOME' && (
             <motion.div
