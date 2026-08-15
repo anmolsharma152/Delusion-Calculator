@@ -3,7 +3,7 @@
 import { DelusionResult, CriteriaState } from '../types';
 import { formatPercentage, formatHeight, formatIncome } from '../utils/format';
 import { X, Share2, Copy, Check, Download, Image as ImageIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toPng } from 'html-to-image';
 
 interface ShareCardProps {
@@ -15,6 +15,18 @@ interface ShareCardProps {
 export default function ShareCard({ result, criteria, onClose }: ShareCardProps) {
   const [copied, setCopied] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  // Listen for Escape key to close the share card
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   const handleCopyLink = () => {
     const textToShare = `My Delusion Score is ${result.delusionScore}/5 (${formatPercentage(result.matchPercentage)} match). Test your standards on the Female Delusion Calculator: ${window.location.href}`;
@@ -54,8 +66,14 @@ export default function ShareCard({ result, criteria, onClose }: ShareCardProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg bg-[#0c0721] border-2 border-[#FF007F] rounded-2xl p-6 shadow-[0_0_50px_rgba(255,0,127,0.4)] space-y-5">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-lg bg-[#0c0721] border-2 border-[#FF007F] rounded-2xl p-6 shadow-[0_0_50px_rgba(255,0,127,0.4)] space-y-5"
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
