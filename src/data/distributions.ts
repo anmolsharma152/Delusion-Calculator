@@ -1,11 +1,11 @@
-import { AgeRange, Race, EducationLevel, IncomeBracket } from '../types';
+import { AgeRange, Race, EducationLevel, IncomeBracket, ReligionPreference } from '../types';
 
 /**
- * DATA PACK 2026.1 — data refresh + Tier-2 filters.
- * Core demographic distributions updated to ACS 2024 1-Year Estimates.
+ * DATA PACK 2026.2 — Tier-3 filter expansion.
+ * Adds non-Christian religions, Independent politics, non-smoker, and straight-orientation filters.
  */
 export const DATA_PACK = {
-  version: '2026.1',
+  version: '2026.2',
   released: '2026-08-15',
 };
 
@@ -284,6 +284,79 @@ export const POLITICS_REPUBLICAN_BY_AGE: Record<AgeRange, number> = {
   '55-59': 0.56,
   '60-64': 0.56,
   '65+':   0.53,
+};
+
+/**
+ * Share of adult men identifying as a strict Independent (no party lean), by age.
+ * Source: Pew Research Center, 2024 Political Affiliation Survey (April 2024).
+ * ~7% of adults say "no lean / refused" to both party-lean follow-ups; strict pure
+ * independents (excludes leaners) are roughly 4% of men. Values are flat by age
+ * because Pew does not publish a reliable male age-gradient for this small group.
+ */
+export const POLITICS_INDEPENDENT_BY_AGE: Record<AgeRange, number> = {
+  '18-24': 0.04,
+  '25-29': 0.04,
+  '30-34': 0.04,
+  '35-39': 0.04,
+  '40-44': 0.04,
+  '45-49': 0.04,
+  '50-54': 0.04,
+  '55-59': 0.04,
+  '60-64': 0.04,
+  '65+':   0.04,
+};
+
+/**
+ * Share of US adult men who identify as a non-Christian religion.
+ * Source: Pew Research Center, Religious Landscape Study 2023-24.
+ * National figures (all adults): 1.7% Jewish, 1.2% Muslim, 1.1% Buddhist, 0.9% Hindu.
+ * Male shares are ~flat by age (Pew publishes no reliable male age-gradient for
+ * groups this small), so values are treated as age-invariant.
+ */
+export const RELIGION_NON_CHRISTIAN_SHARE: Partial<Record<ReligionPreference, number>> = {
+  [ReligionPreference.JEWISH]: 0.017,
+  [ReligionPreference.MUSLIM]: 0.012,
+  [ReligionPreference.HINDU]: 0.009,
+  [ReligionPreference.BUDDHIST]: 0.011,
+};
+
+/**
+ * Share of adult men who did NOT smoke cigarettes in the past month, by age.
+ * Source: SAMHSA, NSDUH 2023 (detailed table 2.4B, past-month cigarette use).
+ * Past-month smoking (all adults): 18-25 = 10.6%, 30-34 = 17.0%, 35-39 = 19.8%,
+ * 40-44 = 19.4%, 45-49 = 19.9%, 50-54 = 18.5%, 55-59 = 16.3%, 60-64 = 16.9%,
+ * 65+ = 9.2%. Values here are the complement (non-smoker), slightly male-adjusted.
+ */
+export const NONSMOKER_BY_AGE: Record<AgeRange, number> = {
+  '18-24': 0.89,
+  '25-29': 0.86,
+  '30-34': 0.83,
+  '35-39': 0.80,
+  '40-44': 0.81,
+  '45-49': 0.80,
+  '50-54': 0.82,
+  '55-59': 0.84,
+  '60-64': 0.83,
+  '65+':   0.91,
+};
+
+/**
+ * Share of adult men identifying as heterosexual / straight, by age.
+ * Source: Gallup, 2024 LGBTQ+ Identification (men; 6% of men identify LGBTQ+ overall).
+ * Age gradient: Gen Z men ~12% non-hetero, millennial men ~9%, Gen X ~5%, boomers+ <3%.
+ * Values are the complement (straight).
+ */
+export const STRAIGHT_BY_AGE: Record<AgeRange, number> = {
+  '18-24': 0.88,
+  '25-29': 0.88,
+  '30-34': 0.91,
+  '35-39': 0.91,
+  '40-44': 0.91,
+  '45-49': 0.95,
+  '50-54': 0.95,
+  '55-59': 0.97,
+  '60-64': 0.97,
+  '65+':   0.98,
 };
 
 /**

@@ -81,15 +81,19 @@ export default function MethodologyModal({ isOpen, onClose }: MethodologyModalPr
                 </li>
                 <li>
                   <strong className="text-white">Pew Research Center — Religious Landscape Study 2023-24:</strong>{' '}
-                  Religious affiliation of US men by age. 59% of men identify as Christian; younger men are substantially less religious than older men.
+                  Religious affiliation of US men. 59% identify as Christian; ~1-2% identify as Jewish, Muslim, Hindu, or Buddhist (non-Christian faiths are survey-based and flat by age).
                 </li>
                 <li>
                   <strong className="text-white">Pew Research Center — 2024 Political Affiliation:</strong>{' '}
-                  Party identification and leaning among US men by age. 52% identify as Republican / lean Republican, 46% as Democratic / lean Democratic.
+                  Party identification and leaning among US men by age. 52% identify as Republican / lean Republican, 46% as Democratic / lean Democratic, ~4% as strict independents (no lean).
                 </li>
                 <li>
                   <strong className="text-white">SAMHSA — NSDUH 2023 (National Survey on Drug Use and Health):</strong>{' '}
-                  Past-year illicit drug use among US men by age (~24.9% of adults 12+ report past-year use; rates peak in the 18-25 cohort).
+                  Past-year illicit drug use among US men by age (~24.9% of adults 12+ report past-year use; rates peak in the 18-25 cohort). Also past-month cigarette use (10.6% of 18-25, ~17-20% of 26-49) used for the non-smoker filter.
+                </li>
+                <li>
+                  <strong className="text-white">Gallup — 2024 LGBTQ+ Identification:</strong>{' '}
+                  Share of US men identifying as straight by age (6% of men overall identify as LGBTQ+; 12% of Gen Z men, 9% of millennials, lower among older cohorts).
                 </li>
                 <li>
                   <strong className="text-white">US Census Bureau SIPP (P70-162) & NSFG 2017-2019:</strong>{' '}
@@ -118,10 +122,10 @@ export default function MethodologyModal({ isOpen, onClose }: MethodologyModalPr
               </p>
               <div className="bg-[#0c0721] p-4 rounded-lg font-mono text-xs text-[#00F5FF] border border-[#00F5FF]/30 space-y-1">
                 <p>P(Match) = P(Age) × P(Race) × P(Height ≥ H) × P(Not Obese | Age) × P(Income ≥ I | Age) × P(Single | Age) × P(Edu ≥ E)</p>
-                <p className="text-[#FF007F]">× P(Christian | Age) × P(Party | Age) × P(No Children | Age) × P(No Drugs | Age) × P(No Record | Age)</p>
+                <p className="text-[#FF007F]">× P(Religion | Age) × P(Party | Age) × P(No Children | Age) × P(No Drugs | Age) × P(No Record | Age) × P(Non-Smoker | Age) × P(Straight | Age)</p>
               </div>
               <p className="text-xs text-[#B3A0D2]">
-                Because income, marital status, BMI, and the Tier-2 lifestyle factors (religion, politics, children, drug use, criminal history) are heavily dependent on age (e.g., only ~5% of men aged 18-24 earn over $100k vs ~33% of men aged 35-54), calculating these variables conditioned on the selected age brackets ensures accuracy. Filters left at "Any" contribute a probability of 1.0 and do not affect the result.
+                Because income, marital status, BMI, and the Tier-2/3 lifestyle factors (religion, politics, children, drug use, criminal history, smoking, sexual orientation) are heavily dependent on age (e.g., only ~5% of men aged 18-24 earn over $100k vs ~33% of men aged 35-54), calculating these variables conditioned on the selected age brackets ensures accuracy. Filters left at "Any" contribute a probability of 1.0 and do not affect the result. Non-Christian religion shares are survey-based and treated as flat by age.
               </p>
             </div>
           </section>
@@ -164,7 +168,7 @@ export default function MethodologyModal({ isOpen, onClose }: MethodologyModalPr
           {/* Section 4: Data Pack Footer */}
           <section className="flex items-center justify-between gap-4 px-2 pb-1">
             <div className="text-[11px] font-mono text-[#B3A0D2]">
-              DATA PACK <span className="text-[#00F5FF] font-bold">2026.1</span> · ACS 2024 · NHANES 2021-2023 · Pew RLS 2023-24 · NSDUH 2023 · released Aug 2026
+              DATA PACK <span className="text-[#00F5FF] font-bold">2026.2</span> · ACS 2024 · NHANES 2021-2023 · Pew RLS 2023-24 · NSDUH 2023 · Gallup 2024 · released Aug 2026
             </div>
             <div className="text-[11px] font-mono text-[#B3A0D2]">All probabilities conditioned on age</div>
           </section>

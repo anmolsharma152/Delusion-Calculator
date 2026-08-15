@@ -30,13 +30,18 @@ export enum MaritalPreference {
 
 export enum ReligionPreference {
   ANY = 'ANY',
-  CHRISTIAN = 'CHRISTIAN'
+  CHRISTIAN = 'CHRISTIAN',
+  JEWISH = 'JEWISH',
+  MUSLIM = 'MUSLIM',
+  HINDU = 'HINDU',
+  BUDDHIST = 'BUDDHIST'
 }
 
 export enum PoliticalPreference {
   ANY = 'ANY',
   REPUBLICAN = 'REPUBLICAN',
-  DEMOCRAT = 'DEMOCRAT'
+  DEMOCRAT = 'DEMOCRAT',
+  INDEPENDENT = 'INDEPENDENT'
 }
 
 export enum LocationScope {
@@ -71,6 +76,8 @@ export interface CriteriaState {
   noChildren: boolean;
   noDrugUse: boolean;
   noCriminalRecord: boolean;
+  noSmoking: boolean;
+  requireStraight: boolean;
 }
 
 export interface DelusionResult {

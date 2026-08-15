@@ -1,6 +1,25 @@
-# DATA PACK 2026.1
+# DATA PACK 2026.2
 
 > Versioned changelog for the Delusion Calculator's probability distributions.
+
+---
+
+## 2026.2 — Released 2026-08-15
+
+### New Tier-3 filters
+
+| Filter | Source | Release | Key estimate | Last update |
+| :--- | :--- | :--- | :--- | :--- |
+| **Religion (Jewish / Muslim / Hindu / Buddhist)** | Pew Research Center, Religious Landscape Study | 2023–24 | 1.7% Jewish, 1.2% Muslim, 1.1% Buddhist, 0.9% Hindu (all adults) | 2026-08-15 |
+| **Politics (Independent, strict)** | Pew Research Center, political affiliation survey | April 2024 | ~4% of men are strict independents (no party lean) | 2026-08-15 |
+| **Non-smoker** | SAMHSA, NSDUH detailed tables | 2023 | Past-month smoking: 10.6% (18–25), ~17–20% (26–49), 9.2% (65+) | 2026-08-15 |
+| **Must be straight** | Gallup, LGBTQ+ Identification | 2024 | 6% of men identify as LGBTQ+; ~12% of Gen Z men | 2026-08-15 |
+
+### Notes
+- Non-Christian religion shares and strict-independent share are survey-based, small, and treated as flat by age (no reliable male age-gradient exists for groups this small).
+- Non-smoker values are the complement of past-month cigarette use, slightly male-adjusted.
+- Height slider now snaps to the standard height options (fixes off-option values like 61"/63"/65").
+- Prior data pack (2026.1) added ACS 2024 refresh + Tier-2 lifestyle filters.
 
 ---
 

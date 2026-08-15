@@ -17,10 +17,14 @@ import {
   RACE_DISTRIBUTION, 
   EDUCATION_LEVELS,
   RELIGION_CHRISTIAN_BY_AGE,
+  RELIGION_NON_CHRISTIAN_SHARE,
   POLITICS_REPUBLICAN_BY_AGE,
+  POLITICS_INDEPENDENT_BY_AGE,
   CHILDLESS_BY_AGE,
   NO_DRUG_USE_BY_AGE,
-  NO_RECORD_BY_AGE
+  NO_RECORD_BY_AGE,
+  NONSMOKER_BY_AGE,
+  STRAIGHT_BY_AGE
 } from '../data/distributions';
 import { normalCDF, interpolateIncome, clamp } from '../utils/math';
 
@@ -123,13 +127,15 @@ export function calcObesityProbability(excludeObese: boolean, ageRanges: AgeRang
 
 export function calcReligionProbability(pref: ReligionPreference, ageRanges: AgeRange[]): number {
   if (pref === ReligionPreference.ANY) return 1.0;
-  return ageWeightedAverage(ageRanges, RELIGION_CHRISTIAN_BY_AGE);
+  if (pref === ReligionPreference.CHRISTIAN) return ageWeightedAverage(ageRanges, RELIGION_CHRISTIAN_BY_AGE);
+  return clamp(RELIGION_NON_CHRISTIAN_SHARE[pref] ?? 0, 0, 1);
 }
 
 export function calcPoliticsProbability(pref: PoliticalPreference, ageRanges: AgeRange[]): number {
   if (pref === PoliticalPreference.ANY) return 1.0;
   const republican = ageWeightedAverage(ageRanges, POLITICS_REPUBLICAN_BY_AGE);
   if (pref === PoliticalPreference.REPUBLICAN) return republican;
+  if (pref === PoliticalPreference.INDEPENDENT) return ageWeightedAverage(ageRanges, POLITICS_INDEPENDENT_BY_AGE);
   return clamp(1 - republican, 0, 1);
 }
 
@@ -146,6 +152,16 @@ export function calcNoDrugUseProbability(noDrugUse: boolean, ageRanges: AgeRange
 export function calcNoRecordProbability(noCriminalRecord: boolean, ageRanges: AgeRange[]): number {
   if (!noCriminalRecord) return 1.0;
   return ageWeightedAverage(ageRanges, NO_RECORD_BY_AGE);
+}
+
+export function calcNoSmokingProbability(noSmoking: boolean, ageRanges: AgeRange[]): number {
+  if (!noSmoking) return 1.0;
+  return ageWeightedAverage(ageRanges, NONSMOKER_BY_AGE);
+}
+
+export function calcStraightProbability(requireStraight: boolean, ageRanges: AgeRange[]): number {
+  if (!requireStraight) return 1.0;
+  return ageWeightedAverage(ageRanges, STRAIGHT_BY_AGE);
 }
 
 export function calcRaceProbability(selectedRaces: Race[]): number {
@@ -205,7 +221,13 @@ export function calcCombinedProbability(criteria: CriteriaState): { matchPercent
   const pNoRecord = calcNoRecordProbability(criteria.noCriminalRecord, ageRanges);
   breakdown.push({ filterName: 'No Criminal Record', probability: pNoRecord, label: criteria.noCriminalRecord ? 'Required' : 'Any' });
 
-  const matchPercentage = pAge * pHeight * pIncome * pRace * pEdu * pMarital * pObese * pReligion * pPolitics * pChildless * pNoDrugs * pNoRecord;
+  const pNoSmoke = calcNoSmokingProbability(criteria.noSmoking, ageRanges);
+  breakdown.push({ filterName: 'Non-Smoker', probability: pNoSmoke, label: criteria.noSmoking ? 'Required' : 'Any' });
+
+  const pStraight = calcStraightProbability(criteria.requireStraight, ageRanges);
+  breakdown.push({ filterName: 'Straight', probability: pStraight, label: criteria.requireStraight ? 'Required' : 'Any' });
+
+  const matchPercentage = pAge * pHeight * pIncome * pRace * pEdu * pMarital * pObese * pReligion * pPolitics * pChildless * pNoDrugs * pNoRecord * pNoSmoke * pStraight;
 
   return {
     matchPercentage,

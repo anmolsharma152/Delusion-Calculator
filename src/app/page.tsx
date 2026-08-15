@@ -32,6 +32,8 @@ const defaultCriteria: CriteriaState = {
   noChildren: false,
   noDrugUse: false,
   noCriminalRecord: false,
+  noSmoking: false,
+  requireStraight: false,
 };
 
 export default function Home() {

@@ -20,7 +20,9 @@ import {
   Landmark,
   Baby,
   Pill,
-  ShieldBan
+  ShieldBan,
+  CigaretteOff,
+  HeartPulse
 } from 'lucide-react';
 
 interface CriteriaFormProps {
@@ -33,20 +35,35 @@ interface CriteriaFormProps {
 // Income steps for slider jumps
 const INCOME_STEPS = [0, 25000, 50000, 80000, 100000, 150000, 200000, 250000, 350000, 500000];
 
-const getIncomeIndex = (income: number): number => {
-  const idx = INCOME_STEPS.indexOf(income);
-  if (idx !== -1) return idx;
-  let closest = 0;
-  let minDiff = Infinity;
-  INCOME_STEPS.forEach((val, i) => {
-    const diff = Math.abs(val - income);
-    if (diff < minDiff) {
-      minDiff = diff;
-      closest = i;
-    }
-  });
-  return closest;
-};
+  const getIncomeIndex = (income: number): number => {
+    const idx = INCOME_STEPS.indexOf(income);
+    if (idx !== -1) return idx;
+    let closest = 0;
+    let minDiff = Infinity;
+    INCOME_STEPS.forEach((val, i) => {
+      const diff = Math.abs(val - income);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = i;
+      }
+    });
+    return closest;
+  };
+
+  const getHeightIndex = (height: number): number => {
+    const idx = HEIGHT_OPTIONS.findIndex((opt) => opt.value === height);
+    if (idx !== -1) return idx;
+    let closest = 0;
+    let minDiff = Infinity;
+    HEIGHT_OPTIONS.forEach((opt, i) => {
+      const diff = Math.abs(opt.value - height);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = i;
+      }
+    });
+    return closest;
+  };
 
 // Standard Heights (inches and formatted)
 const HEIGHT_OPTIONS = [
@@ -243,14 +260,17 @@ function CriteriaForm({ criteria, onChange, onCalculate, isAnalyzing }: Criteria
                 </select>
               </div>
 
-              {/* Slider for quick adjustments */}
+              {/* Slider for quick adjustments (snaps to dropdown options) */}
               <input
                 type="range"
-                min="60"
-                max="78"
+                min="0"
+                max={HEIGHT_OPTIONS.length - 1}
                 step="1"
-                value={Math.min(78, criteria.minHeight)}
-                onChange={(e) => updateCriteria('minHeight', parseInt(e.target.value))}
+                value={getHeightIndex(Math.min(78, criteria.minHeight))}
+                onChange={(e) => {
+                  const idx = parseInt(e.target.value);
+                  updateCriteria('minHeight', HEIGHT_OPTIONS[idx].value);
+                }}
               />
 
               <div className="flex justify-between text-[11px] font-mono text-[#00F5FF] font-bold">
@@ -523,10 +543,14 @@ function CriteriaForm({ criteria, onChange, onCalculate, isAnalyzing }: Criteria
               >
                 <option value={ReligionPreference.ANY} className="bg-[#180e38]">Any Religion (No Requirement)</option>
                 <option value={ReligionPreference.CHRISTIAN} className="bg-[#180e38]">Must Be Christian</option>
+                <option value={ReligionPreference.JEWISH} className="bg-[#180e38]">Must Be Jewish</option>
+                <option value={ReligionPreference.MUSLIM} className="bg-[#180e38]">Must Be Muslim</option>
+                <option value={ReligionPreference.HINDU} className="bg-[#180e38]">Must Be Hindu</option>
+                <option value={ReligionPreference.BUDDHIST} className="bg-[#180e38]">Must Be Buddhist</option>
               </select>
 
               <div className="p-3 bg-[#0c0721] rounded-xl border border-[#FF007F]/20 text-[11px] font-mono text-[#B3A0D2] leading-relaxed">
-                ℹ️ <strong className="text-white">59% of US men</strong> identify as Christian (Pew RLS 2023-24).
+                ℹ️ <strong className="text-white">59% of US men</strong> identify as Christian; only ~1-2% are Jewish, Muslim, Hindu, or Buddhist (Pew RLS 2023-24, survey-based &amp; flat by age).
               </div>
             </div>
           </div>
@@ -551,10 +575,11 @@ function CriteriaForm({ criteria, onChange, onCalculate, isAnalyzing }: Criteria
                 <option value={PoliticalPreference.ANY} className="bg-[#180e38]">Any Affiliation (No Requirement)</option>
                 <option value={PoliticalPreference.REPUBLICAN} className="bg-[#180e38]">Republican / Lean Republican</option>
                 <option value={PoliticalPreference.DEMOCRAT} className="bg-[#180e38]">Democrat / Lean Democrat</option>
+                <option value={PoliticalPreference.INDEPENDENT} className="bg-[#180e38]">Independent (Strict, No Lean)</option>
               </select>
 
               <div className="p-3 bg-[#0c0721] rounded-xl border border-[#FF007F]/20 text-[11px] font-mono text-[#B3A0D2] leading-relaxed">
-                ℹ️ <strong className="text-white">52% of US men</strong> identify as Republican / lean Republican (Pew 2024).
+                ℹ️ <strong className="text-white">52% of US men</strong> identify as Republican / lean Republican; only ~<strong className="text-white">4%</strong> are strict independents (no party lean, Pew 2024).
               </div>
             </div>
           </div>
@@ -634,6 +659,50 @@ function CriteriaForm({ criteria, onChange, onCalculate, isAnalyzing }: Criteria
                   }`}
                 >
                   {criteria.noCriminalRecord && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => updateCriteria('noSmoking', !criteria.noSmoking)}
+                className={`px-3 py-2.5 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  criteria.noSmoking
+                    ? 'border-[#FFE600] bg-[#FFE600]/20 text-white shadow-[0_0_10px_#FFE600]'
+                    : 'border-[#FF007F]/20 bg-[#0c0721] text-[#E0E0E0] hover:text-white'
+                }`}
+              >
+                <CigaretteOff className="w-4 h-4 shrink-0" />
+                <span className="truncate">Non-Smoker (No Cigarettes)</span>
+                <div
+                  className={`ml-auto w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ${
+                    criteria.noSmoking
+                      ? 'border-[#FFE600] bg-[#FFE600] text-black'
+                      : 'border-[#FF007F]/40 bg-[#0c0721]'
+                  }`}
+                >
+                  {criteria.noSmoking && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => updateCriteria('requireStraight', !criteria.requireStraight)}
+                className={`px-3 py-2.5 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  criteria.requireStraight
+                    ? 'border-[#00F5FF] bg-[#00F5FF]/25 text-white shadow-[0_0_10px_#00F5FF]'
+                    : 'border-[#FF007F]/20 bg-[#0c0721] text-[#E0E0E0] hover:text-white'
+                }`}
+              >
+                <HeartPulse className="w-4 h-4 shrink-0" />
+                <span className="truncate">Must Be Straight</span>
+                <div
+                  className={`ml-auto w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ${
+                    criteria.requireStraight
+                      ? 'border-[#00F5FF] bg-[#00F5FF] text-black'
+                      : 'border-[#FF007F]/40 bg-[#0c0721]'
+                  }`}
+                >
+                  {criteria.requireStraight && <Check className="w-3 h-3 stroke-[3]" />}
                 </div>
               </button>
             </div>
