@@ -13,7 +13,20 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
     <div className="w-full py-0.5 sm:py-1 relative flex flex-col justify-center">
       <div className="max-w-5xl mx-auto w-full space-y-2.5 sm:space-y-3">
         {/* Main Banner Card */}
-        <div className="bg-[#0e0726] p-4 sm:p-4 rounded-2xl border-2 border-[#FF007F]/40 shadow-[0_0_45px_rgba(255,0,127,0.35)] text-center space-y-3 relative overflow-hidden">
+        <div className="bg-[#0e0726] p-4 sm:p-5 rounded-2xl border-2 border-[#FF007F]/40 shadow-[0_0_45px_rgba(255,0,127,0.35)] text-center space-y-3 relative overflow-hidden">
+          {/* M1 Hero Copy: eyebrow -> headline -> one-line pitch */}
+          <div className="space-y-2 pt-1">
+            <p className="text-[10px] sm:text-xs font-mono font-bold text-[#00F5FF] tracking-[0.4em] uppercase text-glow-cyan">
+              Build-A-Man Calculator
+            </p>
+            <h2 className="font-display text-4xl sm:text-6xl md:text-7xl text-white uppercase tracking-wide leading-none text-glow-pink">
+              LET'S BUILD YOUR MAN.
+            </h2>
+            <p className="text-xs sm:text-sm font-mono text-[#E0E0E0] max-w-2xl mx-auto">
+              Run the numbers. Test your standards. See what's statistically left.
+            </p>
+          </div>
+
           {/* Title - Official banner image with clockwise rotating cat litter bag */}
           <div className="space-y-1.5 py-0 flex flex-col items-center justify-center">
             <div className="relative">
@@ -24,7 +37,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
                 width={1280}
                 height={488}
                 priority
-                className="block w-auto h-24 sm:h-32 md:h-32 object-contain drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]"
+                className="block w-auto h-20 sm:h-28 md:h-28 object-contain drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]"
               />
 
               {/* Exactly 1 Clockwise Rotating Cat Litter Bag */}
@@ -38,10 +51,6 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
                 />
               </div>
             </div>
-
-            <p className="font-mono text-[11px] sm:text-xs text-[#00F5FF] font-bold text-glow-cyan">
-              "HOW DELUSIONAL ARE YOUR STANDARDS IN A MAN?" — THE NUMBERS DON'T LIE
-            </p>
           </div>
 
           {/* Side-by-Side Central Host Profile Badges */}
@@ -135,12 +144,12 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
               className="w-full max-w-lg mx-auto py-3 rounded-xl bg-gradient-to-r from-[#FF007F] via-[#8A2BE2] to-[#00F5FF] text-white font-display text-xl uppercase tracking-widest font-bold shadow-[0_0_35px_rgba(255,0,127,0.6)] hover:shadow-[0_0_45px_rgba(0,245,255,0.8)] transition-all flex items-center justify-center gap-3 cursor-pointer"
             >
               <Sparkles className="w-6 h-6 text-[#FFE600] animate-spin" />
-              <span>START DELUSION TEST</span>
+              <span>BUILD YOUR MAN</span>
               <ArrowRight className="w-6 h-6 text-white animate-pulse" />
             </motion.button>
 
             <p className="text-center text-[11px] font-mono text-[#B3A0D2] pt-2">
-              Press <kbd className="px-1.5 py-0.5 rounded-md bg-[#0e0726] border border-[#00F5FF]/50 text-[#00F5FF] font-bold">/</kbd> for keyboard shortcuts
+              POWERED BY REAL U.S. CENSUS &amp; CDC DATA · <kbd className="px-1.5 py-0.5 rounded-md bg-[#0e0726] border border-[#00F5FF]/50 text-[#00F5FF] font-bold">/</kbd> for shortcuts
             </p>
           </div>
         </div>
