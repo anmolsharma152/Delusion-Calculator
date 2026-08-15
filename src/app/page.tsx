@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Header from '@/components/Header';
 import WelcomeStage from '@/components/WelcomeStage';
 import CriteriaForm from '@/components/CriteriaForm';
@@ -47,66 +47,8 @@ export default function Home() {
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
   const [playingSound, setPlayingSound] = useState<{ id: string; name: string; hotkey?: string } | null>(null);
 
-  // Stream Mode Auto-Hide Control for Top Header
-  const [autoHideMode, setAutoHideMode] = useState(true);
-  const [isTopVisible, setIsTopVisible] = useState(true);
-  const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastMouseYRef = useRef<number>(typeof window !== 'undefined' ? window.innerHeight : 9999);
-
   // Hook calculates results based on activeCriteria
   const { result, breakdown } = useCalculator(activeCriteria);
-
-  // Stream Mode Auto-Hide: the header only appears when the cursor enters a
-  // tight band along the very top edge — moving the mouse elsewhere never
-  // pops it open. Once the cursor leaves the band it hides after 4s.
-  useEffect(() => {
-    if (!isStreamMode || !autoHideMode || isVaultOpen || isShareModalOpen) {
-      setIsTopVisible(true);
-      return;
-    }
-
-    const topThreshold = 72;
-    const HIDE_DELAY = 4000;
-
-    const scheduleHide = () => {
-      // Idle-based hide: never restart an already-running countdown, so
-      // moving the mouse around the calculator can't keep the panel up.
-      if (hideTimeoutRef.current) return;
-      hideTimeoutRef.current = setTimeout(() => {
-        hideTimeoutRef.current = null;
-        setIsTopVisible(false);
-      }, HIDE_DELAY);
-    };
-
-    const cancelHide = () => {
-      if (hideTimeoutRef.current) {
-        clearTimeout(hideTimeoutRef.current);
-        hideTimeoutRef.current = null;
-      }
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      lastMouseYRef.current = e.clientY;
-      if (e.clientY <= topThreshold) {
-        cancelHide();
-        setIsTopVisible(true);
-      } else {
-        scheduleHide();
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    // Always start the hide countdown when stream mode becomes active — even
-    // if the cursor is parked at the top (e.g. right after clicking the TV
-    // button) — so the panel never stays up indefinitely.
-    scheduleHide();
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelHide();
-    };
-  }, [isStreamMode, autoHideMode, isVaultOpen, isShareModalOpen]);
 
   const playSoundbite = (sound: SoundBite, hotkey?: string) => {
     setPlayingSound({ id: sound.id, name: sound.name, hotkey });
@@ -266,8 +208,6 @@ export default function Home() {
     setViewState('INPUT');
   };
 
-  const isAutoHidden = isStreamMode && autoHideMode && !isTopVisible;
-
   // Stable handler identities so the memoized Header / CriteriaForm never
   // re-render when unrelated state (e.g. typing income) changes.
   const handleToggleStreamMode = useCallback(() => {
@@ -285,12 +225,6 @@ export default function Home() {
   const handleOpenShortcuts = useCallback(() => {
     setIsShortcutsOpen(true);
   }, []);
-
-  const handleToggleAutoHide = useCallback(() => {
-    const next = !autoHideMode;
-    setAutoHideMode(next);
-    if (!next) setIsTopVisible(true);
-  }, [autoHideMode]);
 
   return (
     <div
@@ -321,15 +255,12 @@ export default function Home() {
         onToggleBank={handleToggleBank}
         onOpenSoundVault={handleOpenSoundVault}
         onOpenShortcuts={handleOpenShortcuts}
-        autoHideMode={autoHideMode}
-        onToggleAutoHide={handleToggleAutoHide}
-        isAutoHidden={isAutoHidden}
       />
 
       {/* Main App Content View Switcher */}
       <main className={`flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 z-10 relative flex flex-col justify-center my-auto transition-[padding-top] duration-300 ${
         isStreamMode
-          ? `pb-3 ${isAutoHidden ? 'pt-6' : 'pt-20'}`
+          ? 'pb-3 pt-20'
           : 'py-1 sm:py-1.5'
       }`}>
         <AnimatePresence mode="wait" initial={false}>

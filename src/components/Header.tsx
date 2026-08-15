@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Tv, Moon, Sun, Eye, EyeOff, Maximize2, Music, Layers, CircleHelp } from 'lucide-react';
+import { Tv, Moon, Sun, Maximize2, Music, Layers, CircleHelp } from 'lucide-react';
 
 interface HeaderProps {
   onGoHome?: () => void;
@@ -15,9 +15,6 @@ interface HeaderProps {
   onToggleBank?: () => void;
   onOpenSoundVault?: () => void;
   onOpenShortcuts?: () => void;
-  autoHideMode?: boolean;
-  onToggleAutoHide?: () => void;
-  isAutoHidden?: boolean;
 }
 
 function Header({
@@ -30,9 +27,6 @@ function Header({
   onToggleBank,
   onOpenSoundVault,
   onOpenShortcuts,
-  autoHideMode = true,
-  onToggleAutoHide,
-  isAutoHidden = false,
 }: HeaderProps) {
   const router = useRouter();
 
@@ -56,11 +50,7 @@ function Header({
     <header
       className={`w-full z-40 transition-transform duration-300 ease-in-out bg-[#0c0721] border-b-2 border-[#FF007F]/40 ${
         isStreamMode
-          ? `fixed top-0 left-0 right-0 px-4 sm:px-6 lg:px-8 py-2.5 ${
-              isAutoHidden
-                ? '-translate-y-full opacity-0 pointer-events-none'
-                : 'translate-y-0 opacity-100 pointer-events-auto'
-            }`
+          ? 'fixed top-0 left-0 right-0 px-4 sm:px-6 lg:px-8 py-2.5'
           : 'sticky top-0 px-4 sm:px-6 lg:px-8 h-16 flex items-center'
       }`}
     >
@@ -167,22 +157,6 @@ function Header({
               title="Toggle Stream Mode [Spacebar]"
             >
               <Tv className="w-4 h-4" />
-            </button>
-          )}
-
-          {/* Auto-Hide Toggle (Icon Only, in Stream Mode) */}
-          {isStreamMode && onToggleAutoHide && (
-            <button
-              type="button"
-              onClick={onToggleAutoHide}
-              className={`p-2 sm:p-2.5 rounded-xl border transition-all cursor-pointer ${
-                autoHideMode
-                  ? 'bg-[#FF007F]/20 text-[#FF007F] border-[#FF007F]/50 shadow-[0_0_10px_#FF007F]'
-                  : 'bg-[#00F5FF]/20 text-[#00F5FF] border-[#00F5FF]/50 shadow-[0_0_10px_#00F5FF]'
-              }`}
-              title={autoHideMode ? 'Auto-Hide: ON' : 'Auto-Hide: OFF'}
-            >
-              {autoHideMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4 text-[#00F5FF]" />}
             </button>
           )}
 
