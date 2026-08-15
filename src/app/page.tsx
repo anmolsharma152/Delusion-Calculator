@@ -12,7 +12,7 @@ import ShortcutsCheatsheet from '@/components/ShortcutsCheatsheet';
 import MethodologyModal from '@/components/MethodologyModal';
 import InteractiveBackground from '@/components/InteractiveBackground';
 import { useCalculator } from '@/hooks/useCalculator';
-import { CriteriaState, Race, EducationLevel, MaritalPreference, LocationScope } from '@/types';
+import { CriteriaState, Race, EducationLevel, MaritalPreference, LocationScope, ReligionPreference, PoliticalPreference } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Volume2, Square } from 'lucide-react';
 
@@ -27,6 +27,11 @@ const defaultCriteria: CriteriaState = {
   selectedRaces: [Race.ANY],
   minEducation: EducationLevel.HIGH_SCHOOL,
   location: LocationScope.SAME_COUNTRY,
+  religion: ReligionPreference.ANY,
+  politics: PoliticalPreference.ANY,
+  noChildren: false,
+  noDrugUse: false,
+  noCriminalRecord: false,
 };
 
 export default function Home() {

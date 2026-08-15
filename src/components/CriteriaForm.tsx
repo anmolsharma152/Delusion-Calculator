@@ -3,7 +3,7 @@
 import { memo, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { CriteriaState, Race, EducationLevel, MaritalPreference, LocationScope } from '../types';
+import { CriteriaState, Race, EducationLevel, MaritalPreference, LocationScope, ReligionPreference, PoliticalPreference } from '../types';
 import { formatHeight } from '../utils/format';
 import {
   Calendar,
@@ -15,7 +15,12 @@ import {
   Sparkles,
   Flame,
   Check,
-  MapPin
+  MapPin,
+  Church,
+  Landmark,
+  Baby,
+  Pill,
+  ShieldBan
 } from 'lucide-react';
 
 interface CriteriaFormProps {
@@ -485,6 +490,152 @@ function CriteriaForm({ criteria, onChange, onCalculate, isAnalyzing }: Criteria
                   <option value={LocationScope.OPEN} className="bg-[#180e38]">Open / Worldwide</option>
                 </select>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* TIER-2 LIFESTYLE FILTERS */}
+        <div className="flex items-center gap-3 pt-1">
+          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#FF007F]/50 to-transparent" />
+          <span className="font-mono text-[11px] sm:text-xs text-[#00F5FF] font-bold tracking-[0.3em] uppercase text-glow-cyan">
+            Tier-2 Lifestyle Filters
+          </span>
+          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#FF007F]/50 to-transparent" />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          {/* CARD 7: RELIGION */}
+          <div className="bg-[#180e38] p-5 sm:p-6 rounded-2xl border border-[#FF007F]/35 shadow-md flex flex-col justify-between space-y-4 hover:border-[#FF007F]/60 transition-colors">
+            <div className="flex items-center justify-between border-b border-[#FF007F]/25 pb-2.5">
+              <div className="flex items-center gap-2">
+                <Church className="w-5 h-5 text-[#FFE600]" />
+                <h3 className="font-display text-xl sm:text-2xl text-white tracking-wider uppercase">
+                  Religion
+                </h3>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <select
+                value={criteria.religion}
+                onChange={(e) => updateCriteria('religion', e.target.value as ReligionPreference)}
+                className="w-full bg-[#0c0721] border border-[#FFE600]/40 text-white font-mono text-xs sm:text-sm font-bold rounded-xl px-3.5 py-3 outline-none focus:border-[#00F5FF] cursor-pointer"
+              >
+                <option value={ReligionPreference.ANY} className="bg-[#180e38]">Any Religion (No Requirement)</option>
+                <option value={ReligionPreference.CHRISTIAN} className="bg-[#180e38]">Must Be Christian</option>
+              </select>
+
+              <div className="p-3 bg-[#0c0721] rounded-xl border border-[#FF007F]/20 text-[11px] font-mono text-[#B3A0D2] leading-relaxed">
+                ℹ️ <strong className="text-white">59% of US men</strong> identify as Christian (Pew RLS 2023-24).
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 8: POLITICS */}
+          <div className="bg-[#180e38] p-5 sm:p-6 rounded-2xl border border-[#FF007F]/35 shadow-md flex flex-col justify-between space-y-4 hover:border-[#FF007F]/60 transition-colors">
+            <div className="flex items-center justify-between border-b border-[#FF007F]/25 pb-2.5">
+              <div className="flex items-center gap-2">
+                <Landmark className="w-5 h-5 text-[#00F5FF]" />
+                <h3 className="font-display text-xl sm:text-2xl text-white tracking-wider uppercase">
+                  Politics
+                </h3>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <select
+                value={criteria.politics}
+                onChange={(e) => updateCriteria('politics', e.target.value as PoliticalPreference)}
+                className="w-full bg-[#0c0721] border border-[#00F5FF]/40 text-white font-mono text-xs sm:text-sm font-bold rounded-xl px-3.5 py-3 outline-none focus:border-[#FF007F] cursor-pointer"
+              >
+                <option value={PoliticalPreference.ANY} className="bg-[#180e38]">Any Affiliation (No Requirement)</option>
+                <option value={PoliticalPreference.REPUBLICAN} className="bg-[#180e38]">Republican / Lean Republican</option>
+                <option value={PoliticalPreference.DEMOCRAT} className="bg-[#180e38]">Democrat / Lean Democrat</option>
+              </select>
+
+              <div className="p-3 bg-[#0c0721] rounded-xl border border-[#FF007F]/20 text-[11px] font-mono text-[#B3A0D2] leading-relaxed">
+                ℹ️ <strong className="text-white">52% of US men</strong> identify as Republican / lean Republican (Pew 2024).
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 9: LIFESTYLE / BACKGROUND */}
+          <div className="bg-[#180e38] p-5 sm:p-6 rounded-2xl border border-[#FF007F]/35 shadow-md flex flex-col justify-between space-y-4 hover:border-[#FF007F]/60 transition-colors">
+            <div className="flex items-center justify-between border-b border-[#FF007F]/25 pb-2.5">
+              <div className="flex items-center gap-2">
+                <ShieldBan className="w-5 h-5 text-[#FF007F]" />
+                <h3 className="font-display text-xl sm:text-2xl text-white tracking-wider uppercase">
+                  Lifestyle & Background
+                </h3>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2.5">
+              <button
+                type="button"
+                onClick={() => updateCriteria('noChildren', !criteria.noChildren)}
+                className={`px-3 py-2.5 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  criteria.noChildren
+                    ? 'border-[#FFE600] bg-[#FFE600]/20 text-white shadow-[0_0_10px_#FFE600]'
+                    : 'border-[#FF007F]/20 bg-[#0c0721] text-[#E0E0E0] hover:text-white'
+                }`}
+              >
+                <Baby className="w-4 h-4 shrink-0" />
+                <span className="truncate">Must Have No Children</span>
+                <div
+                  className={`ml-auto w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ${
+                    criteria.noChildren
+                      ? 'border-[#FFE600] bg-[#FFE600] text-black'
+                      : 'border-[#FF007F]/40 bg-[#0c0721]'
+                  }`}
+                >
+                  {criteria.noChildren && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => updateCriteria('noDrugUse', !criteria.noDrugUse)}
+                className={`px-3 py-2.5 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  criteria.noDrugUse
+                    ? 'border-[#00F5FF] bg-[#00F5FF]/25 text-white shadow-[0_0_10px_#00F5FF]'
+                    : 'border-[#FF007F]/20 bg-[#0c0721] text-[#E0E0E0] hover:text-white'
+                }`}
+              >
+                <Pill className="w-4 h-4 shrink-0" />
+                <span className="truncate">No Illicit Drug Use (Past Yr)</span>
+                <div
+                  className={`ml-auto w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ${
+                    criteria.noDrugUse
+                      ? 'border-[#00F5FF] bg-[#00F5FF] text-black'
+                      : 'border-[#FF007F]/40 bg-[#0c0721]'
+                  }`}
+                >
+                  {criteria.noDrugUse && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => updateCriteria('noCriminalRecord', !criteria.noCriminalRecord)}
+                className={`px-3 py-2.5 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  criteria.noCriminalRecord
+                    ? 'border-[#E50914] bg-[#E50914]/25 text-white shadow-[0_0_10px_#E50914]'
+                    : 'border-[#FF007F]/20 bg-[#0c0721] text-[#E0E0E0] hover:text-white'
+                }`}
+              >
+                <ShieldBan className="w-4 h-4 shrink-0" />
+                <span className="truncate">No Criminal Record</span>
+                <div
+                  className={`ml-auto w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ${
+                    criteria.noCriminalRecord
+                      ? 'border-[#E50914] bg-[#E50914] text-white'
+                      : 'border-[#FF007F]/40 bg-[#0c0721]'
+                  }`}
+                >
+                  {criteria.noCriminalRecord && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
             </div>
           </div>
         </div>

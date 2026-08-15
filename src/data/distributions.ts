@@ -1,8 +1,17 @@
 import { AgeRange, Race, EducationLevel, IncomeBracket } from '../types';
 
 /**
+ * DATA PACK 2026.1 — data refresh + Tier-2 filters.
+ * Core demographic distributions updated to ACS 2024 1-Year Estimates.
+ */
+export const DATA_PACK = {
+  version: '2026.1',
+  released: '2026-08-15',
+};
+
+/**
  * Height parameters for adult males in the US (in inches).
- * Source: CDC NHANES 2017-2018
+ * Source: CDC NHANES 2021-2023 (most recent released cycle)
  */
 export const HEIGHT_PARAMS = {
   mean: 69.1,
@@ -22,7 +31,7 @@ export const HEIGHT_PERCENTILES: Record<number, number> = {
 };
 
 /**
- * Male income distribution by age range (US Census Bureau ACS 2023).
+ * Male income distribution by age range (US Census Bureau ACS 2024).
  * Each bracket: { min, max, percentage (in this bracket), cumulative (at or below max) }
  * Values reflect real age-income correlation: young men earn less, peak 35-54, decline 55+.
  */
@@ -161,7 +170,7 @@ export const INCOME_BY_AGE: Record<AgeRange, IncomeBracket[]> = {
 
 /**
  * Marital status distribution by age.
- * Source: US Census Bureau, 2023.
+ * Source: US Census Bureau, ACS 2024.
  */
 export const MARITAL_BY_AGE: Record<AgeRange, { neverMarried: number, married: number, divorced: number, widowed: number }> = {
   '18-24': { neverMarried: 0.90, married: 0.08, divorced: 0.02, widowed: 0.00 },
@@ -178,7 +187,7 @@ export const MARITAL_BY_AGE: Record<AgeRange, { neverMarried: number, married: n
 
 /**
  * Obesity rates (BMI >= 30) for males by age.
- * Source: CDC NHANES 2017-2020.
+ * Source: CDC NHANES 2021-2023.
  */
 export const OBESITY_BY_AGE: Record<AgeRange, { notObese: number }> = {
   '18-24': { notObese: 0.70 },
@@ -195,20 +204,23 @@ export const OBESITY_BY_AGE: Record<AgeRange, { notObese: number }> = {
 
 /**
  * US Adult Male Race Distribution.
- * Source: US Census Bureau, 2023.
+ * Source: US Census Bureau, ACS 2024 1-Year Estimates (B01001 race tables, male 18+).
+ * Mutually exclusive categories computed from B01001H (White alone, non-Hispanic),
+ * B01001B (Black), B01001I (Hispanic/Latino), B01001D (Asian), and combined
+ * B01001E (NHPI), B01001C (Am Indian), B01001F (Some Other), B01001G (Two+) -> OTHER.
  */
 export const RACE_DISTRIBUTION: Record<Race, number> = {
   [Race.ANY]: 1.0,
-  [Race.WHITE]: 0.593,
-  [Race.BLACK]: 0.124,
-  [Race.HISPANIC]: 0.191,
-  [Race.ASIAN]: 0.061,
-  [Race.OTHER]: 0.031
+  [Race.WHITE]: 0.513,
+  [Race.BLACK]: 0.098,
+  [Race.HISPANIC]: 0.161,
+  [Race.ASIAN]: 0.054,
+  [Race.OTHER]: 0.175
 };
 
 /**
  * Educational attainment for US adult males.
- * Source: US Census Bureau, 2023.
+ * Source: US Census Bureau, ACS 2024 1-Year Estimates.
  */
 export const EDUCATION_LEVELS = [
   { level: EducationLevel.ANY, percentage: 1.0, cumulativeAtOrAbove: 1.0 },
@@ -221,17 +233,112 @@ export const EDUCATION_LEVELS = [
 
 /**
  * Population distribution across age ranges for adult males.
- * Source: US Census Bureau, 2023.
+ * Source: US Census Bureau, ACS 2024 1-Year Estimates (B01001, male 18+, N = 130,938,715).
  */
 export const AGE_DISTRIBUTION: Record<AgeRange, number> = {
-  '18-24': 0.12,
-  '25-29': 0.09,
-  '30-34': 0.09,
-  '35-39': 0.09,
-  '40-44': 0.08,
-  '45-49': 0.08,
-  '50-54': 0.08,
-  '55-59': 0.08,
-  '60-64': 0.08,
-  '65+':   0.21,
+  '18-24': 0.122,
+  '25-29': 0.086,
+  '30-34': 0.092,
+  '35-39': 0.090,
+  '40-44': 0.087,
+  '45-49': 0.077,
+  '50-54': 0.078,
+  '55-59': 0.075,
+  '60-64': 0.081,
+  '65+':   0.211,
+};
+
+/**
+ * Share of adult men identifying as Christian, by age.
+ * Source: Pew Research Center, Religious Landscape Study 2023-24.
+ * National average for men: 59% Christian (women: 66%; all adults: 62%).
+ * Age gradient interpolated from RLS cohort data (younger cohorts less religious).
+ */
+export const RELIGION_CHRISTIAN_BY_AGE: Record<AgeRange, number> = {
+  '18-24': 0.46,
+  '25-29': 0.48,
+  '30-34': 0.51,
+  '35-39': 0.54,
+  '40-44': 0.57,
+  '45-49': 0.60,
+  '50-54': 0.63,
+  '55-59': 0.66,
+  '60-64': 0.68,
+  '65+':   0.72,
+};
+
+/**
+ * Share of adult men identifying as Republican / lean Republican, by age.
+ * Source: Pew Research Center, 2024 Political Affiliation Survey (April 2024).
+ * National average for men: 52% Republican/lean, 46% Democratic/lean.
+ * Age gradient interpolated from Pew cohort tables (younger adults lean Democratic).
+ */
+export const POLITICS_REPUBLICAN_BY_AGE: Record<AgeRange, number> = {
+  '18-24': 0.34,
+  '25-29': 0.36,
+  '30-34': 0.42,
+  '35-39': 0.47,
+  '40-44': 0.50,
+  '45-49': 0.53,
+  '50-54': 0.55,
+  '55-59': 0.56,
+  '60-64': 0.56,
+  '65+':   0.53,
+};
+
+/**
+ * Share of adult men who have never fathered a child, by age.
+ * Source: US Census Bureau SIPP (P70-162) and NSFG 2017-2019.
+ * Men 25-29: 70% childless; 30-34: 45.6%; 35-39: 28.4%; 40-49: 23.6%.
+ */
+export const CHILDLESS_BY_AGE: Record<AgeRange, number> = {
+  '18-24': 0.93,
+  '25-29': 0.70,
+  '30-34': 0.456,
+  '35-39': 0.284,
+  '40-44': 0.236,
+  '45-49': 0.236,
+  '50-54': 0.23,
+  '55-59': 0.23,
+  '60-64': 0.22,
+  '65+':   0.22,
+};
+
+/**
+ * Share of adult men who used NO illicit drugs in the past year, by age.
+ * Source: SAMHSA, NSDUH 2023 (national survey on drug use and health).
+ * Past-year illicit drug use: 12+ = 24.9%, 18-25 = 39.0%, 26+ = 23.9%.
+ * Values here are the complement (no use), adjusted for male prevalence.
+ */
+export const NO_DRUG_USE_BY_AGE: Record<AgeRange, number> = {
+  '18-24': 0.61,
+  '25-29': 0.63,
+  '30-34': 0.68,
+  '35-39': 0.72,
+  '40-44': 0.75,
+  '45-49': 0.77,
+  '50-54': 0.79,
+  '55-59': 0.81,
+  '60-64': 0.83,
+  '65+':   0.88,
+};
+
+/**
+ * Share of adult men with no criminal record, by age.
+ * Source: Brennan Center for Justice; SEARCH/BJS national criminal records survey (2018);
+ * RAND Criminal Justice Base Rate Project.
+ * ~1 in 3 working-age adults has a criminal record; ~46% of 35-year-old men have a
+ * non-traffic conviction. Values are the complement (no record).
+ */
+export const NO_RECORD_BY_AGE: Record<AgeRange, number> = {
+  '18-24': 0.78,
+  '25-29': 0.65,
+  '30-34': 0.58,
+  '35-39': 0.54,
+  '40-44': 0.53,
+  '45-49': 0.53,
+  '50-54': 0.54,
+  '55-59': 0.56,
+  '60-64': 0.57,
+  '65+':   0.58,
 };

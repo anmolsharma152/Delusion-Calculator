@@ -28,6 +28,17 @@ export enum MaritalPreference {
   DONT_CARE = 'DONT_CARE'
 }
 
+export enum ReligionPreference {
+  ANY = 'ANY',
+  CHRISTIAN = 'CHRISTIAN'
+}
+
+export enum PoliticalPreference {
+  ANY = 'ANY',
+  REPUBLICAN = 'REPUBLICAN',
+  DEMOCRAT = 'DEMOCRAT'
+}
+
 export enum LocationScope {
   SAME_CITY = 'SAME_CITY',
   SAME_STATE = 'SAME_STATE',
@@ -55,6 +66,11 @@ export interface CriteriaState {
   selectedRaces: Race[];
   minEducation: EducationLevel;
   location: LocationScope;
+  religion: ReligionPreference;
+  politics: PoliticalPreference;
+  noChildren: boolean;
+  noDrugUse: boolean;
+  noCriminalRecord: boolean;
 }
 
 export interface DelusionResult {

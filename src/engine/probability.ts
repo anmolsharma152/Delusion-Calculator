@@ -4,6 +4,8 @@ import {
   Race, 
   EducationLevel, 
   MaritalPreference, 
+  ReligionPreference,
+  PoliticalPreference,
   FilterBreakdown 
 } from '../types';
 import { 
@@ -13,7 +15,12 @@ import {
   MARITAL_BY_AGE, 
   OBESITY_BY_AGE, 
   RACE_DISTRIBUTION, 
-  EDUCATION_LEVELS 
+  EDUCATION_LEVELS,
+  RELIGION_CHRISTIAN_BY_AGE,
+  POLITICS_REPUBLICAN_BY_AGE,
+  CHILDLESS_BY_AGE,
+  NO_DRUG_USE_BY_AGE,
+  NO_RECORD_BY_AGE
 } from '../data/distributions';
 import { normalCDF, interpolateIncome, clamp } from '../utils/math';
 
@@ -70,6 +77,19 @@ export function calcIncomeProbability(minIncome: number, ageRanges: AgeRange[]):
   return totalPop > 0 ? probSum / totalPop : 0;
 }
 
+function ageWeightedAverage(ageRanges: AgeRange[], distribution: Record<AgeRange, number>): number {
+  let totalPop = 0;
+  let probSum = 0;
+
+  for (const range of ageRanges) {
+    const popWeight = AGE_DISTRIBUTION[range];
+    totalPop += popWeight;
+    probSum += distribution[range] * popWeight;
+  }
+
+  return totalPop > 0 ? probSum / totalPop : 0;
+}
+
 export function calcMaritalProbability(pref: MaritalPreference, ageRanges: AgeRange[]): number {
   if (pref === MaritalPreference.DONT_CARE) return 1.0;
 
@@ -99,6 +119,33 @@ export function calcObesityProbability(excludeObese: boolean, ageRanges: AgeRang
   }
 
   return totalPop > 0 ? probSum / totalPop : 0;
+}
+
+export function calcReligionProbability(pref: ReligionPreference, ageRanges: AgeRange[]): number {
+  if (pref === ReligionPreference.ANY) return 1.0;
+  return ageWeightedAverage(ageRanges, RELIGION_CHRISTIAN_BY_AGE);
+}
+
+export function calcPoliticsProbability(pref: PoliticalPreference, ageRanges: AgeRange[]): number {
+  if (pref === PoliticalPreference.ANY) return 1.0;
+  const republican = ageWeightedAverage(ageRanges, POLITICS_REPUBLICAN_BY_AGE);
+  if (pref === PoliticalPreference.REPUBLICAN) return republican;
+  return clamp(1 - republican, 0, 1);
+}
+
+export function calcChildlessProbability(noChildren: boolean, ageRanges: AgeRange[]): number {
+  if (!noChildren) return 1.0;
+  return ageWeightedAverage(ageRanges, CHILDLESS_BY_AGE);
+}
+
+export function calcNoDrugUseProbability(noDrugUse: boolean, ageRanges: AgeRange[]): number {
+  if (!noDrugUse) return 1.0;
+  return ageWeightedAverage(ageRanges, NO_DRUG_USE_BY_AGE);
+}
+
+export function calcNoRecordProbability(noCriminalRecord: boolean, ageRanges: AgeRange[]): number {
+  if (!noCriminalRecord) return 1.0;
+  return ageWeightedAverage(ageRanges, NO_RECORD_BY_AGE);
 }
 
 export function calcRaceProbability(selectedRaces: Race[]): number {
@@ -143,7 +190,22 @@ export function calcCombinedProbability(criteria: CriteriaState): { matchPercent
   const pObese = calcObesityProbability(criteria.excludeObese, ageRanges);
   breakdown.push({ filterName: 'Not Obese', probability: pObese, label: criteria.excludeObese ? 'Required' : 'Any' });
 
-  const matchPercentage = pAge * pHeight * pIncome * pRace * pEdu * pMarital * pObese;
+  const pReligion = calcReligionProbability(criteria.religion, ageRanges);
+  breakdown.push({ filterName: 'Religion', probability: pReligion, label: criteria.religion });
+
+  const pPolitics = calcPoliticsProbability(criteria.politics, ageRanges);
+  breakdown.push({ filterName: 'Politics', probability: pPolitics, label: criteria.politics });
+
+  const pChildless = calcChildlessProbability(criteria.noChildren, ageRanges);
+  breakdown.push({ filterName: 'No Children', probability: pChildless, label: criteria.noChildren ? 'Required' : 'Any' });
+
+  const pNoDrugs = calcNoDrugUseProbability(criteria.noDrugUse, ageRanges);
+  breakdown.push({ filterName: 'No Drug Use', probability: pNoDrugs, label: criteria.noDrugUse ? 'Required' : 'Any' });
+
+  const pNoRecord = calcNoRecordProbability(criteria.noCriminalRecord, ageRanges);
+  breakdown.push({ filterName: 'No Criminal Record', probability: pNoRecord, label: criteria.noCriminalRecord ? 'Required' : 'Any' });
+
+  const matchPercentage = pAge * pHeight * pIncome * pRace * pEdu * pMarital * pObese * pReligion * pPolitics * pChildless * pNoDrugs * pNoRecord;
 
   return {
     matchPercentage,
