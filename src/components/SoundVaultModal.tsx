@@ -54,6 +54,7 @@ export const ALL_VAULT_SOUNDS: SoundBite[] = [
   { id: 'tate-air', name: 'Breathe Air', file: '/Soundbites/andrew-tate-breath-air.mp3', category: 'Top G' },
   { id: 'tate-haram', name: 'Andrew Tate: Haram', file: '/Soundbites/haram-andrew-tate.mp3', category: 'Top G' },
   { id: 'tate-super-gay', name: 'Tate: Super Gay', file: '/Soundbites/its-super-gay-andrew-tate.mp3', category: 'Top G' },
+  { id: 'tate-doesnt-matter', name: "It Doesn't Matter What You Think", file: '/Soundbites/it-doesnt-matter-what-you-think.mp3', category: 'Top G' },
 
   // 3. Reactions & Memes
   { id: 'emotional-damage', name: 'Emotional Damage', file: '/Soundbites/emotional-damage-meme.mp3', category: 'Reactions' },
@@ -75,6 +76,10 @@ export const ALL_VAULT_SOUNDS: SoundBite[] = [
   { id: 'shocked', name: 'Shocked Sound', file: '/Soundbites/shocked-sound-effect.mp3', category: 'Reactions' },
   { id: 'anime-ahh', name: 'Anime Ahh', file: '/Soundbites/anime-ahh.mp3', category: 'Reactions' },
   { id: 'anime-wow', name: 'Anime Wow', file: '/Soundbites/anime-wow-sound-effect.mp3', category: 'Reactions' },
+  { id: 'gah-dayum', name: 'GAH DAYUM', file: '/Soundbites/gah-dayum.mp3', category: 'Reactions' },
+  { id: 'rizzbot-laugh', name: 'Rizzbot Laugh', file: '/Soundbites/rizzbot-laugh.mp3', category: 'Reactions' },
+  { id: 'damn-son', name: "Damn Son, Where'd You Find This?", file: '/Soundbites/damn-son-whered-you-find-this.mp3', category: 'Reactions' },
+  { id: 'shut-up-meg', name: 'Shut Up Meg', file: '/Soundbites/shut-up-meg.mp3', category: 'Reactions' },
 
   // 4. Fails & Losses
   { id: 'spongebob-fail', name: 'Spongebob Fail', file: '/Soundbites/spongebob-fail.mp3', category: 'Fails' },

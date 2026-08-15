@@ -37,7 +37,7 @@ All shortcuts verified in code. This is the authoritative list for the cheat she
 | `Enter` | Next stage (WELCOME → INPUT → RESULTS → INPUT); triggers calculation when on INPUT | `page.tsx:148`, `CriteriaForm.tsx:75` |
 | `Space` | Toggle Stream Mode in place | `page.tsx:141` |
 | `S` | Toggle Stream Mode | `page.tsx:186` |
-| `Tab` / `` ` `` / `Q` | Switch sound bank 1 ↔ 2 | `page.tsx:159`, `page.tsx:204` |
+| `Tab` | Switch sound bank 1 ↔ 2 | `page.tsx:159`, `page.tsx:204` |
 | `1`–`0` | Trigger soundbite from active bank | `page.tsx:167`, `KEY_LABELS` |
 | `M` | Open / close Sound Vault | `page.tsx:179` |
 | `F` | Toggle Fullscreen | `page.tsx:193` |
