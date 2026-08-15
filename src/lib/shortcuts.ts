@@ -26,7 +26,7 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
   },
   {
     title: 'Sound Effects',
-    entries: [{ keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], label: 'Trigger soundbite (active bank)' }],
+    entries: [{ keys: ['1 to 0'], label: 'Trigger soundbite' }],
   },
   {
     title: 'Sound Vault',
