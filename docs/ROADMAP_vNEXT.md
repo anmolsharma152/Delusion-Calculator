@@ -3,7 +3,7 @@
 > **Project:** The Delusion Calculator
 > **Owner:** Anmol Sharma
 > **Date:** August 2026
-> **Status:** Active — supersedes the priority ordering of the original `Implementation Plan 1.txt` and `Implementation Plan 2.txt` (those files remain the source of truth for *what* to build; this document reorders and atomizes *when* and *how*).
+> **Status:** Active — supersedes the priority ordering of the original `docs/IMPLEMENTATION_PLAN_1.md` and `docs/IMPLEMENTATION_PLAN_2.md` (those files remain the source of truth for *what* to build; this document reorders and atomizes *when* and *how*).
 
 ---
 
