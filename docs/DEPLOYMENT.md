@@ -30,7 +30,7 @@ npm run start
 ```
 
 ### Static Optimization Details:
-* All pages (`/`, `/about`, `/stream`) are fully prerendered at build time.
+* The single page (`/`) is fully prerendered at build time.
 * Fast client-side calculations execute with zero API latency.
 * Assets in `public/Assets/` and `public/Soundbites/` are served with static caching headers.
 
@@ -43,5 +43,5 @@ To embed the Delusion Calculator inside OBS Studio:
 1. In OBS, add a **Browser Source**.
 2. Set URL to `http://localhost:3000` (or your production deployment domain).
 3. Set Width: `1920` and Height: `1080` (or `1280` × `720`).
-4. Press **`[Space]`** or click **`STREAM MODE`** to activate the broadcast overlay.
+4. Press **`[Space]`** to activate Stream Mode; the top header hides and only peeks back when the cursor reaches the top edge of the captured window.
 5. In Obsidian Dark theme, the background is pure `#080808` obsidian black for seamless broadcast integration.

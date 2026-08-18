@@ -46,8 +46,8 @@ All cards use solid `#180e38` and `#0e0726` background fills with solid borders 
 
 ---
 
-## 4. OBS Stream Mode Overlay & Auto-Hide
+## 4. OBS Stream Mode Overlay & Header
 
 In Stream Mode:
-* Top header auto-hides with smooth CSS transforms when the cursor moves away from the top 90px.
+* The top header is hidden by default and only peeks back when the cursor reaches the top edge of the screen (mouse leaves → header hides again). No fullscreen is forced — hosts capture the window content directly.
 * In **Obsidian Dark Theme**, the background canvas is completely disabled for a 100% pitch-black background suitable for chromakeying or window capture.

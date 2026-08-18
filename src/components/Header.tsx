@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Tv, Moon, Sun, Maximize2, Music, Layers, CircleHelp, Info } from 'lucide-react';
@@ -18,6 +18,10 @@ interface HeaderProps {
   onOpenMethodology?: () => void;
 }
 
+// Uniform chrome for every icon button. Color is reserved for active states.
+const CHROME =
+  'p-2 sm:p-2.5 rounded-xl bg-[#180e38] border-[#FF007F]/30 text-[#00F5FF] hover:text-white hover:border-[#00F5FF] transition-all cursor-pointer';
+
 function Header({
   onGoHome,
   isStreamMode = false,
@@ -31,6 +35,11 @@ function Header({
   onOpenMethodology,
 }: HeaderProps) {
   const router = useRouter();
+  const [peeking, setPeeking] = useState(false);
+
+  // In stream mode the header is hidden by default and only peeks back when
+  // the cursor reaches the very top edge of the screen (mouse leaves -> hide).
+  const streamVisible = isStreamMode && peeking;
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -49,14 +58,30 @@ function Header({
   };
 
   return (
-    <header
-      className={`w-full z-40 transition-transform duration-300 ease-in-out bg-[#0c0721] border-b-2 border-[#FF007F]/40 ${
-        isStreamMode
-          ? 'fixed top-0 left-0 right-0 px-4 sm:px-6 lg:px-8 py-2.5'
-          : 'sticky top-0 px-4 sm:px-6 lg:px-8 h-16 flex items-center'
-      }`}
-    >
-      <div className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
+    <>
+      {/* Invisible top-edge reveal strip — active ONLY in stream mode so the
+          hidden header can peek back when the cursor reaches the top of the screen. */}
+      {isStreamMode && (
+        <div
+          className="fixed top-0 left-0 right-0 h-2.5 z-50"
+          onMouseEnter={() => setPeeking(true)}
+        />
+      )}
+
+      <header
+        className={`w-full z-40 transition-transform duration-300 ease-in-out bg-[#0c0721] border-b-2 border-[#FF007F]/40 ${
+          isStreamMode
+            ? `fixed top-0 left-0 right-0 px-4 sm:px-6 lg:px-8 py-2.5 ${
+                streamVisible
+                  ? 'translate-y-0 pointer-events-auto'
+                  : '-translate-y-full pointer-events-none'
+              }`
+            : 'sticky top-0 px-4 sm:px-6 lg:px-8 h-16 flex items-center'
+        }`}
+        onMouseEnter={isStreamMode ? () => setPeeking(true) : undefined}
+        onMouseLeave={isStreamMode ? () => setPeeking(false) : undefined}
+      >
+      <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-4">
         {/* Left: Fresh & Fit Logo Cover Art & DELUSION CALCULATOR Branding Only */}
         <button
           type="button"
@@ -89,18 +114,14 @@ function Header({
             <button
               type="button"
               onClick={onToggleBank}
-              className={`p-2 sm:px-2.5 sm:py-1.5 rounded-xl bg-[#180e38] border flex items-center justify-center transition-all cursor-pointer shadow-[0_0_10px_rgba(255,0,127,0.2)] ${
+              className={`${CHROME} ${
                 activeBank === 1
-                  ? 'border-[#FF007F] shadow-[0_0_12px_rgba(255,0,127,0.45)] hover:border-[#FF007F]'
-                  : 'border-[#00F5FF] shadow-[0_0_12px_rgba(0,245,255,0.45)] hover:border-[#00F5FF]'
+                  ? 'bg-[#FF007F]/15 border-[#FF007F] text-[#FF007F] hover:border-[#FF007F]'
+                  : 'bg-[#00F5FF]/15 border-[#00F5FF] text-[#00F5FF] hover:border-[#00F5FF]'
               }`}
               title={`Sampler Bank ${activeBank} [Keys 1–0] (Press Tab to switch)`}
             >
-              <Layers
-                className={`w-4 h-4 transition-colors ${
-                  activeBank === 1 ? 'text-[#FF007F]' : 'text-[#00F5FF]'
-                }`}
-              />
+              <Layers className="w-4 h-4" />
             </button>
           )}
 
@@ -109,23 +130,23 @@ function Header({
             <button
               type="button"
               onClick={onOpenSoundVault}
-              className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-r from-[#FF007F]/30 to-[#8A2BE2]/30 hover:from-[#FF007F]/60 hover:to-[#8A2BE2]/60 border border-[#FF007F]/50 text-[#FFE600] hover:text-white transition-all shadow-[0_0_12px_rgba(255,0,127,0.3)] cursor-pointer"
+              className={CHROME}
               title="Sound Vault (45+ Audio Effects)"
             >
-              <Music className="w-4 h-4 text-[#FFE600]" />
+              <Music className="w-4 h-4" />
             </button>
           )}
 
           {/* Theme Switcher (Sun & Moon Icons Only) */}
           {onSetBgMode && (
-            <div className="flex items-center gap-1 bg-[#180e38] p-1 rounded-xl border border-[#FF007F]/30">
+            <div className="flex items-center gap-1 bg-[#180e38] p-1 rounded-xl border-[#FF007F]/30 border">
               <button
                 type="button"
                 onClick={() => onSetBgMode('VAPORWAVE')}
                 className={`p-1.5 rounded-lg transition-all cursor-pointer ${
                   bgMode === 'VAPORWAVE'
                     ? 'bg-[#FF007F] text-white shadow-[0_0_10px_#FF007F]'
-                    : 'text-[#B3A0D2] hover:text-white'
+                    : 'text-[#00F5FF] hover:text-white'
                 }`}
                 title="80s Vaporwave Theme (Sun)"
               >
@@ -137,7 +158,7 @@ function Header({
                 className={`p-1.5 rounded-lg transition-all cursor-pointer ${
                   bgMode === 'OBSIDIAN'
                     ? 'bg-[#00F5FF] text-black shadow-[0_0_10px_#00F5FF]'
-                    : 'text-[#B3A0D2] hover:text-white'
+                    : 'text-[#00F5FF] hover:text-white'
                 }`}
                 title="Obsidian Dark Theme (Moon)"
               >
@@ -151,10 +172,10 @@ function Header({
             <button
               type="button"
               onClick={onToggleStreamMode}
-              className={`p-2 sm:p-2.5 rounded-xl border transition-all cursor-pointer shadow-[0_0_12px_rgba(0,245,255,0.3)] ${
+              className={`${CHROME} ${
                 isStreamMode
-                  ? 'bg-[#FF007F] text-white border-[#FF007F] shadow-[0_0_15px_#FF007F] animate-pulse'
-                  : 'border-[#00F5FF]/40 bg-[#00F5FF]/15 text-[#00F5FF] hover:bg-[#00F5FF]/30'
+                  ? 'bg-[#FF007F] text-white border-[#FF007F] hover:border-[#FF007F] shadow-[0_0_15px_#FF007F] animate-pulse'
+                  : ''
               }`}
               title="Toggle Stream Mode [Spacebar]"
             >
@@ -167,7 +188,7 @@ function Header({
             <button
               type="button"
               onClick={onOpenMethodology}
-              className="p-2 sm:p-2.5 rounded-xl bg-[#180e38] hover:bg-[#2a0845] text-[#00F5FF] hover:text-white transition-colors border border-[#00F5FF]/40 cursor-pointer"
+              className={CHROME}
               title="Methodology & Data [A]"
             >
               <Info className="w-4 h-4" />
@@ -179,7 +200,7 @@ function Header({
             <button
               type="button"
               onClick={onOpenShortcuts}
-              className="p-2 sm:p-2.5 rounded-xl bg-[#180e38] hover:bg-[#2a0845] text-[#FFE600] hover:text-white transition-colors border border-[#FFE600]/40 cursor-pointer"
+              className={CHROME}
               title="Keyboard Shortcuts [/]"
             >
               <CircleHelp className="w-4 h-4" />
@@ -190,7 +211,7 @@ function Header({
           <button
             type="button"
             onClick={toggleFullscreen}
-            className="p-2 sm:p-2.5 rounded-xl bg-[#180e38] hover:bg-[#2a0845] text-[#00F5FF] hover:text-white transition-colors border border-[#00F5FF]/40 cursor-pointer"
+            className={CHROME}
             title="Toggle Fullscreen"
           >
             <Maximize2 className="w-4 h-4" />
@@ -198,6 +219,7 @@ function Header({
         </div>
       </div>
     </header>
+    </>
   );
 }
 

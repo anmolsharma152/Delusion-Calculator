@@ -19,8 +19,8 @@ Next.js web app (Fresh & Fit / Miami After Hours themed) that computes the proba
 ## Architecture
 
 - `src/app/page.tsx` is the entire app shell: WELCOME / INPUT / RESULTS view states, Stream Mode, theme (VAPORWAVE / OBSIDIAN), soundboard, and global hotkeys. Most UI work lands here or in `src/components/`.
-- `src/app/stream/page.tsx` is only a client-side redirect to `/` — Stream Mode is a state toggle in `page.tsx`, not a separate route.
-- `src/app/about/page.tsx` documents the methodology; `src/app/layout.tsx` hardcodes the Vercel SITE_URL and the four Google fonts.
+- Stream Mode is a state toggle in `page.tsx` — there is no separate `/stream` route (the old redirect stub was deleted).
+- Methodology lives in `src/components/MethodologyModal.tsx` (in-app overlay, hotkey `A`) — there is no `/about` route. `src/app/layout.tsx` hardcodes the Vercel SITE_URL and the four Google fonts.
 - Calculation flow: `CriteriaForm` → `page.tsx` state → `hooks/useCalculator.ts` → `engine/probability.ts` → `data/distributions.ts`. Pure functions, no server work, no fetching.
 - `next.config.ts` only adds security headers (no static-export config, despite `docs/DEPLOYMENT.md`).
 
@@ -30,7 +30,7 @@ Next.js web app (Fresh & Fit / Miami After Hours themed) that computes the proba
 - **Client vs Server**: every interactive component starts with `'use client'`. Use `@/` absolute imports.
 - **Fonts**: Bebas Neue / Anton / Inter / JetBrains Mono load via `next/font/google` in `layout.tsx`. Apply with the Tailwind v4 `@utility` classes `font-display` and `font-subhead` — plain `font-bebas`/`font-anton` utilities do **not** exist.
 - **Surfaces**: use solid `#0e0726` cards (`.glass-card-vapor` / `.glass-card-cyan`) on the `#180e38` / `#0c0721` gradient. Avoid semi-transparent fills that hurt text legibility.
-- **Hotkeys** (`page.tsx`): `[Space]` toggles Stream Mode, `[Enter]` advances views, `[Tab]` / `` ` `` switches sound banks, `[1]`–`[0]` trigger drops. The handler early-returns while typing in INPUT/TEXTAREA — keep that guard when adding keys.
+- **Hotkeys** (`page.tsx`): `[Space]` toggles Stream Mode, `[Enter]` advances views, `[Tab]` / `` ` `` switches sound banks, `[1]`–`[0]` trigger drops. The handler early-returns while typing in INPUT/TEXTAREA — keep that guard when adding keys. In Stream Mode the header is hidden and peeks back only when the cursor reaches the top ~2.5px edge (`Header.tsx`).
 - **Soundboard**: banks are hardcoded arrays in `SoundVaultModal.tsx` (`BANK_1_SOUNDS`, `BANK_2_SOUNDS`, `ALL_VAULT_SOUNDS`). Adding a sound means dropping the mp3 in `public/Soundbites/` **and** registering its path in those arrays (a prior commit fixed broken paths). Playback runs through `GlobalAudio`, exported from `components/AnticipationOverlay.tsx`.
 - **Canvas perf**: `InteractiveBackground.tsx` pre-renders sprites to offscreen canvases and deliberately avoids per-frame `shadowBlur` (was removed to reach near-0% CPU). Keep it that way.
 - `CLAUDE.md` just imports `@AGENTS.md` — update this file, not that one.

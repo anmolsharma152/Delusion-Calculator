@@ -280,7 +280,7 @@ export default function Home() {
 
       {/* Main App Content View Switcher */}
       <main className={`flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 z-10 relative flex flex-col justify-center my-auto transition-[padding-top] duration-300 ${isStreamMode
-          ? 'pb-3 pt-20'
+          ? 'pb-3 pt-3'
           : 'py-1 sm:py-1.5'
         }`}>
         <AnimatePresence mode="wait" initial={false}>

@@ -41,7 +41,7 @@ export default function WelcomeStage({ onStart }: WelcomeStageProps) {
               />
 
               {/* Exactly 1 Clockwise Rotating Cat Litter Bag */}
-              <div className="absolute top-1/2 -translate-y-1/2 left-full -ml-4 sm:-ml-5 w-14 h-16 sm:w-20 sm:h-24 drop-shadow-[0_0_20px_rgba(255,0,127,0.8)] animate-spin-clockwise">
+              <div className="absolute top-1/2 -translate-y-1/2 left-full ml-1.5 sm:ml-2 w-14 h-16 sm:w-20 sm:h-24 drop-shadow-[0_0_20px_rgba(255,0,127,0.8)] animate-spin-clockwise">
                 <Image
                   src="/Assets/cat_litter_bag.png"
                   alt="Cat Litter Bag"

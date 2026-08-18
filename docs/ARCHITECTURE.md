@@ -6,14 +6,14 @@
 
 ## 1. Architectural Overview
 
-The application is built on **Next.js 15 (App Router)** with **TypeScript (Strict Mode)** and **Tailwind CSS v4**. It uses a **Unified Single-Shell Architecture** to handle both standard web visitors and live OBS broadcast overlays without state fragmentation or page reloads.
+The application is built on **Next.js 16 (App Router)** with **TypeScript (Strict Mode)** and **Tailwind CSS v4**. It uses a **Unified Single-Shell Architecture** to handle both standard web visitors and live OBS broadcast overlays without state fragmentation or page reloads.
 
 ```mermaid
 graph TD
     subgraph "Unified App Shell (src/app/page.tsx)"
         State["Shared Global State<br/>• viewState: WELCOME | INPUT | RESULTS<br/>• criteria & activeCriteria<br/>• isStreamMode: true | false<br/>• bgMode: VAPORWAVE | OBSIDIAN<br/>• activeBank: 1 | 2<br/>• isVaultOpen: boolean<br/>• playingSound: object | null"]
         
-        Header["Unified Top Header (src/components/Header.tsx)<br/>• Standard Mode: Sticky & Visible<br/>• Stream Mode: Auto-Hides on Proximity<br/>• Controls: Sound Vault, Bank 1/2, Theme, Stream Mode, Fullscreen"]
+        Header["Unified Top Header (src/components/Header.tsx)<br/>• Standard Mode: Sticky & Visible<br/>• Stream Mode: Hides, Peeks Back on Top-Edge Cursor<br/>• Controls: Sound Vault, Bank 1/2, Theme, Stream Mode, Fullscreen"]
         
         Stage["Active View Stage (AnimatePresence)<br/>• WELCOME: WelcomeStage.tsx<br/>• INPUT: CriteriaForm.tsx (3x2 Grid)<br/>• RESULTS: ResultsPanel.tsx (Full Verdict)"]
         
@@ -41,7 +41,7 @@ graph TD
 2. **Unified Navigation Matrix**:
    - `[Space]`: In-place Stream Mode toggle.
    - `[Enter]`: Advances `WELCOME` $\rightarrow$ `INPUT` $\rightarrow$ `RESULTS` $\rightarrow$ `INPUT`.
-   - `[Tab]` / `[` `]`: Swaps Sampler Bank 1 and Bank 2.
+   - `[Tab]`: Swaps Sampler Bank 1 and Bank 2.
    - `[1]` to `[0]`: Triggers audio drops corresponding to active bank presets.
 
 ---

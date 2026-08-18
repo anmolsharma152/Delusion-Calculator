@@ -1,7 +1,7 @@
 # 🧮 THE DELUSION CALCULATOR
 ### *"The Numbers Don't Lie."* — Powered by Fresh & Fit Reality Checks
 
-[![Next.js 15](https://img.shields.io/badge/Next.js-15_(App_Router)-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16_(App_Router)-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0_(Strict)-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-crimson?style=for-the-badge)](LICENSE)
@@ -14,11 +14,11 @@ A stream-ready, high-accuracy statistical calculator web application inspired by
 
 * **3 × 2 Spacious Calculator Grid**: Six clean, high-contrast, easily scannable cards (*Age Range*, *Minimum Height*, *Race / Ethnicity*, *Minimum Education*, *Minimum Income*, and *Status & Fitness*).
 * **Unified Single-Shell Stream Mode**: Press `[Space]` anywhere to toggle OBS broadcast mode without resetting your criteria or calculated results.
-* **Proximity Auto-Hide Studio Header**: Auto-hides on broadcast overlays with smooth slide animations when moving the cursor within the top 90px.
+* **Peek Header in Stream Mode**: The top header hides for a clean broadcast view and peeks back only when the cursor reaches the top edge of the screen.
 * **45+ Soundboard Vault (Chris & Big Mo)**:
   * **Bank 1 (Main Stage Hits)**: Hotkeys `[1]` to `[0]` (*Don Demarco*, *For The Streets*, *Stop The Cap*, *Top G Theme*, *Emotional Damage*, *Airhorn Blast*, *Falcon Punch*, *Spongebob Fail*, *FAHHH*, *Undertaker Bell*).
   * **Bank 2 (Meme & Roast FX)**: Hotkeys `[1]` to `[0]` (*You're Broke*, *Button It*, *Breathe Air*, *Rizz Effect*, *Losing Horn*, *Stoopid*, *Bruh*, *Tuco Get Out*, *Rewind*, *Over 9000*).
-  * **Instant Bank Switch**: Press `[Tab]` or `[` `]` to swap active banks on the fly.
+  * **Instant Bank Switch**: Press `[Tab]` to swap active banks on the fly.
   * **Sound Vault Modal**: Search and trigger across 45+ categorized soundbites.
   * **Floating Audio HUD**: Non-intrusive bottom-right status badge during playback.
 * **Dual Theme Engine**: Instant switching between **`80s Vaporwave`** (floating particles + drifting cat bags) and **`Obsidian Dark`** (`#080808` pitch-black studio mode).
@@ -26,7 +26,7 @@ A stream-ready, high-accuracy statistical calculator web application inspired by
 * **Universal Hotkey Matrix**:
   * `[Space]`: Toggle Stream Mode in place.
   * `[Enter]`: Progress forward (`WELCOME` $\rightarrow$ `INPUT` $\rightarrow$ `RESULTS` $\rightarrow$ `INPUT`).
-  * `[Tab]` / `[` `]`: Toggle Soundboard Banks.
+  * `[Tab]`: Toggle Soundboard Banks.
   * `[1]`–`[0]`: Trigger Sampler Drops.
 
 ---
@@ -85,8 +85,6 @@ Delusion Calculator/
 │   └── icon.png
 ├── src/
 │   ├── app/
-│   │   ├── about/page.tsx      # Methodology & Census data documentation
-│   │   ├── stream/page.tsx     # Route alias to unified stream mode
 │   │   ├── globals.css         # Outrun neon glows & solid surface tokens
 │   │   ├── layout.tsx          # Root layout with metadata & fonts
 │   │   ├── page.tsx            # Unified Application Core & State Shell
@@ -94,7 +92,7 @@ Delusion Calculator/
 │   │   └── sitemap.ts          # SEO sitemap generator
 │   ├── components/
 │   │   ├── CriteriaForm.tsx    # 3x2 spacious input grid & banner header
-│   │   ├── Header.tsx          # Adaptive top header with auto-hide
+│   │   ├── Header.tsx          # Top header with stream-mode peek
 │   │   ├── SoundVaultModal.tsx # Full 45+ stream sound deck modal
 │   │   ├── ResultsPanel.tsx    # Gauge meter, %, ratio, breakdown & roast
 │   │   ├── WelcomeStage.tsx    # Hero intro landing screen
