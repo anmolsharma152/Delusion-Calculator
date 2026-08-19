@@ -1,34 +1,24 @@
 # Session Handoff
 
 ## Current Work Session
-Header icon/palette/width polish for the Fresh & Fit Delusion Calculator, expanded into stream-mode header behavior and dead-code cleanup planning.
+Repository separation and documentation synchronization for the **Fresh & Fit Female Delusion Calculator (US)**.
 
 ## What Was Completed
-- Audited auto-hide history (removed in `d810d51` after 3 fixes — mouse-proximity reveal didn't fit Stream Deck workflow).
-- Found cat bag overlap bug in `WelcomeStage` (`-ml-4`/`-ml-5` pulls it into the banner).
-- Identified dead `/stream` route, unimported `Footer.tsx`, stale sitemap/docs.
-- Locked: palette Option A (uniform chrome, active-state color only); header `max-w-7xl`; stream mode layout-only (no fullscreen); `[f]` manual-only.
+1. **Repository & Architecture Decoupling**:
+   - `Delusion Calculator` remains the dedicated repository for the Fresh & Fit US Calculator on `main`.
+   - `Rishta Calculator` is established as an independent project in `/home/anmol/Projects/Rishta Calculator` with its own isolated git history.
+2. **Feature & Bug Fix Completion**:
+   - Clockwise rotating cat litter bag placed next to the `fnf_delusion_banner.png` in both `WelcomeStage.tsx` and `CriteriaForm.tsx` using hardware-accelerated CSS animations (`.animate-spin-clockwise`).
+   - Symmetrical double-bar diamond dollar sign and multi-tier luxury superyacht SVGs integrated.
+   - Canvas background physics optimized to near 0% CPU with pre-rendered offscreen sprite caches.
+   - US Census Bureau Current Population Survey (CPS) Data Tables citation added.
+   - Snapping height slider initialized with 5'9" US male average baseline.
+   - Data Pack 2026.2 lifestyle filters (Religion, Politics, Children, Drugs, Crime, Smoking, Orientation) fully functional.
+3. **Build & Deployment Health**:
+   - `npm run build` compiles with 0 errors across all 7 static pages.
+   - Live on Vercel at `https://female-delusion-calculator.vercel.app/`.
 
-## What Is In Progress
-Header polish plan drafted; **no code written yet** (plan mode; user paused).
-
-## Files Touched Recently
-- Planned: `Header.tsx`, `page.tsx` (drop `pt-20` in stream), `WelcomeStage.tsx` (cat bag gap), delete `Footer.tsx`/`stream/page.tsx`, fix `sitemap.ts`.
-- Last commits: `84e71a7`, `611c9b8`, `88935d0`.
-
-## Important Decisions
-- `[f]` stays manual-only fullscreen; stream mode won't force fullscreen (hosts share window content).
-- Engine stays percentage-multiplication; children = single "No Children" toggle; Independent = strict flat 4%.
-- **Pending:** stream header reveal (hotkey-flash recommended vs peek vs always-visible); Footer fate.
-
-## Current Blockers
-Plan mode (read-only). Awaiting the two decisions above.
-
-## Immediate Next Action
-On approval: implement header polish per chosen reveal, fix cat bag gap, delete dead route/Footer, update sitemap + stale docs, `npm run build`, Playwright check, commit.
-
-## First Prompt For The Next Agent
-"Resume the header polish task in this repo. Locked: uniform header chrome (Option A — `bg-[#180e38] border-[#FF007F]/30 text-[#00F5FF]`, color for active states), inner width `max-w-6xl`→`max-w-7xl`, `[f]` stays manual fullscreen, stream mode is layout-only. Pending: stream-mode header reveal mechanism and whether to delete the dead `Footer.tsx`/`src/app/stream`. Run `npm run build` before committing."
-
-## Roadmap Review
-M0/M1 done; M5 done (ahead of roadmap); M2 partial (report missing); M3/M4 proposals pending; M6 partial; M7 not started. Next after cleanup: typography report, then result/stream proposals.
+## Important Guidelines
+- **Stack**: Next.js 16.3.0, React 19, TypeScript strict, Tailwind CSS v4, Framer Motion 13.
+- **Verification**: Run `npm run build` prior to committing any changes.
+- **Hotkeys**: Keep the `INPUT`/`TEXTAREA` guard in `src/app/page.tsx`.

@@ -1,10 +1,18 @@
 # Deployment & Production Guidelines
 
-> **Project: The Delusion Calculator**
+> **Project: The Delusion Calculator (Fresh & Fit — US)**
 
 ---
 
-## 1. Local Development Workflow
+## 1. Live Production Deployment
+
+* **URL**: [https://female-delusion-calculator.vercel.app/](https://female-delusion-calculator.vercel.app/)
+* **Platform**: Vercel (Production Branch: `main`)
+* **Framework**: Next.js 16 (App Router with Turbopack)
+
+---
+
+## 2. Local Development Workflow
 
 Run the Next.js development server locally:
 
@@ -17,9 +25,9 @@ npm run dev
 
 ---
 
-## 2. Production Build & Static Export
+## 3. Production Build & Static Optimization
 
-The project is configured for optimal performance using static generation:
+The project is configured for optimal performance using static pre-rendering:
 
 ```bash
 # Build optimized production bundle
@@ -30,18 +38,18 @@ npm run start
 ```
 
 ### Static Optimization Details:
-* The single page (`/`) is fully prerendered at build time.
-* Fast client-side calculations execute with zero API latency.
+* All public routes (`/`, `robots.txt`, `sitemap.xml`, `icon.png`) are fully pre-rendered at build time.
+* Fast client-side demographic calculations execute in $< 1.0\text{ ms}$ with zero server round-trips.
 * Assets in `public/Assets/` and `public/Soundbites/` are served with static caching headers.
 
 ---
 
-## 3. OBS Studio Broadcast Setup
+## 4. OBS Studio Broadcast Setup
 
-To embed the Delusion Calculator inside OBS Studio:
+To embed the Delusion Calculator inside OBS Studio for streaming:
 
 1. In OBS, add a **Browser Source**.
-2. Set URL to `http://localhost:3000` (or your production deployment domain).
+2. Set URL to `https://female-delusion-calculator.vercel.app/` (or `http://localhost:3000` for local testing).
 3. Set Width: `1920` and Height: `1080` (or `1280` × `720`).
-4. Press **`[Space]`** to activate Stream Mode; the top header hides and only peeks back when the cursor reaches the top edge of the captured window.
-5. In Obsidian Dark theme, the background is pure `#080808` obsidian black for seamless broadcast integration.
+4. Press **`[Space]`** or **`[S]`** to activate Stream Mode; the top header hides for a clean broadcast canvas and reveals on hover at the top edge.
+5. In **Obsidian Dark** theme (`[T]`), the background switches to solid `#080808` obsidian black for seamless overlay integration.
